@@ -11,29 +11,44 @@ export const Searcher = ({ collection, searchFunction, resetFunction }) => {
     <Box
       sx={{
         display: "flex",
-        gap: "10px",
-        padding: "10px",
-        height: "56px",
-        width: "500px",
+        flexDirection: { xs: "column", sm: "row" },
+        gap: { xs: 1, sm: 2 },
+        p: { xs: 1, sm: 2 },
+        width: "100%",
+        maxWidth: 500,
+        boxSizing: "border-box",
+        alignItems: "stretch",
       }}
     >
       <Input
-        sx={{ width: "100%" }}
+        sx={{
+          width: "100%",
+          flex: 1,
+          fontSize: { xs: "1rem", sm: "1.1rem" },
+          bgcolor: "background.paper",
+          borderRadius: 1,
+          px: 1,
+        }}
         onChange={(e) => setItem(e.target.value)}
         type="text"
         placeholder="Buscar un contenido específico..."
         value={item}
-      >
-        {item}
-      </Input>
+        disableUnderline
+      />
       <Button
         onClick={() => searchFunction(item, collection)}
         sx={{
-          backgroundColor: "background.green",
+          minWidth: { xs: 40, sm: 48 },
+          minHeight: { xs: 40, sm: 48 },
+          px: { xs: 1, sm: 2 },
+          bgcolor: "background.green",
+          color: "primary.contrastText",
+          borderRadius: 1,
+          boxShadow: 1,
           ":hover": {
             color: "primary.main",
-            backgroundColor: "background.main",
-            border: "1.5px,solid,#2c3e50",
+            bgcolor: "background.main",
+            border: "1.5px solid #2c3e50",
             transition: "200ms",
           },
         }}
@@ -41,7 +56,14 @@ export const Searcher = ({ collection, searchFunction, resetFunction }) => {
         <SearchOutlined />
       </Button>
       <Button
-        sx={{ border: "1px,solid,#e95354", color: "#e95354", padding: "10px" }}
+        sx={{
+          border: "1px solid #e95354",
+          color: "#e95354",
+          px: { xs: 1, sm: 2 },
+          minHeight: { xs: 40, sm: 48 },
+          borderRadius: 1,
+          boxShadow: 1,
+        }}
         onClick={() => {
           resetFunction();
           setItem("");

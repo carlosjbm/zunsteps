@@ -49,12 +49,32 @@ export default function BasicTabs() {
   //************************************************************** */
 
   return (
-    <Box sx={{ width: "1000px" }}>
+    <Box
+      sx={{
+        width: "100%",
+        maxWidth: 1000,
+        mx: "auto",
+        px: { xs: 0.5, sm: 2 },
+        boxSizing: "border-box",
+      }}
+    >
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}
           onChange={handleChange}
           aria-label="basic tabs example"
+          variant="scrollable"
+          scrollButtons="auto"
+          allowScrollButtonsMobile
+          sx={{
+            minHeight: 40,
+            "& .MuiTab-root": {
+              fontSize: { xs: "0.95rem", sm: "1.1rem" },
+              minWidth: 80,
+              px: { xs: 1, sm: 2 },
+              py: { xs: 0.5, sm: 1 },
+            },
+          }}
         >
           {mSecciones.map((el) => (
             <Tab
@@ -65,17 +85,15 @@ export default function BasicTabs() {
           ))}
         </Tabs>
       </Box>
-      {mSecciones.map((el) => {
-        return (
-          <CustomTabPanel
-            key={el.sNombre}
-            value={value}
-            index={mSecciones.indexOf(el)}
-          >
-            <AccordionExpandIcon key={el.id} seccion={el} />
-          </CustomTabPanel>
-        );
-      })}
+      {mSecciones.map((el) => (
+        <CustomTabPanel
+          key={el.sNombre}
+          value={value}
+          index={mSecciones.indexOf(el)}
+        >
+          <AccordionExpandIcon key={el.id} seccion={el} />
+        </CustomTabPanel>
+      ))}
     </Box>
   );
 }

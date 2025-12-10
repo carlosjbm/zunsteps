@@ -61,14 +61,19 @@ export default function Dashboard(params) {
   };
 
   return (
-    <Box sx={{ display: "flex", justifyContent: "center", gap: "30px" }}>
-      <Box>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: { xs: "column", md: "row" },
+        gap: { xs: 2, md: 3 },
+        py: { xs: 2, md: 4 },
+        px: { xs: 1, md: 2 },
+      }}
+    >
+      <Box sx={{ width: { xs: "100%", md: "auto" } }}>
         <Card
           sx={{
-            minWidth: "300px",
-            height: "85vh",
-            marginTop: "40px",
-            marginBottom: "30px",
+            minWidth: { xs: "100%", md: "300px" },
             display: "flex",
             flexDirection: "column",
           }}
@@ -78,15 +83,15 @@ export default function Dashboard(params) {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              gap: "10px",
-              marginTop: "30px",
+              gap: 1,
+              p: 2,
             }}
           >
             <AppsOutlinedIcon />
             <Typography
-              variant="h5"
+              variant="h6"
               color="primary.main"
-              fontFamily={"monospace"}
+              fontFamily="monospace"
             >
               Módulos
             </Typography>
@@ -95,9 +100,10 @@ export default function Dashboard(params) {
             sx={{
               display: "flex",
               flexDirection: "column",
-              gap: "10px",
-              marginTop: "20px",
+              gap: 1,
+              overflowY: "auto",
               alignItems: "center",
+              p: 1,
             }}
           >
             <SideBtnItem
@@ -173,7 +179,7 @@ export default function Dashboard(params) {
           </Box>
         </Card>
       </Box>
-      <Box>
+      <Box sx={{ flex: 1, width: { xs: "100%", md: "auto" } }}>
         <BasicTabs />
       </Box>
     </Box>

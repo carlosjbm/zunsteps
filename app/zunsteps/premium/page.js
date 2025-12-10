@@ -11,45 +11,84 @@ import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 
 export default function PremiumPage() {
   return (
-    <Container maxWidth="md" sx={{ py: 4 }}>
+    <Container maxWidth="md" sx={{ py: { xs: 2, md: 4 } }}>
+      {/* Header */}
       <Box textAlign="center" mb={4}>
-        <Typography variant="h3" component="h1" gutterBottom>
-          Zona Premium
+        <Typography
+          variant="h3"
+          component="h1"
+          gutterBottom
+          sx={{ fontSize: { xs: "1.75rem", md: "2.5rem" } }}
+        >
+          ⭐ Zona Premium
         </Typography>
-        <Box sx={{ display: "flex", marginLeft: "40%", mb: 2, gap: "5px" }}>
-          <Link href={"/"}>
-            <WhiteMiddButton
-              icon={<HomeOutlinedIcon sx={{ color: "primary.blue" }} />}
-              text={"Inicio"}
-            />
-          </Link>
-          <Link href={"/zunsteps/dashboard"}>
-            <DefaultButton text="Dashboard" />
-          </Link>
-        </Box>
-        <Typography variant="subtitle1">
+        <Typography variant="subtitle1" color="text.secondary" sx={{ mb: 2 }}>
           ¡Bienvenido a tu área exclusiva!
         </Typography>
+        {/* Navigation */}
+        <Box
+          sx={{
+            display: "flex",
+            gap: 1,
+            justifyContent: "center",
+            flexWrap: "wrap",
+          }}
+        >
+          <Link href="/">
+            <Button
+              size="small"
+              variant="outlined"
+              startIcon={<HomeOutlinedIcon />}
+            >
+              Inicio
+            </Button>
+          </Link>
+          <Link href="/zunsteps/dashboard">
+            <Button size="small" variant="outlined">
+              Dashboard
+            </Button>
+          </Link>
+        </Box>
       </Box>
 
+      {/* Benefits Section */}
       <Box mb={4}>
-        <Typography variant="h5" gutterBottom>
-          Beneficios de ser Premium
+        <Typography
+          variant="h5"
+          gutterBottom
+          sx={{ fontSize: { xs: "1.25rem", md: "1.5rem" }, mb: 2 }}
+        >
+          ✨ Beneficios Premium
         </Typography>
-        <ul>
-          <li>
-            <Typography>Acceso a contenido exclusivo</Typography>
-          </li>
-          <li>
-            <Typography>Soporte prioritario</Typography>
-          </li>
-          <li>
-            <Typography>Acceso a utilitarios exclusivos</Typography>
-          </li>
-          <li>
-            <Typography>Agente de ayuda para responder FAQs</Typography>
-          </li>
-        </ul>
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
+            gap: 2,
+          }}
+        >
+          {[
+            "Acceso a contenido exclusivo",
+            "Soporte prioritario",
+            "Utilitarios exclusivos",
+            "Agente de ayuda 24/7",
+          ].map((benefit) => (
+            <Card
+              key={benefit}
+              sx={{
+                p: 2,
+                background:
+                  "linear-gradient(135deg, rgba(25,118,210,0.1) 0%, rgba(56,142,60,0.1) 100%)",
+                border: "1px solid",
+                borderColor: "divider",
+              }}
+            >
+              <Typography variant="body2" color="text.primary">
+                ✓ {benefit}
+              </Typography>
+            </Card>
+          ))}
+        </Box>
       </Box>
 
       <Box mb={4}>
