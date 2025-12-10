@@ -26,11 +26,7 @@ export default function ChatBotSim({ responses }) {
   const [showTopics, setShowTopics] = useState(false);
   const [input, setInput] = useState("");
   const [chat, setChat] = useState([]);
-  const [suggestions] = useState([
-    "Hola",
-    "¿Qué es renderPremium?",
-    "¿Cómo contacto soporte?",
-  ]);
+  const [suggestions] = useState(["Hola", "No cierra el front"]);
   const listRef = useRef(null);
 
   useEffect(() => {
@@ -122,16 +118,6 @@ export default function ChatBotSim({ responses }) {
         )}
 
         <List disablePadding>
-          {showTopics &&
-            suggestions.map((s) => (
-              <Chip
-                key={s}
-                label={s}
-                size="small"
-                clickable
-                onClick={() => handleSend(s)}
-              />
-            ))}
           {chat.map((msg, idx) => (
             <ListItem
               key={idx}
@@ -166,6 +152,21 @@ export default function ChatBotSim({ responses }) {
             </ListItem>
           ))}
         </List>
+        {showTopics && (
+          <Box
+            sx={{ mt: 1, display: "flex", gap: 1, justifyContent: "center" }}
+          >
+            {suggestions.map((s) => (
+              <Chip
+                key={s}
+                label={s}
+                size="small"
+                clickable
+                onClick={() => handleSend(s)}
+              />
+            ))}
+          </Box>
+        )}
       </Box>
 
       <Divider />
