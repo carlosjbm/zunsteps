@@ -4,7 +4,7 @@ import { zunacc } from "../modulos/zunacc";
 import { zunaft } from "../modulos/zunaft";
 import { zunhr } from "../modulos/zunhr";
 import { zunst } from "../modulos/zunst";
-
+import { zunpr } from "../modulos/zunpr";
 const { createContext, useState } = require("react");
 
 export const ModuloContext = createContext();
@@ -35,6 +35,10 @@ export const ModuloProvider = ({ children }) => {
   const setZunst = () => {
     setModulo(zunst); //cambiar aqui
   };
+  //funcion para activar zunpr
+  const setZunpr = () => {
+    setModulo(zunpr);
+  };
 
   const values = {
     modulo,
@@ -42,6 +46,7 @@ export const ModuloProvider = ({ children }) => {
     setZunhr,
     setZunaft,
     setZunst,
+    setZunpr,
     devModule,
   };
   return (

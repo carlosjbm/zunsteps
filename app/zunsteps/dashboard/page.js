@@ -10,6 +10,7 @@ import CurrencyExchangeOutlinedIcon from "@mui/icons-material/CurrencyExchangeOu
 import Diversity3OutlinedIcon from "@mui/icons-material/Diversity3Outlined";
 import ChairOutlinedIcon from "@mui/icons-material/ChairOutlined";
 import Inventory2OutlinedIcon from "@mui/icons-material/Inventory2Outlined";
+import PaymentsOutlinedIcon from "@mui/icons-material/PaymentsOutlined";
 import Link from "next/link";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 
@@ -17,14 +18,22 @@ import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import { ModuloContext } from "@/app/lib/contexts/ModulosContext";
 
 export default function Dashboard(params) {
-  const { modulo, setZunacc, setZunhr, setZunaft, setZunst, devModule } =
-    useContext(ModuloContext);
-  //Para desarrollo
-  const [dev, setDev] = useState(false);
+  const {
+    modulo,
+    setZunacc,
+    setZunhr,
+    setZunaft,
+    setZunst,
+    setZunpr,
+    devModule,
+  } = useContext(ModuloContext);
+
+  const [dev, setDev] = useState(false); //para desarrollo
   const [acc, setAcc] = useState(true);
   const [hr, setHr] = useState(false);
   const [aft, setAft] = useState(false);
   const [st, setSt] = useState(false);
+  const [pr, setPr] = useState(false);
 
   //Menejo de si esta marcado un modulo en desarrollo
   const handleMarkupDev = () => {
@@ -38,6 +47,7 @@ export default function Dashboard(params) {
     setHr(false);
     setAft(false);
     setSt(false);
+    setPr(false);
   };
   //Manejo de si esta marcado o no para Hr
   const handleMarkupHr = () => {
@@ -46,6 +56,7 @@ export default function Dashboard(params) {
     setAcc(false);
     setAft(false);
     setSt(false);
+    setPr(false);
   };
   //Manejo de si esta marcado o no para AFT
   const handleMarkupAft = () => {
@@ -53,10 +64,20 @@ export default function Dashboard(params) {
     setHr(false);
     setAcc(false);
     setSt(false);
+    setPr(false);
   };
   const handleMarkupSt = () => {
     setDev(false);
     setSt(true);
+    setAft(false);
+    setHr(false);
+    setAcc(false);
+    setPr(false);
+  };
+  const handleMarkupPr = () => {
+    setPr(true);
+    setDev(false);
+    setSt(false);
     setAft(false);
     setHr(false);
     setAcc(false);
@@ -143,10 +164,10 @@ export default function Dashboard(params) {
             {/* In Dev */}
             <SideBtnItem
               title={"ZUNpr"}
-              icon={<ScienceOutlined />}
-              toMark={handleMarkupDev}
-              handleModulo={devModule}
-              marked={dev}
+              icon={<PaymentsOutlinedIcon />}
+              toMark={handleMarkupPr}
+              handleModulo={setZunpr}
+              marked={pr}
             />
 
             {/* In Dev */}
