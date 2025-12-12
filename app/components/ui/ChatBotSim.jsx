@@ -26,7 +26,12 @@ export default function ChatBotSim({ responses }) {
   const [showTopics, setShowTopics] = useState(false);
   const [input, setInput] = useState("");
   const [chat, setChat] = useState([]);
-  const [suggestions] = useState(["Hola", "No cierra el front"]);
+  const [suggestions] = useState([
+    "Hola",
+    "No cierra el front",
+    "Revertir un comprobante",
+    "¿Cómo generar un reporte de ventas?",
+  ]);
   const listRef = useRef(null);
 
   useEffect(() => {
