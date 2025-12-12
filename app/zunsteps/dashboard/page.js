@@ -10,6 +10,8 @@ import CurrencyExchangeOutlinedIcon from "@mui/icons-material/CurrencyExchangeOu
 import Diversity3OutlinedIcon from "@mui/icons-material/Diversity3Outlined";
 import ChairOutlinedIcon from "@mui/icons-material/ChairOutlined";
 import Inventory2OutlinedIcon from "@mui/icons-material/Inventory2Outlined";
+import Link from "next/link";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 
 /*Modulos */
 import { ModuloContext } from "@/app/lib/contexts/ModulosContext";
@@ -174,7 +176,9 @@ export default function Dashboard(params) {
             />
 
             <Box>
-              <DefaultButton text={"Frecuentes"} />
+              <Link href={"/zunsteps/faqs"}>
+                <DefaultButton text={"Preguntas"} icon={<HelpOutlineIcon />} />
+              </Link>
             </Box>
           </Box>
         </Card>

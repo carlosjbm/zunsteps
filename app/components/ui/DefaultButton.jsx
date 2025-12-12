@@ -1,7 +1,11 @@
 import { ArrowForward } from "@mui/icons-material";
 import { Button, Typography } from "@mui/material";
 
-export const DefaultButton = ({ text, actionFunction }) => {
+export const DefaultButton = ({
+  text,
+  actionFunction,
+  icon = <ArrowForward />,
+}) => {
   return (
     <Button
       onClick={actionFunction}
@@ -30,7 +34,7 @@ export const DefaultButton = ({ text, actionFunction }) => {
       <Typography sx={{ fontSize: "inherit", fontWeight: 500 }}>
         {text}
       </Typography>
-      <ArrowForward sx={{ fontSize: { xs: "1.3rem", sm: "1.6rem" } }} />
+      {icon}
     </Button>
   );
 };
