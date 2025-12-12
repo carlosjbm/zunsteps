@@ -5,6 +5,7 @@ import { zunacc } from "./modulos/zunacc";
 import { zunaft } from "./modulos/zunaft";
 import { zunhr } from "./modulos/zunhr";
 import { zunst } from "./modulos/zunst";
+import { zunpr } from "./modulos/zunpr";
 import { tablasConocimientos } from "./knowlebasic/tablas";
 import { tips } from "./knowlebasic/tips";
 import { basicAnswers } from "./knowlebasic/basicAnswers";
@@ -34,7 +35,7 @@ const chatbotResponses = {
 };
 
 // Construir una base de conocimiento a partir de los módulos
-const modules = [zunacc, zunaft, zunhr, zunst];
+const modules = [zunacc, zunaft, zunhr, zunst, zunpr];
 const knowledge = [];
 //para conocimientos basicos
 basicAnswers.forEach((b) => {
