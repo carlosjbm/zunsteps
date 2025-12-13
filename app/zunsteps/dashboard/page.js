@@ -16,6 +16,7 @@ import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 
 /*Modulos */
 import { ModuloContext } from "@/app/lib/contexts/ModulosContext";
+import useMark from "@/app/lib/hooks/useMark";
 
 export default function Dashboard(params) {
   const {
@@ -27,62 +28,7 @@ export default function Dashboard(params) {
     setZunpr,
     devModule,
   } = useContext(ModuloContext);
-
-  const [dev, setDev] = useState(false); //para desarrollo
-  const [acc, setAcc] = useState(true);
-  const [hr, setHr] = useState(false);
-  const [aft, setAft] = useState(false);
-  const [st, setSt] = useState(false);
-  const [pr, setPr] = useState(false);
-
-  //Menejo de si esta marcado un modulo en desarrollo
-  const handleMarkupDev = () => {
-    setDev(false);
-  };
-
-  //Manejo de si esta marcado o no para Acc
-  const handleMarkupAcc = () => {
-    setDev(false);
-    setAcc(true);
-    setHr(false);
-    setAft(false);
-    setSt(false);
-    setPr(false);
-  };
-  //Manejo de si esta marcado o no para Hr
-  const handleMarkupHr = () => {
-    setDev(false);
-    setHr(true);
-    setAcc(false);
-    setAft(false);
-    setSt(false);
-    setPr(false);
-  };
-  //Manejo de si esta marcado o no para AFT
-  const handleMarkupAft = () => {
-    setAft(true);
-    setHr(false);
-    setAcc(false);
-    setSt(false);
-    setPr(false);
-  };
-  const handleMarkupSt = () => {
-    setDev(false);
-    setSt(true);
-    setAft(false);
-    setHr(false);
-    setAcc(false);
-    setPr(false);
-  };
-  const handleMarkupPr = () => {
-    setPr(true);
-    setDev(false);
-    setSt(false);
-    setAft(false);
-    setHr(false);
-    setAcc(false);
-  };
-
+  const { itemsMarked, handleMark } = useMark();
   return (
     <Box
       sx={{
@@ -131,70 +77,69 @@ export default function Dashboard(params) {
           >
             <SideBtnItem
               title={"ZUNacc"}
-              handleModulo={setZunacc}
-              marked={acc}
-              toMark={handleMarkupAcc}
               icon={<CurrencyExchangeOutlinedIcon />}
+              handleModulo={setZunacc}
+              modulesStatus={itemsMarked}
+              toMark={() => handleMark("ZUNacc")}
             />
 
             {/* In Dev */}
-            <SideBtnItem
+            {/* <SideBtnItem
               title={"ZUNpms"}
               icon={<ScienceOutlined />}
               toMark={handleMarkupDev}
               handleModulo={devModule}
               marked={dev}
-            />
+            /> */}
 
             <SideBtnItem
-              marked={st}
-              toMark={handleMarkupSt}
-              handleModulo={setZunst}
               title={"ZUNst"}
               icon={<Inventory2OutlinedIcon />}
+              handleModulo={setZunst}
+              modulesStatus={itemsMarked}
+              toMark={() => handleMark("ZUNst")}
             />
             <SideBtnItem
               title={"ZUNhr"}
-              marked={hr}
-              toMark={handleMarkupHr}
-              handleModulo={setZunhr}
               icon={<Diversity3OutlinedIcon />}
+              handleModulo={setZunhr}
+              modulesStatus={itemsMarked}
+              toMark={() => handleMark("ZUNhr")}
             />
 
-            {/* In Dev */}
             <SideBtnItem
               title={"ZUNpr"}
               icon={<PaymentsOutlinedIcon />}
-              toMark={handleMarkupPr}
               handleModulo={setZunpr}
-              marked={pr}
+              modulesStatus={itemsMarked}
+              toMark={() => handleMark("ZUNpr")}
             />
 
             {/* In Dev */}
-            <SideBtnItem
+            {/* <SideBtnItem
               title={"ZUNcc"}
               icon={<ScienceOutlined />}
               toMark={handleMarkupDev}
               handleModulo={devModule}
               marked={dev}
-            />
+            /> */}
 
             <SideBtnItem
               title={"ZUNaft"}
-              marked={aft}
-              handleModulo={setZunaft}
-              toMark={handleMarkupAft}
               icon={<ChairOutlinedIcon />}
+              handleModulo={setZunaft}
+              modulesStatus={itemsMarked}
+              toMark={() => handleMark("ZUNaft")}
             />
 
             {/* In Dev */}
-            <SideBtnItem
+            {/* <SideBtnItem
               title={"ZUNut"}
               icon={<ScienceOutlined />}
               toMark={handleMarkupDev}
               handleModulo={devModule}
               marked={dev}
-            />
+            /> */}
 
             <Box>
               <Link href={"/zunsteps/faqs"}>

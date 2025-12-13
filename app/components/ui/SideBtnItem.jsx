@@ -1,22 +1,24 @@
 "use Client";
-import {
-  ArrowCircleRightOutlined,
-  Title,
-  VisibilityOffOutlined,
-  VisibilityOutlined,
-} from "@mui/icons-material";
 import { Button, Box } from "@mui/material";
-import { useState } from "react";
 
-export const SideBtnItem = ({ title, icon, handleModulo, marked, toMark }) => {
-  //Manejo del que el boton salga marcado
-  const handleSelected = () => {
-    toMark();
-  };
+export const SideBtnItem = ({
+  title,
+  icon,
+  handleModulo,
+  toMark,
+  modulesStatus,
+}) => {
+  let valueMark;
+
+  modulesStatus.map((e) => {
+    if (e.name === title) {
+      valueMark = e.isMarked;
+    } else return;
+  });
 
   return (
     <Box>
-      {marked ? (
+      {valueMark ? (
         <Button
           variant="outlined"
           sx={{
@@ -27,7 +29,7 @@ export const SideBtnItem = ({ title, icon, handleModulo, marked, toMark }) => {
           }}
           onClick={() => {
             handleModulo();
-            handleSelected();
+            toMark();
           }}
         >
           {icon}
@@ -43,7 +45,7 @@ export const SideBtnItem = ({ title, icon, handleModulo, marked, toMark }) => {
           }}
           onClick={() => {
             handleModulo();
-            handleSelected();
+            toMark();
           }}
         >
           {icon}
