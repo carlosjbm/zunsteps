@@ -119,7 +119,7 @@ export default function Home() {
             }}
           >
             <Link
-              href="/admin"
+              href="/premium-access"
               aria-label="Ir a Premium"
               style={{
                 display: "inline-flex",

@@ -60,7 +60,7 @@ const Admin = () => {
               />
             </Link>
           ) : (
-            console.log("Key no valida")
+            console.log("Key no valida") //acordarme que tengo que poner una alerta o algo
           )}
         </Box>
         <Box className="box-info">

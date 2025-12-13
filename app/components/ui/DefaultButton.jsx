@@ -5,6 +5,7 @@ export const DefaultButton = ({
   text,
   actionFunction,
   icon = <ArrowForward />,
+  sx = {},
 }) => {
   return (
     <Button
@@ -29,6 +30,7 @@ export const DefaultButton = ({
           boxShadow: 3,
           transition: "200ms",
         },
+        ...sx,
       }}
     >
       <Typography sx={{ fontSize: "inherit", fontWeight: 500 }}>

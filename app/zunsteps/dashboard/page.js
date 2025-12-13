@@ -4,6 +4,7 @@ import { SideBtnItem } from "@/app/components/ui/SideBtnItem";
 import { Box, Button, Card, Divider, Typography } from "@mui/material";
 import AppsOutlinedIcon from "@mui/icons-material/AppsOutlined";
 import { DefaultButton } from "@/app/components/ui/DefaultButton";
+import { NavButtonGroup } from "@/app/components/ui/NavButtonGroup";
 import { ScienceOutlined } from "@mui/icons-material";
 import React, { useContext, useState } from "react";
 import CurrencyExchangeOutlinedIcon from "@mui/icons-material/CurrencyExchangeOutlined";
@@ -146,6 +147,10 @@ export default function Dashboard(params) {
                 <DefaultButton text={"Preguntas"} icon={<HelpOutlineIcon />} />
               </Link>
             </Box>
+
+            <Divider sx={{ width: "100%", my: 1 }} />
+
+            <NavButtonGroup />
           </Box>
         </Card>
       </Box>

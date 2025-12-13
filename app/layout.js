@@ -3,6 +3,7 @@ import "./globals.css";
 import { MyThemeProvider } from "./components/providers/MyThemeProvider";
 import { ModuloProvider } from "./lib/contexts/ModulosContext";
 import { PremiumProvider } from "./lib/contexts/PremiumContext";
+import { PremiumAuthProvider } from "./lib/contexts/PremiumAuthContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,9 +25,11 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <MyThemeProvider>
         <ModuloProvider>
-          <body className={`${geistSans.variable} ${geistMono.variable}`}>
-            {children}
-          </body>
+          <PremiumAuthProvider>
+            <body className={`${geistSans.variable} ${geistMono.variable}`}>
+              {children}
+            </body>
+          </PremiumAuthProvider>
         </ModuloProvider>
       </MyThemeProvider>
     </html>

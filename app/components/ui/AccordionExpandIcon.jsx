@@ -50,89 +50,168 @@ export default function AccordionExpandIcon({ seccion }) {
   };
 
   return (
-    <div>
-      <Accordion>
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+      {/* Accordion - Módulo */}
+      <Accordion
+        sx={{
+          borderRadius: "8px",
+          border: "1px solid",
+          borderColor: "divider",
+          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.08)",
+          "&:hover": {
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.12)",
+          },
+          transition: "all 250ms cubic-bezier(0.4, 0, 0.2, 1)",
+        }}
+      >
         <AccordionSummary
           expandIcon={<ArrowDownwardIcon />}
           aria-controls="panel1-content"
           id="panel1-header"
+          sx={{
+            padding: "16px 20px",
+            backgroundColor: "background.paper",
+            "&:hover": {
+              backgroundColor: "background.green",
+            },
+            transition: "background-color 250ms",
+          }}
         >
           <Box
             sx={{
               display: "flex",
               alignItems: "center",
-              justifyContent: "center",
-              gap: "10px",
+              justifyContent: "space-between",
+              width: "100%",
+              gap: "12px",
             }}
           >
-            <Typography variant="h5" color="primary.main">
+            <Typography
+              variant="h5"
+              color="primary.main"
+              sx={{
+                fontWeight: 600,
+                fontSize: { xs: "1.1rem", sm: "1.3rem" },
+              }}
+            >
               {mNombre}
             </Typography>
           </Box>
         </AccordionSummary>
-        <AccordionDetails>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: "10px",
-              marginBottom: "10px",
-            }}
-          >
-            {/* <ResponsiveDialog
-              title={"Atajo1"}
-              importat={true}
-              content={<VerticalLinearStepper />}
-            />
-            <ResponsiveDialog title={"Atajo2"} importat={false} /> */}
-          </Box>
-          <Typography color="primary.text">{mResumen}</Typography>
+        <AccordionDetails
+          sx={{
+            padding: "16px 20px",
+            backgroundColor: "background.paper",
+            borderTop: "1px solid",
+            borderColor: "divider",
+          }}
+        >
+          <Typography color="primary.text" sx={{ lineHeight: 1.6 }}>
+            {mResumen}
+          </Typography>
         </AccordionDetails>
       </Accordion>
-      <Accordion defaultExpanded="true">
+
+      {/* Accordion - Sección y Contenidos */}
+      <Accordion
+        defaultExpanded="true"
+        sx={{
+          borderRadius: "8px",
+          border: "1px solid",
+          borderColor: "divider",
+          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.08)",
+          "&:hover": {
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.12)",
+          },
+          transition: "all 250ms cubic-bezier(0.4, 0, 0.2, 1)",
+        }}
+      >
         <AccordionSummary
           expandIcon={<ArrowDropDownIcon />}
           aria-controls="panel2-content"
           id="panel2-header"
+          sx={{
+            padding: "16px 20px",
+            backgroundColor: "background.paper",
+            "&:hover": {
+              backgroundColor: "background.green",
+            },
+            transition: "background-color 250ms",
+          }}
         >
-          <Typography variant="h6" color="primary.text">
+          <Typography
+            variant="h6"
+            color="primary.text"
+            sx={{
+              fontWeight: 600,
+              fontSize: { xs: "1rem", sm: "1.1rem" },
+            }}
+          >
             {seccion.sNombre}
           </Typography>
         </AccordionSummary>
-        <AccordionDetails>
-          <Typography color="primary.text">
+        <AccordionDetails
+          sx={{
+            padding: "20px",
+            backgroundColor: "background.paper",
+            borderTop: "1px solid",
+            borderColor: "divider",
+            display: "flex",
+            flexDirection: "column",
+            gap: 2,
+          }}
+        >
+          <Typography color="primary.text" sx={{ lineHeight: 1.6 }}>
             A continuación te mostramos las acciones que consideramos más
             importantes en esta sección, pero puedes buscar la que desees desde
             la barra de búsqueda.
           </Typography>
+
           <Searcher
             collection={seccion.acciones}
             searchFunction={searchAccion}
             resetFunction={restSearch}
           />
-          <Typography variant="h6">Contenidos:</Typography>
 
-          {
-            /***Con eto me aseguro de que no existan resultados de la busqueda */
-            resultSearch && resultSearch.length === 0 && <NoResults />
-          }
-          {resultSearch
-            ? resultSearch.map((el) => <ConceptItem key={el.id} accion={el} />)
-            : seccion.acciones
-                .slice(leftValue, rightValue)
-                .map((el) => <ConceptItem key={el.id} accion={el} />)}
+          <Typography
+            variant="h6"
+            sx={{
+              fontWeight: 600,
+              marginTop: "8px",
+              color: "primary.main",
+            }}
+          >
+            Contenidos:
+          </Typography>
+
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+            {
+              /***Con eto me aseguro de que no existan resultados de la busqueda */
+              resultSearch && resultSearch.length === 0 && <NoResults />
+            }
+            {resultSearch
+              ? resultSearch.map((el) => (
+                  <ConceptItem key={el.id} accion={el} />
+                ))
+              : seccion.acciones
+                  .slice(leftValue, rightValue)
+                  .map((el) => <ConceptItem key={el.id} accion={el} />)}
+          </Box>
+
           {
             //Asegurandome que el existan mas de 5 contenidos para mostrar el boton de paginacion quintuple
             showPaginButton && seccion.acciones.length > 5 && (
-              <PaginatorDots
-                handlePaging={handlePaging}
-                dots={countDots}
-                showNext={showPaginButton}
-              />
+              <Box sx={{ marginTop: "8px" }}>
+                <PaginatorDots
+                  handlePaging={handlePaging}
+                  dots={countDots}
+                  showNext={showPaginButton}
+                />
+              </Box>
             )
           }
         </AccordionDetails>
       </Accordion>
-    </div>
+    </Box>
   );
 }

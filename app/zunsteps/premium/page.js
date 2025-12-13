@@ -8,8 +8,20 @@ import { DefaultButton } from "@/app/components/ui/DefaultButton";
 import Link from "next/link";
 import { WhiteMiddButton } from "@/app/components/ui/WhiteMiddButton";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { useRouter } from "next/navigation";
+import { usePremiumAuth } from "@/app/lib/contexts/PremiumAuthContext";
+import { PremiumProtection } from "@/app/components/ui/PremiumProtection";
 
-export default function PremiumPage() {
+function PremiumPageContent() {
+  const router = useRouter();
+  const { logout } = usePremiumAuth();
+
+  const handleLogout = () => {
+    logout();
+    router.push("/premium-access");
+  };
+
   return (
     <Container maxWidth="md" sx={{ py: { xs: 2, md: 4 } }}>
       {/* Header */}
@@ -20,7 +32,7 @@ export default function PremiumPage() {
           gutterBottom
           sx={{ fontSize: { xs: "1.75rem", md: "2.5rem" } }}
         >
-          ⭐ Zona Premium
+          Zona Premium
         </Typography>
         <Typography variant="subtitle1" color="text.secondary" sx={{ mb: 2 }}>
           ¡Bienvenido a tu área exclusiva!
@@ -48,6 +60,15 @@ export default function PremiumPage() {
               Dashboard
             </Button>
           </Link>
+          <Button
+            size="small"
+            variant="contained"
+            color="error"
+            startIcon={<LogoutIcon />}
+            onClick={handleLogout}
+          >
+            Cerrar Sesión
+          </Button>
         </Box>
       </Box>
 
@@ -58,7 +79,7 @@ export default function PremiumPage() {
           gutterBottom
           sx={{ fontSize: { xs: "1.25rem", md: "1.5rem" }, mb: 2 }}
         >
-          ✨ Beneficios Premium
+          Beneficios Premium
         </Typography>
         <Box
           sx={{
@@ -108,5 +129,13 @@ export default function PremiumPage() {
         </Typography>
       </Box>
     </Container>
+  );
+}
+
+export default function PremiumPage() {
+  return (
+    <PremiumProtection>
+      <PremiumPageContent />
+    </PremiumProtection>
   );
 }
