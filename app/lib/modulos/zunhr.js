@@ -1,4 +1,6 @@
-export const zunhr = {
+import { addCargosToModule } from "../helpers/cargoHelper";
+
+export const zunhrBase = {
   mNombre: "ZUNHr Recursos Humanos",
   mImage: "/acc",
   mResumen: `ZUNhr es un sistema integral de gestión de recursos humanos que permite registrar, 
@@ -1906,3 +1908,6 @@ Evitar errores en la toma de decisiones, al contar con reportes confiables y act
     },
   ],
 };
+
+// Aplicar cargos a todas las acciones
+export const zunhr = addCargosToModule(zunhrBase);

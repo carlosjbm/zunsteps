@@ -3455,3 +3455,28 @@ Generar reportes de consecutivos utilizados por período o tipo de operación.`,
     //     },
   ],
 };
+
+// Agregar cargos a todas las acciones
+const cargosDisponibles = [
+  "Contador",
+  "Encargado Contable",
+  "Encargado de Almacén",
+  "Jefe de Operaciones",
+  "Auditor Interno",
+];
+const cargoGet = "Encargado de Almacén";
+
+zunst.mSecciones.forEach((seccion) => {
+  seccion.acciones.forEach((accion) => {
+    const cargosAsignados = [cargoGet];
+    // Agregar un cargo random aleatoriamente (60% de probabilidad)
+    if (Math.random() > 0.4) {
+      const cargoRandom =
+        cargosDisponibles[Math.floor(Math.random() * cargosDisponibles.length)];
+      if (!cargosAsignados.includes(cargoRandom)) {
+        cargosAsignados.push(cargoRandom);
+      }
+    }
+    accion.cargos = cargosAsignados;
+  });
+});

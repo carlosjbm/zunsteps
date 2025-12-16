@@ -1,4 +1,6 @@
-export const zunaft = {
+import { addCargosToModule } from "../helpers/cargoHelper";
+
+export const zunaftBase = {
   mNombre: "ZUNAft Activos Fijos",
   mImage: "/acc",
   mResumen: `ZUNaft es una herramienta especializada para la gestión integral de activos fijos tangibles (AFT)
@@ -2743,3 +2745,6 @@ Asegurar que los activos impacten correctamente en los reportes de ejecución fi
     },
   ],
 };
+
+// Aplicar cargos a todas las acciones
+export const zunaft = addCargosToModule(zunaftBase);

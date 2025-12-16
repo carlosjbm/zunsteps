@@ -1,4 +1,6 @@
-export const zunacc = {
+import { addCargosToModule } from "../helpers/cargoHelper";
+
+export const zunaccBase = {
   mNombre: "ZUNacc Contabilidad",
   mImage: "/acc",
   mResumen:
@@ -11,6 +13,7 @@ export const zunacc = {
         {
           id: 1,
           aNombre: "Creación y Modificación de Comprobantes",
+          cargos: ["Cargo de prueba basico"],
           aResumen: `La ventana que se despliega está diseñada para que tanto la creación como la edición se 
 puedan realizar por el operador de la manera más ágil posible, ya que es la opción en que  
 se produce la mayor interacción con el usuario.`,
@@ -44,6 +47,7 @@ El Documento no son campos obligatorios `,
         {
           id: 2,
           aNombre: "Reversión de Comprobantes",
+          cargos: ["Cargo de prueba basico"],
           aResumen: `El objetivo de esta opción es crear un comprobante (que NO se considera automático) 
 revirtiendo otro ya integrado. Debe ser considerada como una opción de ayuda al usuario 
 que le evita la introducción manual del comprobante de reversión. El comprobante 
@@ -1044,3 +1048,6 @@ Generar reportes claros para dirección, auditoría y seguimiento operativo.`,
     },
   ],
 };
+
+// Aplicar cargos a todas las acciones
+export const zunacc = addCargosToModule(zunaccBase);

@@ -6,7 +6,15 @@ import Typography from "@mui/material/Typography";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import Image from "next/image";
-import { Box, IconButton, Tooltip } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  Tooltip,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@mui/material";
 import { Searcher } from "./Searcher";
 import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
 import { ConceptItem } from "./ConceptItem";
@@ -14,14 +22,42 @@ import VerticalLinearStepper from "./VerticalLinearStepper";
 import { ModuloContext } from "@/app/lib/contexts/ModulosContext";
 import { NoResults } from "./NoResults";
 import { PaginatorDots } from "./PaginatorDots";
+import { cargos } from "@/app/lib/cargos";
 
 export default function AccordionExpandIcon({ seccion }) {
   const { modulo } = React.useContext(ModuloContext);
   const { mNombre, mResumen } = modulo;
   const [resultSearch, setResultSearch] = React.useState();
+  const [selectedCargo, setSelectedCargo] = React.useState("");
+  const [filteredActions, setFilteredActions] = React.useState(
+    seccion.acciones
+  );
+
+  const orderActionBycargos = (cargo) => {
+    if (seccion && cargo) {
+      const filtered = seccion.acciones.filter((accion) =>
+        accion.cargos?.includes(cargo)
+      );
+      setFilteredActions(filtered);
+      setLeftValue(0);
+      setRightValue(5);
+      setShowPaginButton(true);
+    } else {
+      setFilteredActions(seccion.acciones);
+      setLeftValue(0);
+      setRightValue(5);
+      setShowPaginButton(true);
+    }
+  };
+
+  const handleCargoChange = (item) => {
+    const cargo = item;
+    setSelectedCargo(cargo);
+    orderActionBycargos(cargo);
+  };
 
   //Cantidad de puntos por pintar
-  let countDots = (seccion.acciones.length / 5).toFixed(0);
+  let countDots = (filteredActions.length / 5).toFixed(0);
   //Mostrar en grupos de 5 los contenidos
   const [leftValue, setLeftValue] = React.useState(0);
   const [rightValue, setRightValue] = React.useState(5);
@@ -30,7 +66,7 @@ export default function AccordionExpandIcon({ seccion }) {
   //Mostrar los 5 siguientes
   const handlePaging = () => {
     //Condicion para mostrar o no el boton para paginar
-    if (seccion.acciones.length - rightValue <= 5) {
+    if (filteredActions.length - rightValue <= 5) {
       setShowPaginButton(false);
     }
     //Aunmemtando de 5 en 5 la dimencion de la muestra de paginado
@@ -167,8 +203,42 @@ export default function AccordionExpandIcon({ seccion }) {
             la barra de búsqueda.
           </Typography>
 
+          {/* Filtro por Cargo */}
+          <FormControl
+            sx={{ minWidth: { xs: "100%", sm: "250px" } }}
+            size="small"
+          >
+            <InputLabel id="cargo-select-label" sx={{ color: "primary.text" }}>
+              Filtrar por Cargo
+            </InputLabel>
+            <Select
+              labelId="cargo-select-label"
+              id="cargo-select"
+              value={selectedCargo}
+              label="Filtrar por Cargo"
+              onChange={(event) => handleCargoChange(event.target.value)}
+              sx={{
+                backgroundColor: "background.green",
+                borderRadius: "6px",
+                "&:hover": {
+                  backgroundColor: "background.main",
+                },
+                transition: "all 250ms",
+              }}
+            >
+              <MenuItem value="">
+                <em>Mostrar todas</em>
+              </MenuItem>
+              {cargos.map((cargo) => (
+                <MenuItem key={cargo.id} value={cargo.name}>
+                  {cargo.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
           <Searcher
-            collection={seccion.acciones}
+            collection={filteredActions}
             searchFunction={searchAccion}
             resetFunction={restSearch}
           />
@@ -181,7 +251,7 @@ export default function AccordionExpandIcon({ seccion }) {
               color: "primary.main",
             }}
           >
-            Contenidos:
+            Contenidos: {filteredActions.length} acciones
           </Typography>
 
           <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
@@ -189,18 +259,20 @@ export default function AccordionExpandIcon({ seccion }) {
               /***Con eto me aseguro de que no existan resultados de la busqueda */
               resultSearch && resultSearch.length === 0 && <NoResults />
             }
-            {resultSearch
-              ? resultSearch.map((el) => (
-                  <ConceptItem key={el.id} accion={el} />
-                ))
-              : seccion.acciones
-                  .slice(leftValue, rightValue)
-                  .map((el) => <ConceptItem key={el.id} accion={el} />)}
+            {resultSearch && resultSearch.length > 0 ? (
+              resultSearch.map((el) => <ConceptItem key={el.id} accion={el} />)
+            ) : filteredActions.length > 0 ? (
+              filteredActions
+                .slice(leftValue, rightValue)
+                .map((el) => <ConceptItem key={el.id} accion={el} />)
+            ) : (
+              <NoResults />
+            )}
           </Box>
 
           {
             //Asegurandome que el existan mas de 5 contenidos para mostrar el boton de paginacion quintuple
-            showPaginButton && seccion.acciones.length > 5 && (
+            showPaginButton && filteredActions.length > 5 && (
               <Box sx={{ marginTop: "8px" }}>
                 <PaginatorDots
                   handlePaging={handlePaging}

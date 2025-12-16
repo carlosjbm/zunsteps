@@ -1,4 +1,6 @@
-export const zunpr = {
+import { addCargosToModule } from "../helpers/cargoHelper";
+
+export const zunprBase = {
   mNombre: "ZUNpr -Nómina",
   mImage: "/acc",
   mResumen:
@@ -1982,3 +1984,6 @@ Generar reportes de reintegros para auditoría y contabilidad.`,
     },
   ],
 };
+
+// Aplicar cargos a todas las acciones
+export const zunpr = addCargosToModule(zunprBase);
