@@ -1,24 +1,13 @@
-import * as React from "react";
+import React from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import Image from "next/image";
-import {
-  Box,
-  IconButton,
-  Tooltip,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-} from "@mui/material";
+import { Box, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import { Searcher } from "./Searcher";
-import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
 import { ConceptItem } from "./ConceptItem";
-import VerticalLinearStepper from "./VerticalLinearStepper";
 import { ModuloContext } from "@/app/lib/contexts/ModulosContext";
 import { NoResults } from "./NoResults";
 import { PaginatorDots } from "./PaginatorDots";
@@ -227,7 +216,7 @@ export default function AccordionExpandIcon({ seccion }) {
               }}
             >
               <MenuItem value="">
-                <em>Mostrar todas</em>
+                <em>Mostrar todas las acciones</em>
               </MenuItem>
               {cargos.map((cargo) => (
                 <MenuItem key={cargo.id} value={cargo.name}>

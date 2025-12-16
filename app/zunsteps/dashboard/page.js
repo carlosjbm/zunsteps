@@ -1,12 +1,11 @@
 "use client";
 import BasicTabs from "@/app/components/ui/BasicTaps";
 import { SideBtnItem } from "@/app/components/ui/SideBtnItem";
-import { Box, Button, Card, Divider, Typography } from "@mui/material";
+import { Box, Card, Divider, Typography } from "@mui/material";
 import AppsOutlinedIcon from "@mui/icons-material/AppsOutlined";
 import { DefaultButton } from "@/app/components/ui/DefaultButton";
 import { NavButtonGroup } from "@/app/components/ui/NavButtonGroup";
-import { ScienceOutlined } from "@mui/icons-material";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import CurrencyExchangeOutlinedIcon from "@mui/icons-material/CurrencyExchangeOutlined";
 import Diversity3OutlinedIcon from "@mui/icons-material/Diversity3Outlined";
 import ChairOutlinedIcon from "@mui/icons-material/ChairOutlined";

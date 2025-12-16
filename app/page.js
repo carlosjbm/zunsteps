@@ -39,7 +39,7 @@ export default function Home() {
               ZUNSteps
             </Typography>
             <Typography variant="caption" color="primary.text">
-              v1.0.0
+              v1.3.1
             </Typography>
           </Box>
 

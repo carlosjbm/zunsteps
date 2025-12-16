@@ -1,17 +1,17 @@
 // app/zunsteps/premium/page.js
 "use client";
 import React from "react";
-import { Box, Container, Typography, Button, Card } from "@mui/material";
+import { Box, Container, Typography } from "@mui/material";
 import PremiumTabs from "@/app/components/ui/PremiumTaps";
 import VerifiedIcon from "@mui/icons-material/Verified";
-import { DefaultButton } from "@/app/components/ui/DefaultButton";
-import Link from "next/link";
-import { WhiteMiddButton } from "@/app/components/ui/WhiteMiddButton";
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useRouter } from "next/navigation";
 import { usePremiumAuth } from "@/app/lib/contexts/PremiumAuthContext";
 import { PremiumProtection } from "@/app/components/ui/PremiumProtection";
+import Link from "next/link";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import { Button } from "@mui/material";
+import Card from "@mui/material/Card";
 
 function PremiumPageContent() {
   const router = useRouter();

@@ -1,9 +1,8 @@
 "use client";
 
-import { Card, Typography, Box, IconButton, Tooltip } from "@mui/material";
+import { Card, Typography, Box, Tooltip } from "@mui/material";
 import ResponsiveDialog from "./ResponsiveDialog";
 import VerticalLinearStepper from "./VerticalLinearStepper";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { useState } from "react";
 
 export const ConceptItem = ({ accion }) => {
