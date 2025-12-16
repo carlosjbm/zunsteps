@@ -9,6 +9,7 @@ import { zunpr } from "./modulos/zunpr";
 import { tablasConocimientos } from "./knowlebasic/tablas";
 import { tips } from "./knowlebasic/tips";
 import { basicAnswers } from "./knowlebasic/basicAnswers";
+import { loadKnowledgeHelper } from "./helpers/loadKnowledgeHelper";
 
 function normalize(text) {
   return (text || "")
@@ -37,21 +38,12 @@ const chatbotResponses = {
 // Construir una base de conocimiento a partir de los módulos
 const modules = [zunacc, zunaft, zunhr, zunst, zunpr];
 const knowledge = [];
-//para conocimientos basicos
-basicAnswers.forEach((b) => {
-  if (!b) return;
-  knowledge.push(b);
-});
+//para las respuestas basicas
+loadKnowledgeHelper(basicAnswers, knowledge);
 //para el conocimiento de las tablas
-tablasConocimientos.forEach((t) => {
-  if (!t) return;
-  knowledge.push(t);
-});
+loadKnowledgeHelper(tablasConocimientos, knowledge);
 //para diferentes tips
-tips.forEach((i) => {
-  if (!i) return;
-  knowledge.push(i);
-});
+loadKnowledgeHelper(tips, knowledge);
 //para el conocimieto de modulos
 modules.forEach((m) => {
   if (!m) return;
