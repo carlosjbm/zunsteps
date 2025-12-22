@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -60,42 +60,6 @@ export default function AccordionExpandIcon({ seccion }) {
   const [showPaginButton, setShowPaginButton] = React.useState(() => {
     return filteredActions.length > 5;
   });
-  const [showNextButton, setShowNextButton] = React.useState(true);
-  const [showPrevButton, setShowPrevButton] = React.useState(false);
-
-  console.log(filteredActions.length - rightValue);
-  console.log(showPrevButton);
-  console.log(showNextButton);
-
-  //Mostrar los 5 siguientes
-  const handlePaging = () => {
-    let filteredActionsLength = filteredActions.length - rightValue;
-    //Condicion para mostrar o no el boton para paginar
-
-    if (filteredActionsLength < filteredActions.length) {
-      setShowPaginButton(true);
-      setShowNextButton(true);
-    }
-    if (filteredActionsLength === 5) {
-      setShowPaginButton(true);
-      setShowPrevButton(true);
-      setShowNextButton(false);
-    }
-    if (filteredActionsLength > 5) {
-      setShowPaginButton(true);
-      setShowNextButton(true);
-      setShowPrevButton(true);
-    }
-
-    //Aunmemtando de 5 en 5 la dimencion de la muestra de paginado
-    setLeftValue(leftValue + 5);
-    setRightValue(rightValue + 5);
-  };
-  const handleBackPagin = () => {
-    setLeftValue(leftValue - 5);
-    setRightValue(rightValue - 5);
-  };
-
   const searchAccion = (goal, list) => {
     let lowerGoal = goal.toLowerCase();
     let result = list.filter((el) =>
@@ -297,12 +261,8 @@ export default function AccordionExpandIcon({ seccion }) {
             showPaginButton && (
               <Box sx={{ marginTop: "8px" }}>
                 <PaginatorDots
-                  handleBackPagin={handleBackPagin}
-                  handlePaging={handlePaging}
                   dots={countDots}
                   isVisiblePaginator={showPaginButton}
-                  isVisibleNextButton={showNextButton}
-                  isvisiblePrevButton={showPrevButton}
                   leftValue={leftValue}
                   rightValue={rightValue}
                   setLeftValue={setLeftValue}

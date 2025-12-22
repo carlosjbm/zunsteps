@@ -5,31 +5,20 @@ import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutl
 import { useState } from "react";
 
 export const PaginatorDots = ({
-  handleBackPagin,
-  handlePaging,
   dots,
   leftValue,
   rightValue,
   setLeftValue,
   setRightValue,
   isVisiblePaginator,
-  isVisibleNextButton,
-  isVisiblePrevButton,
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = parseInt(dots);
-
-  console.log(`total de puntos: ${dots}`);
-  console.log(`valor de la izquierda: ${leftValue}`);
-  console.log(`valor de la derecha: ${rightValue}`);
 
   const handleNextPage = () => {
     setCurrentPage(currentPage + 1);
     setLeftValue(leftValue + 5);
     setRightValue(rightValue + 5);
-    if (currentPage < totalPages) {
-      console.log("se puede dar next");
-    } else return;
   };
 
   const handlePrevPage = () => {
