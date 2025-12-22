@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import { Box, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  formLabelClasses,
+} from "@mui/material";
 import { Searcher } from "./Searcher";
 import { ConceptItem } from "./ConceptItem";
 import { ModuloContext } from "@/app/lib/contexts/ModulosContext";
@@ -50,17 +57,43 @@ export default function AccordionExpandIcon({ seccion }) {
   //Mostrar en grupos de 5 los contenidos
   const [leftValue, setLeftValue] = React.useState(0);
   const [rightValue, setRightValue] = React.useState(5);
-  const [showPaginButton, setShowPaginButton] = React.useState(true);
+  const [showPaginButton, setShowPaginButton] = React.useState(() => {
+    return filteredActions.length > 5;
+  });
+  const [showNextButton, setShowNextButton] = React.useState(true);
+  const [showPrevButton, setShowPrevButton] = React.useState(false);
+
+  console.log(filteredActions.length - rightValue);
+  console.log(showPrevButton);
+  console.log(showNextButton);
 
   //Mostrar los 5 siguientes
   const handlePaging = () => {
+    let filteredActionsLength = filteredActions.length - rightValue;
     //Condicion para mostrar o no el boton para paginar
-    if (filteredActions.length - rightValue <= 5) {
-      setShowPaginButton(false);
+
+    if (filteredActionsLength < filteredActions.length) {
+      setShowPaginButton(true);
+      setShowNextButton(true);
     }
+    if (filteredActionsLength === 5) {
+      setShowPaginButton(true);
+      setShowPrevButton(true);
+      setShowNextButton(false);
+    }
+    if (filteredActionsLength > 5) {
+      setShowPaginButton(true);
+      setShowNextButton(true);
+      setShowPrevButton(true);
+    }
+
     //Aunmemtando de 5 en 5 la dimencion de la muestra de paginado
     setLeftValue(leftValue + 5);
     setRightValue(rightValue + 5);
+  };
+  const handleBackPagin = () => {
+    setLeftValue(leftValue - 5);
+    setRightValue(rightValue - 5);
   };
 
   const searchAccion = (goal, list) => {
@@ -261,12 +294,19 @@ export default function AccordionExpandIcon({ seccion }) {
 
           {
             //Asegurandome que el existan mas de 5 contenidos para mostrar el boton de paginacion quintuple
-            showPaginButton && filteredActions.length > 5 && (
+            showPaginButton && (
               <Box sx={{ marginTop: "8px" }}>
                 <PaginatorDots
+                  handleBackPagin={handleBackPagin}
                   handlePaging={handlePaging}
                   dots={countDots}
-                  showNext={showPaginButton}
+                  isVisiblePaginator={showPaginButton}
+                  isVisibleNextButton={showNextButton}
+                  isvisiblePrevButton={showPrevButton}
+                  leftValue={leftValue}
+                  rightValue={rightValue}
+                  setLeftValue={setLeftValue}
+                  setRightValue={setRightValue}
                 />
               </Box>
             )
