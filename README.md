@@ -2,7 +2,7 @@
 
 Herramienta moderna y ágil diseñada para facilitar y optimizar el trabajo con la Suite ZUN. Accede a toda la funcionalidad desde una interfaz web intuitiva sin interrumpir tu flujo de trabajo. Aprende mientras trabajas con recursos interactivos, documentación integrada y un asistente de IA inteligente.
 
-**Versión actual:** v1.3.1 | **Stack:** Next.js 15 + React 19 + Material-UI | **Estado:** En producción en Netlify
+**Versión actual:** v1.3.2 | **Stack:** Next.js 15 + React 19 + Material-UI | **Estado:** En producción en Netlify
 
 ---
 
@@ -128,6 +128,7 @@ La clave de acceso actual es: `Master*25`
 - **Despliegue:** Netlify (estático, sin SSR)
 - **Versionado:** Git + GitHub
 - **Linting:** ESLint v9 con config de Next.js
+- **Dependencias actualizadas con operadores `^`** para flexibilidad en actualizaciones menores
 
 ---
 
@@ -178,6 +179,33 @@ pnpm run lint
 ```
 
 **Nota:** Los scripts utilizan Turbopack para compilación más rápida. Turbopack es la evolución de Webpack optimizada para Next.js 15.
+
+---
+
+## 📦 Instalación
+
+### Requisitos previos
+
+- Node.js 18+ o superior
+- pnpm (recomendado) o npm
+
+### Pasos de instalación
+
+```bash
+# Clona el repositorio
+git clone https://github.com/carlosjbm/zunsteps.git
+
+# Entra al directorio
+cd zunsteps
+
+# Instala dependencias (con pnpm recomendado)
+pnpm install
+
+# Ejecuta la app en modo desarrollo
+pnpm run dev
+```
+
+La app estará disponible en `http://localhost:3000`
 
 ---
 
@@ -414,6 +442,12 @@ Edita [app/zunsteps/premium/page.js](app/zunsteps/premium/page.js) para agregar 
 - `CudeSnippet` — Bloques de código
 - `LoadingSpinner` — Indicador de carga
 - `Searcher` — Buscador global
+- `PremiumProtection` — Componente de protección para zona premium (nuevo)
+
+### Helpers y Utilidades
+
+- `loadKnowledgeHelper()` — Carga elementos de conocimiento en la base de datos (con documentación JSDoc completa)
+- `cargoHelper` — Funciones auxiliares para gestionar cargos
 
 ## 🚀 Optimizaciones Implementadas
 
@@ -541,7 +575,22 @@ Documentación de sistemas premium:
 
 ## 🔄 Historial de Cambios
 
-### v1.0.0 (Actual - 15 de diciembre de 2025)
+### v1.3.2 (22 de diciembre de 2025)
+
+- ✅ Actualización de dependencias con operadores `^` para flexibilidad
+- ✅ Agregados comentarios JSDoc completos en helpers
+- ✅ Helper `loadKnowledgeHelper` documentado
+- ✅ Rama `chore` con optimizaciones de dependencies
+- ✅ Versión de pnpm-lock.yaml actualizada
+
+**Dependencias actualizadas:**
+
+- `next`: `^15.5.4` (permite actualizaciones menores)
+- `react`: `^19.1.0` (permite actualizaciones menores)
+- `react-dom`: `^19.1.0` (permite actualizaciones menores)
+- `eslint-config-next`: `^15.5.4` (permite actualizaciones menores)
+
+### v1.3.1 (Anterior - 15 de diciembre de 2025)
 
 - ✅ Sistema premium protegido con localStorage
 - ✅ Integración con Netlify estático
@@ -552,8 +601,15 @@ Documentación de sistemas premium:
 - ✅ Diseño 100% responsivo
 - ✅ Feature: Acceso basado en contenido por posiciones (feat/content-by-poss)
 
+### v1.0.0 (Release inicial)
+
+- ✅ Estructura base del proyecto
+- ✅ Componentes UI principales
+- ✅ Sistema de contextos (React Context API)
+
 ---
 
-**Última actualización:** 15 de diciembre de 2025  
+**Última actualización:** 22 de diciembre de 2025  
 **Estado:** En producción ✅  
-**Mantenimiento:** Activo
+**Mantenimiento:** Activo  
+**Rama actual:** develop / chore (dependencias)
