@@ -8,7 +8,9 @@ import NotificationsActiveOutlinedIcon from "@mui/icons-material/NotificationsAc
 import LinkOutlinedIcon from "@mui/icons-material/LinkOutlined";
 import CloudDownloadOutlinedIcon from "@mui/icons-material/CloudDownloadOutlined";
 import TipsAndUpdatesOutlinedIcon from "@mui/icons-material/TipsAndUpdatesOutlined";
+import AccountTreeOutlinedIcon from "@mui/icons-material/AccountTreeOutlined";
 import CodeSnippet from "../ui/CudeSnippet";
+
 import {
   clearStock,
   resetGet,
@@ -22,6 +24,8 @@ import Utilinks from "./Utilinks";
 import { links } from "@/app/lib/links";
 import ChatBotSim from "./ChatBotSim";
 import chatBotResponses from "@/app/lib/chatbotResponses";
+import HorizontalNonLinearStepper from "./HorizontalNonLinearStepper";
+import BasicAccordion from "./BasicAccordion";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -71,8 +75,8 @@ export default function PremiumTabs() {
           <Tab label={<TerminalIcon />} {...a11yProps(0)} />
           {/* <Tab label={<NotificationsActiveOutlinedIcon />} {...a11yProps(1)} /> */}
           <Tab label={<LinkOutlinedIcon />} {...a11yProps(1)} />
-          {/* <Tab label={<CloudDownloadOutlinedIcon />} {...a11yProps(3)} /> */}
           <Tab label={<TipsAndUpdatesOutlinedIcon />} {...a11yProps(2)} />
+          <Tab label={<AccountTreeOutlinedIcon />} {...a11yProps(3)} />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
@@ -114,9 +118,14 @@ export default function PremiumTabs() {
         </Typography>
         <Utilinks links={links} />
       </CustomTabPanel>
-      {/* <CustomTabPanel value={value} index={3}>
-        Item Four
-      </CustomTabPanel> */}
+      <CustomTabPanel value={value} index={3}>
+        <Typography variant="h6" sx={{ margin: "2%" }} gutterBottom>
+          Procesos
+        </Typography>
+        <Box className="process-box">
+          <BasicAccordion />
+        </Box>
+      </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
         <Box sx={{ display: "flex", gap: "1%" }}>
           <ChatBotSim responses={responses} />

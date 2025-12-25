@@ -10,12 +10,12 @@ import { useTheme } from "@mui/material/styles";
 import VerticalLinearStepper from "./VerticalLinearStepper";
 
 export default function ResponsiveDialog({
-  title,
-  content,
-  importat,
-  nAccion,
-  rAccion,
-  pasos,
+  title = "Title",
+  content = "content",
+  importat = false,
+  nAccion = "",
+  rAccion = "",
+  pasos = [],
 }) {
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();

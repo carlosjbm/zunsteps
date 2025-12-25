@@ -7,6 +7,10 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
 const steps = [
+  // {
+  //   stepName: "Nombre del primer paso",
+  //   stepDescrip: "Lorem ipsum bjkjjs jjhbeucbej jbekjcbjeb",
+  // },
   "Select campaign settings",
   "Create an ad group",
   "Create an ad",
@@ -78,7 +82,7 @@ export default function HorizontalNonLinearStepper() {
         {allStepsCompleted() ? (
           <React.Fragment>
             <Typography sx={{ mt: 2, mb: 1 }}>
-              All steps completed - you&apos;re finished
+              Todos los pasos han sido completados!
             </Typography>
             <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
               <Box sx={{ flex: "1 1 auto" }} />
@@ -88,7 +92,7 @@ export default function HorizontalNonLinearStepper() {
         ) : (
           <React.Fragment>
             <Typography sx={{ mt: 2, mb: 1, py: 1 }}>
-              Step {activeStep + 1}
+              {activeStep + 1}
             </Typography>
             <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
               <Button
@@ -97,11 +101,11 @@ export default function HorizontalNonLinearStepper() {
                 onClick={handleBack}
                 sx={{ mr: 1 }}
               >
-                Back
+                Atrás
               </Button>
               <Box sx={{ flex: "1 1 auto" }} />
               <Button onClick={handleNext} sx={{ mr: 1 }}>
-                Next
+                Próximo
               </Button>
               {activeStep !== steps.length &&
                 (completed[activeStep] ? (
