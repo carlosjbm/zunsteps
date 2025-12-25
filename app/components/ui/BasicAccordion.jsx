@@ -10,7 +10,10 @@ import Typography from "@mui/material/Typography";
 import ResponsiveDialog from "./ResponsiveDialog";
 import VerticalLinearStepper from "./VerticalLinearStepper";
 import Box from "@mui/material/Box";
+import Skeleton from "@mui/material/Skeleton";
 import { process } from "@/app/lib/process";
+import Switch from "@mui/material/Switch";
+import useCurrentMonth from "@/app/lib/hooks/useCurrentMonth";
 
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -49,7 +52,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   borderTop: "1px solid rgba(0, 0, 0, .125)",
 }));
 
-export default function BasicAccordion() {
+export default function BasicAccordion({ items, isLoading }) {
   const [expanded, setExpanded] = React.useState("panel1");
 
   const handleChange = (panel) => (event, newExpanded) => {
@@ -58,23 +61,49 @@ export default function BasicAccordion() {
 
   return (
     <div>
-      {process.map((item) => (
-        <Accordion key={item.id}>
-          <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-            <Typography component="span">{item.title}</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>{item.content}</Typography>
-            <Box sx={{ marginTop: "5%" }}>
-              <ResponsiveDialog
-                title="Ver Pasos"
-                nAccion="Pasos del Proceso"
-                content={<VerticalLinearStepper steps={item.steps} />}
-              />
-            </Box>
-          </AccordionDetails>
-        </Accordion>
-      ))}
+      {isLoading ? (
+        <Box>
+          <Skeleton animation="wave" />
+          <Skeleton animation="wave" />
+          <Skeleton animation="wave" />
+        </Box>
+      ) : (
+        items.map((item) => (
+          <Accordion key={item.id}>
+            <AccordionSummary
+              aria-controls="panel1d-content"
+              id="panel1d-header"
+            >
+              <Typography component="span">{item.title}</Typography>
+              <Box sx={{ flexGrow: 0.5 }}>
+                <Typography
+                  component="span"
+                  sx={{ marginLeft: "5%", color: "primary.text" }}
+                >
+                  mes uso:
+                </Typography>
+                <Typography
+                  component="span"
+                  sx={{ marginLeft: "5%", color: "background.green" }}
+                >
+                  {item.month}
+                </Typography>
+              </Box>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>{item.content}</Typography>
+              <Box sx={{ marginTop: "5%" }}>
+                <ResponsiveDialog
+                  title="Ver Pasos"
+                  nAccion="Pasos del Proceso"
+                  content={<VerticalLinearStepper steps={item.steps} />}
+                />
+              </Box>
+            </AccordionDetails>
+          </Accordion>
+        ))
+      )}
+      <br />
     </div>
   );
 }

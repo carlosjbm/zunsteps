@@ -10,6 +10,8 @@ import CloudDownloadOutlinedIcon from "@mui/icons-material/CloudDownloadOutlined
 import TipsAndUpdatesOutlinedIcon from "@mui/icons-material/TipsAndUpdatesOutlined";
 import AccountTreeOutlinedIcon from "@mui/icons-material/AccountTreeOutlined";
 import CodeSnippet from "../ui/CudeSnippet";
+import Badge from "@mui/material/Badge";
+import MailIcon from "@mui/icons-material/Mail";
 
 import {
   clearStock,
@@ -26,6 +28,7 @@ import ChatBotSim from "./ChatBotSim";
 import chatBotResponses from "@/app/lib/chatbotResponses";
 import HorizontalNonLinearStepper from "./HorizontalNonLinearStepper";
 import BasicAccordion from "./BasicAccordion";
+import useCurrentMonth from "@/app/lib/hooks/useCurrentMonth";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -59,7 +62,14 @@ function a11yProps(index) {
 export default function PremiumTabs() {
   const [value, setValue] = React.useState(0);
   const responses = chatBotResponses;
-
+  const [
+    currentMonth,
+    allProcess,
+    filtredProcess,
+    isLoading,
+    setFiltredProcess,
+    toFiltre,
+  ] = useCurrentMonth("es-ES");
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -73,10 +83,20 @@ export default function PremiumTabs() {
           aria-label="basic tabs example"
         >
           <Tab label={<TerminalIcon />} {...a11yProps(0)} />
-          {/* <Tab label={<NotificationsActiveOutlinedIcon />} {...a11yProps(1)} /> */}
           <Tab label={<LinkOutlinedIcon />} {...a11yProps(1)} />
           <Tab label={<TipsAndUpdatesOutlinedIcon />} {...a11yProps(2)} />
           <Tab label={<AccountTreeOutlinedIcon />} {...a11yProps(3)} />
+          <Tab
+            label={
+              <Badge
+                badgeContent={currentMonth.monthName.slice(0, 3)}
+                color="primary"
+              >
+                <NotificationsActiveOutlinedIcon color="action" />
+              </Badge>
+            }
+            {...a11yProps(4)}
+          />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
@@ -123,12 +143,21 @@ export default function PremiumTabs() {
           Procesos
         </Typography>
         <Box className="process-box">
-          <BasicAccordion />
+          <BasicAccordion items={allProcess} isLoading={isLoading} />
         </Box>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
         <Box sx={{ display: "flex", gap: "1%" }}>
           <ChatBotSim responses={responses} />
+        </Box>
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={4}>
+        <Typography variant="h6" sx={{ margin: "2%" }} gutterBottom>
+          Sugerencias para el mes de {currentMonth.monthName}
+          {`(${currentMonth.monthName.slice(0, 3)})`}
+        </Typography>
+        <Box>
+          <BasicAccordion items={filtredProcess} isLoading={isLoading} />
         </Box>
       </CustomTabPanel>
     </Box>
