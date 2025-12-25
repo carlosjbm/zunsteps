@@ -11,9 +11,6 @@ import ResponsiveDialog from "./ResponsiveDialog";
 import VerticalLinearStepper from "./VerticalLinearStepper";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
-import { process } from "@/app/lib/process";
-import Switch from "@mui/material/Switch";
-import useCurrentMonth from "@/app/lib/hooks/useCurrentMonth";
 
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -75,20 +72,6 @@ export default function BasicAccordion({ items, isLoading }) {
               id="panel1d-header"
             >
               <Typography component="span">{item.title}</Typography>
-              <Box sx={{ flexGrow: 0.5 }}>
-                <Typography
-                  component="span"
-                  sx={{ marginLeft: "5%", color: "primary.text" }}
-                >
-                  mes uso:
-                </Typography>
-                <Typography
-                  component="span"
-                  sx={{ marginLeft: "5%", color: "background.green" }}
-                >
-                  {item.month}
-                </Typography>
-              </Box>
             </AccordionSummary>
             <AccordionDetails>
               <Typography>{item.content}</Typography>

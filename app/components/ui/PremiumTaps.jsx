@@ -6,12 +6,11 @@ import Box from "@mui/material/Box";
 import TerminalIcon from "@mui/icons-material/Terminal";
 import NotificationsActiveOutlinedIcon from "@mui/icons-material/NotificationsActiveOutlined";
 import LinkOutlinedIcon from "@mui/icons-material/LinkOutlined";
-import CloudDownloadOutlinedIcon from "@mui/icons-material/CloudDownloadOutlined";
 import TipsAndUpdatesOutlinedIcon from "@mui/icons-material/TipsAndUpdatesOutlined";
 import AccountTreeOutlinedIcon from "@mui/icons-material/AccountTreeOutlined";
 import CodeSnippet from "../ui/CudeSnippet";
 import Badge from "@mui/material/Badge";
-import MailIcon from "@mui/icons-material/Mail";
+import Tooltip from "@mui/material/Tooltip";
 
 import {
   clearStock,
@@ -26,7 +25,6 @@ import Utilinks from "./Utilinks";
 import { links } from "@/app/lib/links";
 import ChatBotSim from "./ChatBotSim";
 import chatBotResponses from "@/app/lib/chatbotResponses";
-import HorizontalNonLinearStepper from "./HorizontalNonLinearStepper";
 import BasicAccordion from "./BasicAccordion";
 import useCurrentMonth from "@/app/lib/hooks/useCurrentMonth";
 
@@ -82,21 +80,31 @@ export default function PremiumTabs() {
           onChange={handleChange}
           aria-label="basic tabs example"
         >
-          <Tab label={<TerminalIcon />} {...a11yProps(0)} />
-          <Tab label={<LinkOutlinedIcon />} {...a11yProps(1)} />
-          <Tab label={<TipsAndUpdatesOutlinedIcon />} {...a11yProps(2)} />
-          <Tab label={<AccountTreeOutlinedIcon />} {...a11yProps(3)} />
-          <Tab
-            label={
-              <Badge
-                badgeContent={currentMonth.monthName.slice(0, 3)}
-                color="primary"
-              >
-                <NotificationsActiveOutlinedIcon color="action" />
-              </Badge>
-            }
-            {...a11yProps(4)}
-          />
+          <Tooltip title="Scripts" arrow>
+            <Tab label={<TerminalIcon />} {...a11yProps(0)} />
+          </Tooltip>
+          <Tooltip title="Links Útiles" arrow>
+            <Tab label={<LinkOutlinedIcon />} {...a11yProps(1)} />
+          </Tooltip>
+          <Tooltip title="ChatBot" arrow>
+            <Tab label={<TipsAndUpdatesOutlinedIcon />} {...a11yProps(2)} />
+          </Tooltip>
+          <Tooltip title="Procesos" arrow>
+            <Tab label={<AccountTreeOutlinedIcon />} {...a11yProps(3)} />
+          </Tooltip>
+          <Tooltip title="Sugerencias del Mes" arrow>
+            <Tab
+              label={
+                <Badge
+                  badgeContent={currentMonth.monthName.slice(0, 3)}
+                  color="primary"
+                >
+                  <NotificationsActiveOutlinedIcon color="action" />
+                </Badge>
+              }
+              {...a11yProps(4)}
+            />
+          </Tooltip>
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>

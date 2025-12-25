@@ -36,8 +36,8 @@ export const process = [
   },
   {
     id: 2,
-    month: "enero",
-    title: "Collapsible Group Item #2",
+    month: "diciembre",
+    title: "Cierre de Almacen",
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget.",
     steps: [
