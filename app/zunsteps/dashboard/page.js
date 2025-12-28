@@ -29,6 +29,9 @@ export default function Dashboard(params) {
     devModule,
   } = useContext(ModuloContext);
   const { itemsMarked, handleMark } = useMark();
+
+  console.log(isLoading);
+  console.log(response);
   return (
     <Box
       sx={{
