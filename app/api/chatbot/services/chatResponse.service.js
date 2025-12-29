@@ -129,7 +129,7 @@ export function getBestResponse(query) {
     }
   });
 
-  if (best.score > 0) {
+  if (best.score > 0.35) {
     return best.answer + `\n✨Referenciando a: ${best.source}`;
     // return { answer: best.answer, score: best.source, source: best.source };
   }
@@ -148,8 +148,8 @@ export function getBestResponse(query) {
   // 4) fallback genérico
   writeInUnKnowTopics(query);
   return (
-    "Lo siento, no tengo una respuesta específica para esa pregunta. " +
-    "Puedes intentar preguntar de otra forma o consultar la documentación del módulo correspondiente."
+    "😢 Lo siento, no tengo una respuesta específica para esa pregunta. " +
+    "Pero intentare prepararme mejor para cuando regreses de nuevo por aqui"
   );
 }
 
