@@ -5,22 +5,28 @@ useGetResponseChatbot v0.2.0
 
 const { useState, useEffect } = require("react");
 
-export default function useGetResponseChatBot(imput) {
-  const [response, setResponse] = useState();
-  const [isLoading, setIsLoading] = useState(true);
-  useEffect(() => {
-    async function sendMessage(imput) {
-      const res = await fetch("/api/chatbot", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(imput),
-      });
-      const data = await res.json();
-      setResponse(data.answer);
-      setIsLoading(false);
-    }
-    sendMessage(imput);
-  }, [imput]);
+export default function useGetResponseChatBot() {
+  const [response, setResponse] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  return { response, isLoading };
+  useEffect(() => {
+    setIsLoading(isLoading);
+    setResponse(response);
+  }, [response, isLoading]);
+
+  async function sendMessage(input) {
+    setResponse(""); //Limpio la respuesta anterior en caso de que exista
+    setIsLoading(true);
+    const res = await fetch("/api/chatbot", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(input),
+    });
+    const data = await res.json();
+    setIsLoading(false);
+    setResponse(data.answer);
+    console.log(data);
+  }
+
+  return { response, isLoading, sendMessage };
 }

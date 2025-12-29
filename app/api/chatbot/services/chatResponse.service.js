@@ -146,7 +146,7 @@ export function getBestResponse(query) {
       k.text.toLowerCase().includes(qLower) ||
       k.source.toLowerCase().includes(qLower)
     ) {
-      return k.answer + `\n\n(Encontrado en: ${k.source})`;
+      return k;
     }
   }
 

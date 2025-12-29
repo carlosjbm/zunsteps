@@ -21,6 +21,7 @@ import { getBestResponse } from "@/app/lib/chatbotResponses";
 import { SendOutlined } from "@mui/icons-material";
 import { CopyAllOutlined } from "@mui/icons-material";
 import { PsychologyAltOutlined } from "@mui/icons-material";
+import useGetResponseChatBot from "@/app/lib/hooks/useGetResponseChatBot";
 
 export default function ChatBotSim({ responses }) {
   const [showTopics, setShowTopics] = useState(false);
@@ -33,6 +34,10 @@ export default function ChatBotSim({ responses }) {
     "¿Cómo generar un reporte de ventas?",
   ]);
   const listRef = useRef(null);
+  const { isLoading, response } = useGetResponseChatBot({ message: "sql8" });
+
+  console.log(isLoading);
+  console.log(response);
 
   useEffect(() => {
     // auto-scroll to bottom when chat updates
@@ -45,10 +50,14 @@ export default function ChatBotSim({ responses }) {
     const question = (text || input || "").trim();
     if (!question) return;
     const userMsg = { sender: "user", text: question, time: new Date() };
-    const answer = getBestResponse(question);
-    const botMsg = { sender: "bot", text: answer, time: new Date() };
-    setChat((prev) => [...prev, userMsg, botMsg]);
-    setInput("");
+    sendMessage({ message: question });
+    // const answer = getBestResponse(question);
+    const answer = response;
+    if (answer) {
+      const botMsg = { sender: "bot", text: answer, time: new Date() };
+      setChat((prev) => [...prev, userMsg, botMsg]);
+      setInput("");
+    }
   };
 
   const handleCopy = async (text) => {
@@ -76,17 +85,21 @@ export default function ChatBotSim({ responses }) {
           </Typography>
         </Box>
         <Box sx={{ flex: 1 }} />
-        {chat.length > 0 && (
-          <Tooltip title="Temas sugeridos">
-            <IconButton
-              onClick={() => {
-                setShowTopics(!showTopics);
-              }}
-              aria-label="topics"
-            >
-              <PsychologyAltOutlined />
-            </IconButton>
-          </Tooltip>
+        {isLoading ? (
+          <p>Pensando...</p>
+        ) : (
+          chat.length > 0 && (
+            <Tooltip title="Temas sugeridos">
+              <IconButton
+                onClick={() => {
+                  setShowTopics(!showTopics);
+                }}
+                aria-label="topics"
+              >
+                <PsychologyAltOutlined />
+              </IconButton>
+            </Tooltip>
+          )
         )}
       </Box>
 
@@ -187,13 +200,17 @@ export default function ChatBotSim({ responses }) {
             if (e.key === "Enter") handleSend();
           }}
         />
-        <IconButton
-          color="primary"
-          onClick={() => handleSend()}
-          aria-label="enviar"
-        >
-          <SendOutlined />
-        </IconButton>
+        {isLoading ? (
+          <p>Pensando...</p>
+        ) : (
+          <IconButton
+            color="primary"
+            onClick={() => handleSend()}
+            aria-label="enviar"
+          >
+            <SendOutlined />
+          </IconButton>
+        )}
       </Box>
     </Paper>
   );
