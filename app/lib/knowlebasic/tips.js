@@ -1,36 +1,35 @@
 export const tips = [
   {
-    source: "ZUNpms",
-    text:
-      "No cierra el front" ||
-      "error en el cierre" ||
-      "problema con el cierre de zunpms" ||
-      "pone cerrando" ||
-      "no cierra el pms" ||
-      "tips de zunpms",
-    answer: `Problema asociado a los campos procesa_llamada y cerrando de la tabla HOTETABL.
-    La solucion es simple:Invierte los valores de estos campos. (ej:cerrando:true->false)`,
+    source: "Cultura General Integral",
+    text: "que es sql",
+    answer: `SQL significa Structured Query Lenguaje(Lenguaje de Consulta Estructurado), es un lenguaje
+    que se usa para crear,consultar,modificar y administrar bases de datos relacionales.`,
+  },
+  {
+    source: "Interaccion extraprofesional",
+    text: "cuentame de ti, dame detalles de que puedes hacer, para que sirves,quien eres",
+    answer: `Buena pregunta 😂, soy un chatbot asistente creado y desarrollado por Carlos Borges, estoy aqui para 
+     ayudarte con cualquier duda que tengas sobre la Suiete ZUN, ya que soy un modelo determinista 
+     entrenado para brindar ayuda a los especialistas del area de Software, asi que hazme una pregunta... 😎 `,
+  },
+  {
+    source: "Problema con el cierre de auditiria ",
+    text: "A que se puede deber el problema de que el zunpms no permite hacer el cierre de auditoria, el error que lanza es que se encuentra cerrando ",
+    answer: `Es muy comun que este problema este asociado a los campos procesa_llamada y cerrando de la tabla HOTETABL.
+    Te sugiero que los revises personalmente, te pongo un ejemplo de lo que puede estar pasando. ej:cerrando:true(como esta)->false(como debe estar).`,
   },
   {
     source: "SQLServerInstalacion",
-    text:
-      "servicios sql server" ||
-      "que servicios debo instalar" ||
-      "instalacion sql server servicios" ||
-      "componentes sql server",
-    answer: `Durante la instalación de SQL Server se recomienda incluir:
-    Database Engine Services,
-     Integration Services,
-    SQL Server Books Online,
-    Management Tools Complete`,
+    text: "Que servicios tengo que tener en cuenta cuando instalo SQL server",
+    answer: `Durante la instalación de SQL Server es 🚩MUY IMPORTANTE  incluir:\n
+    🧩Database Engine Services\n
+    ✨Integration Services\n
+    📘SQL Server Books Online\n
+    🧰Management Tools Complete`,
   },
   {
     source: "SQLServerInstalacion",
-    text:
-      "usuario sa" ||
-      "configurar usuario sa" ||
-      "sql server sa" ||
-      "carpetas base datos sa",
+    text: "Que consideraciones importantes debo tener con las carpetas para almacenar la data y salvas o backups",
     answer: `Cuando especifiques el usuario 'sa' en la instalación,
     también debes indicar las carpetas de base de datos y de backups
     para asegurar una correcta configuración.`,
