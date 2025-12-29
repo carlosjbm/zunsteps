@@ -15,7 +15,7 @@ export default function useGetResponseChatBot() {
   }, [response, isLoading]);
 
   async function sendMessage(input) {
-    setResponse(""); //Limpio la respuesta anterior en caso de que exista
+    setResponse(""); //Limpio la respuesta anterior en caso de
     setIsLoading(true);
     const res = await fetch("/api/chatbot", {
       method: "POST",
@@ -25,7 +25,6 @@ export default function useGetResponseChatBot() {
     const data = await res.json();
     setIsLoading(false);
     setResponse(data.answer);
-    console.log(data);
   }
 
   return { response, isLoading, sendMessage };

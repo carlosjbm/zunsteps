@@ -1,3 +1,6 @@
+import { tokens } from "./extracTokens.service";
+import { normalize } from "./normalize.service";
+
 const {
   loadKnowledgeHelper,
 } = require("@/app/lib/helpers/loadKnowledgeHelper");
@@ -9,20 +12,6 @@ const { zunaft } = require("@/app/lib/modulos/zunaft");
 const { zunhr } = require("@/app/lib/modulos/zunhr");
 const { zunpr } = require("@/app/lib/modulos/zunpr");
 const { zunst } = require("@/app/lib/modulos/zunst");
-
-function normalize(text) {
-  return (text || "")
-    .toString()
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/\p{Diacritic}/gu, "")
-    .replace(/[\W_]+/g, " ")
-    .trim();
-}
-
-function tokens(text) {
-  return normalize(text).split(/\s+/).filter(Boolean);
-}
 
 // Base de respuestas iniciales (preguntas comunes)
 const chatbotResponses = {
@@ -137,18 +126,19 @@ export function getBestResponse(query) {
 
   if (best.score > 0) {
     return best.answer + `\n\n(Referenciando a: ${best.source})`;
+    // return { answer: best.answer, score: best.source, source: best.source };
   }
 
   // 3) si no hay coincidencias, intentar búsqueda por substring en textos
-  const qLower = qNorm;
-  for (const k of knowledge) {
-    if (
-      k.text.toLowerCase().includes(qLower) ||
-      k.source.toLowerCase().includes(qLower)
-    ) {
-      return k;
-    }
-  }
+  // const qLower = qNorm;
+  // for (const k of knowledge) {
+  //   if (
+  //     k.text.toLowerCase().includes(qLower) ||
+  //     k.source.toLowerCase().includes(qLower)
+  //   ) {
+  //     return k.answer + `\n\n(Encontrado en: ${k.source})`;
+  //   }
+  // }
 
   // 4) fallback genérico
   return (

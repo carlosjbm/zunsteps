@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 
 export default function TestChat(test) {
   const { response, isLoading, sendMessage } = useGetResponseChatBot();
-
+  // const [res, setRes] = useState("pensando...");
   const [inputChanger, setChanger] = useState("");
 
   console.log(isLoading);
