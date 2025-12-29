@@ -1,5 +1,12 @@
 export const tips = [
   {
+    source: "Desentendimiento con el usuario",
+    text: "estas equivocado,no me refiero a eso, no me entendistes,eso no es lo que te estoy preguntando,piensa mejor",
+    answer: `🤔 Disculpa, creo que no te entendi bien, por favor re-formula la pregunta entonces para
+    tratar de buscar una respuesta mas acertada.
+    `,
+  },
+  {
     source: "Cultura General Integral",
     text: "que es sql",
     answer: `SQL significa Structured Query Lenguaje(Lenguaje de Consulta Estructurado), es un lenguaje

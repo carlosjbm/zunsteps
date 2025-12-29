@@ -18,10 +18,6 @@ const { zunst } = require("@/app/lib/modulos/zunst");
 const chatbotResponses = {
   hola: "😊¡Hola! ¿En qué puedo ayudarte hoy?",
   gracias: "¡De nada! Si tienes otra pregunta, escríbela aquí.",
-  "cómo exporto mi proyecto":
-    "Usa el comando `pnpm run build && pnpm run export` y sube la carpeta `out` a Netlify (o usa el plugin oficial de Netlify para Next.js para soportar SSR).",
-  "qué es renderpremium":
-    "`renderPremium` es una bandera que controla el acceso a la zona premium; si es `true`, el usuario puede ver contenido premium.",
 };
 const unKnow = {
   ups: "Lo sient no conozco de es tema",
@@ -130,8 +126,8 @@ export function getBestResponse(query) {
   });
 
   if (best.score > 0.35) {
-    return best.answer + `\n✨Referenciando a: ${best.source}`;
-    // return { answer: best.answer, score: best.source, source: best.source };
+    return best.answer;
+    // return best.answer + `\n✨Referenciando a: ${best.source}`;
   }
 
   // 3) si no hay coincidencias, intentar búsqueda por substring en textos
