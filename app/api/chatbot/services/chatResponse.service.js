@@ -1,3 +1,4 @@
+import { writeInUnKnowTopics } from "@/app/lib/helpers/witePending";
 import { tokens } from "./extracTokens.service";
 import { normalize } from "./normalize.service";
 
@@ -22,6 +23,10 @@ const chatbotResponses = {
   "qué es renderpremium":
     "`renderPremium` es una bandera que controla el acceso a la zona premium; si es `true`, el usuario puede ver contenido premium.",
 };
+const unKnow = {
+  ups: "Lo sient no conozco de es tema",
+};
+const nosabe = [];
 
 // Construir una base de conocimiento a partir de los módulos
 const modules = [zunacc, zunaft, zunhr, zunst, zunpr];
@@ -141,6 +146,7 @@ export function getBestResponse(query) {
   }
 
   // 4) fallback genérico
+  writeInUnKnowTopics(query);
   return (
     "Lo siento, no tengo una respuesta específica para esa pregunta. " +
     "Puedes intentar preguntar de otra forma o consultar la documentación del módulo correspondiente."
