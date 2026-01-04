@@ -44,4 +44,66 @@ export const tips = [
     también debes indicar las carpetas de base de datos y de backups
     para asegurar una correcta configuración.`,
   },
+  {
+    souce: "Manejo de Trazas en SQLServer",
+    text: "poner una traza en sqlserver,como pongo una traza,explicame como poner una traza",
+    answer: `En SQL Server 2008 las trazas se crean usando 
+    la herramienta integrada llamada SQL Server Profiler. 
+    Desde ahí puedes capturar y analizar la actividad de tu servidor paso a paso.
+    
+    Pasos para crear una traza en SQL Server 2008
+1. Abrir SQL Server Profiler
+Inicia SQL Server Management Studio (SSMS).
+
+En el menú superior selecciona Tools → SQL Server Profiler.
+
+Se abrirá la ventana del Profiler, que es la herramienta para configurar y visualizar trazas.
+
+2. Crear una nueva traza
+En Profiler, ve a File → New Trace.
+
+Conéctate a la instancia de SQL Server que quieras monitorear.
+
+Aparecerá el cuadro de diálogo Trace Properties.
+
+3. Configurar propiedades de la traza
+Nombre de la traza: escribe un nombre descriptivo (ejemplo: “Monitoreo_Consultas”).
+
+Plantilla: puedes elegir una plantilla predefinida (ej. “TSQL_Replay” o “Standard”) 
+o personalizar los eventos.
+
+Guardar resultados: selecciona si quieres guardar la traza en un archivo .trc o
+ en una tabla de la base de datos. Esto es útil para análisis posteriores.
+
+4. Seleccionar eventos y columnas
+En la pestaña Events Selection, marca los eventos que quieres capturar:
+
+RPC:Completed y SQL:BatchCompleted para consultas ejecutadas.
+
+Errors and Warnings para detectar problemas.
+
+Locks si quieres analizar bloqueos.
+
+En Columns, selecciona qué datos mostrar (ej. nombre de usuario, base de datos, duración, CPU, etc.).
+
+5. Iniciar la traza
+Haz clic en Run.
+
+El Profiler empezará a mostrar en tiempo real la actividad del servidor.
+
+6. Detener y guardar
+Cuando hayas capturado suficiente información, haz clic en Stop.
+
+Guarda la traza en archivo o tabla para analizarla después.
+
+Consejos prácticos
+No dejes trazas activas mucho tiempo: pueden afectar el rendimiento del servidor.
+
+Usa filtros: en la pestaña Events Selection puedes filtrar por base de datos, aplicación o
+ usuario para reducir ruido.
+
+Analiza offline: guarda la traza y luego examínala con calma para encontrar consultas lentas o 
+errores.
+    `,
+  },
 ];

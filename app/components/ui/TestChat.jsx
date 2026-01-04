@@ -1,7 +1,26 @@
 "use client";
 
 import useGetResponseChatBot from "@/app/lib/hooks/useGetResponseChatBot";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
+import {
+  Paper,
+  Box,
+  TextField,
+  IconButton,
+  Typography,
+  Stack,
+  Chip,
+  CircularProgress,
+  useMediaQuery,
+  useTheme,
+  Tooltip,
+} from "@mui/material";
+import SendIcon from "@mui/icons-material/Send";
+import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
+import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
+import RefreshIcon from "@mui/icons-material/Refresh";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import styles from "./TestChat.module.css";
 
 export default function TestChat() {
@@ -9,7 +28,13 @@ export default function TestChat() {
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState([]);
   const [displayedMessages, setDisplayedMessages] = useState({});
+  const [copiedId, setCopiedId] = useState(null);
   const messagesEndRef = useRef(null);
+  const typingTimerRef = useRef(null);
+  const displayedMessagesRef = useRef({});
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isTablet = useMediaQuery(theme.breakpoints.down("md"));
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -42,54 +67,62 @@ export default function TestChat() {
       };
       setMessages((prev) => [...prev, botMessage]);
       // Activar efecto de escritura para este mensaje
-      setDisplayedMessages((prev) => ({
-        ...prev,
-        [botMessage.id]: "",
-      }));
+      displayedMessagesRef.current[botMessage.id] = "";
+      startTypingEffect(botMessage.id, response);
     }
   }, [response, isLoading]);
 
-  // Efecto de escritura por palabras para cada mensaje del bot
-  useEffect(() => {
-    const botMessages = messages.filter(
-      (msg) => msg.sender === "bot" && msg.isTyping
-    );
+  const startTypingEffect = useCallback((messageId, fullText) => {
+    // Dividir el texto en fragmentos grandes (por párrafos o líneas)
+    const chunks = fullText
+      .split("\n")
+      .filter((line) => line.trim().length > 0);
 
-    if (botMessages.length === 0) return;
+    // Si no hay saltos de línea, dividir en fragmentos de ~100 caracteres
+    const textChunks =
+      chunks.length > 1
+        ? chunks
+        : fullText.match(/.{1,100}(?:\s|$)/g) || [fullText];
 
-    const lastMsg = botMessages[botMessages.length - 1];
-    const currentDisplayed = displayedMessages[lastMsg.id] || "";
-    const fullText = lastMsg.text;
+    let chunkIndex = 0;
 
-    // Dividir en palabras pero preservar la estructura (saltos de línea y espacios)
-    const wordTokens = fullText.match(/\S+|\s+/g) || [];
-    const displayedTokens = currentDisplayed.match(/\S+|\s+/g) || [];
-    const tokensShown = displayedTokens.length;
+    const showNextChunk = () => {
+      if (chunkIndex < textChunks.length) {
+        const chunk = textChunks[chunkIndex];
+        const currentText = displayedMessagesRef.current[messageId] || "";
+        const nextText =
+          currentText +
+          (chunkIndex > 0 && chunks.length > 1 ? "\n" : "") +
+          chunk;
 
-    // Si aún hay palabras por mostrar
-    if (tokensShown < wordTokens.length) {
-      const timer = setTimeout(() => {
-        const nextText = wordTokens.slice(0, tokensShown + 1).join("");
-        setDisplayedMessages((prev) => ({
-          ...prev,
-          [lastMsg.id]: nextText,
-        }));
-      }, 60);
+        displayedMessagesRef.current[messageId] = nextText;
+        setDisplayedMessages({ ...displayedMessagesRef.current });
 
-      return () => clearTimeout(timer);
-    } else if (tokensShown >= wordTokens.length && lastMsg.isTyping) {
-      // Asegurarse que se muestre el texto completo
-      setDisplayedMessages((prev) => ({
-        ...prev,
-        [lastMsg.id]: fullText,
-      }));
+        chunkIndex++;
 
-      // Marcar como completado
-      setMessages((prev) =>
-        prev.map((m) => (m.id === lastMsg.id ? { ...m, isTyping: false } : m))
-      );
+        // Delay progresivo: comienza en 40ms y baja a 5ms
+        const progress = chunkIndex / textChunks.length;
+        const delay = Math.max(5, 40 * Math.pow(1 - progress, 2));
+
+        typingTimerRef.current = setTimeout(showNextChunk, delay);
+      } else {
+        // Completar el mensaje
+        displayedMessagesRef.current[messageId] = fullText;
+        setDisplayedMessages({ ...displayedMessagesRef.current });
+
+        setMessages((prev) =>
+          prev.map((m) => (m.id === messageId ? { ...m, isTyping: false } : m))
+        );
+      }
+    };
+
+    // Limpiar timer anterior
+    if (typingTimerRef.current) {
+      clearTimeout(typingTimerRef.current);
     }
-  }, [displayedMessages, messages]);
+
+    showNextChunk();
+  }, []);
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -98,159 +131,496 @@ export default function TestChat() {
     }
   };
 
-  return (
-    <div className={styles.chatContainer}>
-      {/* Header */}
-      <div className={styles.chatHeader}>
-        <div className={styles.headerContent}>
-          <h2>Zunex Core 1.2</h2>
-          <p>Estoy aquí para ayudarte</p>
-        </div>
-        <div className={styles.statusIndicator}>
-          <div className={styles.statusDot}></div>
-          <span>En línea</span>
-        </div>
-      </div>
+  const handleCopyMessage = (text, id) => {
+    navigator.clipboard.writeText(text);
+    setCopiedId(id);
+    setTimeout(() => setCopiedId(null), 2000);
+  };
 
-      {/* Messages Area */}
-      <div className={styles.messagesContainer}>
-        {messages.length === 0 && (
-          <div className={styles.emptyState}>
-            <div className={styles.emptyIcon}>💬</div>
-            <h3>¿En qué puedo ayudarte?</h3>
-            <p>Comienza escribiendo tu pregunta</p>
-          </div>
+  // Limpiar timer al desmontar
+  useEffect(() => {
+    return () => {
+      if (typingTimerRef.current) {
+        clearTimeout(typingTimerRef.current);
+      }
+    };
+  }, []);
+
+  return (
+    <Paper
+      elevation={3}
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
+        maxWidth: { xs: "100%", sm: "100%", md: "900px" },
+        margin: "0 auto",
+        borderRadius: { xs: 1, sm: 2, md: 2 },
+        overflow: "hidden",
+      }}
+    >
+      {/* Header */}
+      <Box
+        sx={{
+          padding: { xs: "12px 16px", sm: "16px 20px", md: "20px 24px" },
+          background: "linear-gradient(135deg, #2c3e50 0%, #34495e 100%)",
+          color: "white",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          gap: 2,
+          borderBottom: "1px solid rgba(255,255,255,0.1)",
+        }}
+      >
+        <Box>
+          <Typography
+            variant={isMobile ? "h6" : "h5"}
+            sx={{ fontWeight: 600, m: 0 }}
+          >
+            Zunex Core 1.2
+          </Typography>
+          {!isMobile && (
+            <Typography
+              variant="caption"
+              sx={{ opacity: 0.9, display: "block", mt: 0.5 }}
+            >
+              Estoy aquí para ayudarte
+            </Typography>
+          )}
+        </Box>
+        {!isMobile && (
+          <Stack direction="row" spacing={1} alignItems="center">
+            <Box
+              sx={{
+                width: 8,
+                height: 8,
+                borderRadius: "50%",
+                background: "#33d2a4",
+                animation: "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+                "@keyframes pulse": {
+                  "0%, 100%": { opacity: 1 },
+                  "50%": { opacity: 0.5 },
+                },
+              }}
+            />
+            <Typography variant="caption">En línea</Typography>
+          </Stack>
         )}
+      </Box>
+
+      {/* Messages Container */}
+      <Box
+        sx={{
+          flex: 1,
+          overflowY: "auto",
+          padding: { xs: "12px", sm: "16px", md: "24px" },
+          display: "flex",
+          flexDirection: "column",
+          gap: { xs: 1, sm: 1.5, md: 2 },
+          backgroundColor: "#fafafa",
+          scrollBehavior: "smooth",
+          "&::-webkit-scrollbar": {
+            width: "6px",
+          },
+          "&::-webkit-scrollbar-track": {
+            background: "transparent",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            background: "#e0e0e0",
+            borderRadius: "3px",
+          },
+          "&::-webkit-scrollbar-thumb:hover": {
+            background: "#c0c0c0",
+          },
+        }}
+      >
+        {/* Empty State */}
+        {messages.length === 0 && !isLoading && (
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              height: "100%",
+              textAlign: "center",
+              py: 4,
+            }}
+          >
+            <Box
+              sx={{
+                fontSize: { xs: "40px", sm: "48px", md: "56px" },
+                mb: 2,
+                animation: "float 3s ease-in-out infinite",
+                "@keyframes float": {
+                  "0%, 100%": { transform: "translateY(0)" },
+                  "50%": { transform: "translateY(-10px)" },
+                },
+              }}
+            >
+              💬
+            </Box>
+            <Typography
+              variant={isMobile ? "h6" : "h5"}
+              sx={{ color: "text.primary", mb: 1 }}
+            >
+              ¿En qué puedo ayudarte?
+            </Typography>
+            <Typography variant="body2" sx={{ color: "text.secondary" }}>
+              Comienza escribiendo tu pregunta
+            </Typography>
+          </Box>
+        )}
+
+        {/* Messages */}
         {messages.map((msg) => (
-          <div
+          <Box
             key={msg.id}
-            className={`${styles.message} ${
-              msg.sender === "user" ? styles.userMessage : styles.botMessage
-            }`}
+            sx={{
+              display: "flex",
+              justifyContent: msg.sender === "user" ? "flex-end" : "flex-start",
+              animation: "slideIn 0.3s ease-out",
+              "@keyframes slideIn": {
+                from: { opacity: 0, transform: "translateY(10px)" },
+                to: { opacity: 1, transform: "translateY(0)" },
+              },
+            }}
           >
             {msg.sender === "user" ? (
-              <div className={styles.messageBubble}>{msg.text}</div>
+              <Paper
+                sx={{
+                  maxWidth: { xs: "85%", sm: "75%", md: "70%" },
+                  padding: { xs: "8px 12px", sm: "10px 14px", md: "12px 16px" },
+                  borderRadius: {
+                    xs: "12px 4px 12px 12px",
+                    sm: "14px 4px 14px 14px",
+                    md: "18px 4px 18px 18px",
+                  },
+                  background: "#2c3e50",
+                  color: "white",
+                  wordWrap: "break-word",
+                  lineHeight: 1.5,
+                  fontSize: { xs: "13px", sm: "14px", md: "15px" },
+                  boxShadow: "0 2px 8px rgba(0, 0, 0, 0.12)",
+                  elevation: 1,
+                }}
+              >
+                <Typography variant="body2" sx={{ whiteSpace: "pre-wrap" }}>
+                  {msg.text}
+                </Typography>
+              </Paper>
             ) : (
-              <div className={styles.botMessageWrapper}>
-                <pre className={styles.botMessageContent}>
-                  {displayedMessages[msg.id] !== undefined
-                    ? displayedMessages[msg.id]
-                    : msg.text}
-                </pre>
-                <div className={styles.messageActions}>
-                  <button className={styles.actionBtn} title="Me gusta">
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
+              <Box
+                sx={{
+                  width: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 1.5,
+                }}
+              >
+                <Paper
+                  sx={{
+                    maxWidth: { xs: "95%", sm: "85%", md: "80%" },
+                    padding: {
+                      xs: "10px 14px",
+                      sm: "14px 18px",
+                      md: "16px 24px",
+                    },
+                    borderRadius: 2,
+                    background: "white",
+                    borderLeft: "4px solid #33d2a4",
+                    wordWrap: "break-word",
+                    lineHeight: 1.6,
+                    fontSize: { xs: "13px", sm: "14px", md: "15px" },
+                    color: "text.primary",
+                    boxShadow: "0 2px 6px rgba(0, 0, 0, 0.08)",
+                    elevation: 1,
+                  }}
+                >
+                  <Typography
+                    component="pre"
+                    variant="body2"
+                    sx={{
+                      whiteSpace: "pre-wrap",
+                      wordBreak: "break-word",
+                      fontFamily: "inherit",
+                      m: 0,
+                    }}
+                  >
+                    {displayedMessages[msg.id] !== undefined
+                      ? displayedMessages[msg.id]
+                      : msg.text}
+                  </Typography>
+                </Paper>
+
+                {/* Message Actions */}
+                <Stack
+                  direction="row"
+                  spacing={0.5}
+                  sx={{
+                    pl: { xs: 0, sm: 0, md: 3 },
+                    alignItems: "center",
+                    flexWrap: "wrap",
+                    gap: 1,
+                  }}
+                >
+                  <Tooltip title="Me gusta">
+                    <IconButton
+                      size={isMobile ? "small" : "medium"}
+                      sx={{
+                        color: "text.secondary",
+                        border: "1px solid",
+                        borderColor: "divider",
+                        borderRadius: 1,
+                        transition: "all 0.2s ease",
+                        "&:hover": {
+                          borderColor: "#33d2a4",
+                          color: "#33d2a4",
+                          backgroundColor: "rgba(51, 210, 164, 0.05)",
+                        },
+                        padding: { xs: "6px", sm: "8px" },
+                      }}
                     >
-                      <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
-                    </svg>
-                  </button>
-                  <button className={styles.actionBtn} title="No me gusta">
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
+                      <ThumbUpOffAltIcon fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+
+                  <Tooltip title="No me gusta">
+                    <IconButton
+                      size={isMobile ? "small" : "medium"}
+                      sx={{
+                        color: "text.secondary",
+                        border: "1px solid",
+                        borderColor: "divider",
+                        borderRadius: 1,
+                        transition: "all 0.2s ease",
+                        "&:hover": {
+                          borderColor: "#33d2a4",
+                          color: "#33d2a4",
+                          backgroundColor: "rgba(51, 210, 164, 0.05)",
+                        },
+                        padding: { xs: "6px", sm: "8px" },
+                      }}
                     >
-                      <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path>
-                    </svg>
-                  </button>
-                  <button className={styles.actionBtn} title="Reintentar">
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
+                      <ThumbDownOffAltIcon fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+
+                  <Tooltip title="Reintentar">
+                    <IconButton
+                      size={isMobile ? "small" : "medium"}
+                      sx={{
+                        color: "text.secondary",
+                        border: "1px solid",
+                        borderColor: "divider",
+                        borderRadius: 1,
+                        transition: "all 0.2s ease",
+                        "&:hover": {
+                          borderColor: "#33d2a4",
+                          color: "#33d2a4",
+                          backgroundColor: "rgba(51, 210, 164, 0.05)",
+                        },
+                        padding: { xs: "6px", sm: "8px" },
+                      }}
                     >
-                      <path d="M1 4v6h6"></path>
-                      <path d="M23 20v-6h-6"></path>
-                      <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path>
-                    </svg>
-                  </button>
-                  <button className={styles.actionBtn} title="Copiar">
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
+                      <RefreshIcon fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+
+                  <Tooltip title={copiedId === msg.id ? "¡Copiado!" : "Copiar"}>
+                    <IconButton
+                      size={isMobile ? "small" : "medium"}
+                      onClick={() =>
+                        handleCopyMessage(
+                          displayedMessages[msg.id] || msg.text,
+                          msg.id
+                        )
+                      }
+                      sx={{
+                        color:
+                          copiedId === msg.id ? "#33d2a4" : "text.secondary",
+                        border: "1px solid",
+                        borderColor:
+                          copiedId === msg.id ? "#33d2a4" : "divider",
+                        borderRadius: 1,
+                        transition: "all 0.2s ease",
+                        backgroundColor:
+                          copiedId === msg.id
+                            ? "rgba(51, 210, 164, 0.05)"
+                            : "transparent",
+                        "&:hover": {
+                          borderColor: "#33d2a4",
+                          color: "#33d2a4",
+                          backgroundColor: "rgba(51, 210, 164, 0.05)",
+                        },
+                        padding: { xs: "6px", sm: "8px" },
+                      }}
                     >
-                      <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
-                      <rect
-                        x="8"
-                        y="2"
-                        width="8"
-                        height="4"
-                        rx="1"
-                        ry="1"
-                      ></rect>
-                    </svg>
-                  </button>
-                </div>
-              </div>
+                      <ContentCopyIcon fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+                </Stack>
+              </Box>
             )}
-          </div>
+          </Box>
         ))}
 
+        {/* Loading Indicator */}
         {isLoading && (
-          <div className={styles.message + " " + styles.botMessage}>
-            <div className={styles.messageBubble}>
-              <div className={styles.typingIndicator}>
-                <span></span>
-                <span></span>
-                <span></span>
-              </div>
-            </div>
-          </div>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "flex-start",
+              animation: "slideIn 0.3s ease-out",
+            }}
+          >
+            <Paper
+              sx={{
+                padding: { xs: "8px 12px", sm: "10px 14px", md: "12px 16px" },
+                borderRadius: 2,
+                background: "white",
+                borderLeft: "4px solid #33d2a4",
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
+              }}
+            >
+              <CircularProgress
+                size={isMobile ? 20 : 24}
+                sx={{ color: "#33d2a4" }}
+              />
+              <Typography variant="body2" sx={{ color: "text.secondary" }}>
+                Pensando...
+              </Typography>
+            </Paper>
+          </Box>
         )}
 
-        <div ref={messagesEndRef} />
-      </div>
+        <Box ref={messagesEndRef} />
+      </Box>
 
       {/* Input Area */}
-      <div className={styles.inputContainer}>
-        <div className={styles.inputWrapper}>
-          <textarea
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            onKeyPress={handleKeyPress}
-            placeholder="Escribe tu mensaje aquí..."
-            rows="1"
-            className={styles.input}
-          />
-          <button
-            onClick={handleSendMessage}
-            disabled={!inputValue.trim() || isLoading}
-            className={styles.sendButton}
-            title="Enviar mensaje (Enter)"
+      <Box
+        sx={{
+          padding: {
+            xs: "12px 12px 16px",
+            sm: "16px 16px 20px",
+            md: "16px 24px 24px",
+          },
+          backgroundColor: "white",
+          borderTop: "1px solid",
+          borderColor: "divider",
+        }}
+      >
+        <Stack spacing={1}>
+          <Stack
+            direction="row"
+            spacing={1}
+            alignItems="flex-end"
+            sx={{
+              gap: { xs: "6px", sm: "8px", md: "8px" },
+            }}
           >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
+            <TextField
+              fullWidth
+              multiline
+              maxRows={4}
+              minRows={1}
+              placeholder="Escribe tu mensaje aquí..."
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyPress={handleKeyPress}
+              size="small"
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: { xs: 2, sm: 2, md: 3 },
+                  backgroundColor: "#f5f5f5",
+                  transition: "all 0.3s ease",
+                  "&:hover": {
+                    backgroundColor: "white",
+                  },
+                  "&.Mui-focused": {
+                    backgroundColor: "white",
+                    boxShadow: "0 0 0 3px rgba(51, 210, 164, 0.1)",
+                    "& fieldset": {
+                      borderColor: "#33d2a4 !important",
+                    },
+                  },
+                },
+                "& .MuiOutlinedInput-input": {
+                  fontSize: { xs: "13px", sm: "14px", md: "15px" },
+                  padding: { xs: "8px 12px", sm: "10px 14px", md: "12px 16px" },
+                  fontFamily: "inherit",
+                },
+                "& .MuiOutlinedInput-input::placeholder": {
+                  color: "text.secondary",
+                  opacity: 0.7,
+                },
+              }}
+            />
+            <Tooltip
+              title={
+                isLoading || !inputValue.trim()
+                  ? "Escriba algo para enviar"
+                  : "Enviar (Enter)"
+              }
             >
-              <line x1="22" y1="2" x2="11" y2="13"></line>
-              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-            </svg>
-          </button>
-        </div>
-        <p className={styles.helpText}>
-          Presiona <kbd>Enter</kbd> para enviar
-        </p>
-      </div>
-    </div>
+              <span>
+                <IconButton
+                  onClick={handleSendMessage}
+                  disabled={!inputValue.trim() || isLoading}
+                  sx={{
+                    background: "#33d2a4",
+                    color: "white",
+                    borderRadius: "50%",
+                    width: { xs: 36, sm: 40, md: 44 },
+                    height: { xs: 36, sm: 40, md: 44 },
+                    flexShrink: 0,
+                    transition: "all 0.3s ease",
+                    "&:hover:not(:disabled)": {
+                      transform: "scale(1.1)",
+                      boxShadow: "0 8px 20px rgba(51, 210, 164, 0.4)",
+                      background: "#2cb895",
+                    },
+                    "&:active:not(:disabled)": {
+                      transform: "scale(0.95)",
+                    },
+                    "&:disabled": {
+                      opacity: 0.5,
+                      cursor: "not-allowed",
+                    },
+                  }}
+                >
+                  <SendIcon fontSize={isMobile ? "small" : "medium"} />
+                </IconButton>
+              </span>
+            </Tooltip>
+          </Stack>
+          <Typography
+            variant="caption"
+            sx={{
+              color: "text.secondary",
+              display: "flex",
+              alignItems: "center",
+              gap: 0.5,
+              fontSize: { xs: "11px", sm: "12px", md: "12px" },
+            }}
+          >
+            Presiona{" "}
+            <Chip
+              label="Enter"
+              size="small"
+              variant="outlined"
+              sx={{
+                height: "18px",
+                fontSize: "10px",
+                fontFamily: "monospace",
+              }}
+            />
+            {" para enviar"}
+          </Typography>
+        </Stack>
+      </Box>
+    </Paper>
   );
 }
