@@ -7,8 +7,9 @@ export const basicAnswers = [
   },
   {
     source: "SoporteBasico",
-    text: "como guardar" || "no se guarda" || "guardar archivo" || "save",
-    answer: `Para guardar tu progreso, busca el botón "Guardar" en el menú principal 
+    text: "como guardar",
+    answer: `Para guardar tu progreso 
+       busca el botón "Guardar" en el menú principal 
     o usa el atajo Ctrl+S (Windows) / Cmd+S (Mac).`,
   },
   {

@@ -60,26 +60,24 @@ export default function TestChat() {
     const lastMsg = botMessages[botMessages.length - 1];
     const currentDisplayed = displayedMessages[lastMsg.id] || "";
     const fullText = lastMsg.text;
-    const words = fullText.split(" ").filter((w) => w.length > 0);
 
-    // Contar palabras que ya se han mostrado
-    const displayedWords = currentDisplayed
-      .split(" ")
-      .filter((w) => w.length > 0);
-    const wordsShown = displayedWords.length;
+    // Dividir en palabras pero preservar la estructura (saltos de línea y espacios)
+    const wordTokens = fullText.match(/\S+|\s+/g) || [];
+    const displayedTokens = currentDisplayed.match(/\S+|\s+/g) || [];
+    const tokensShown = displayedTokens.length;
 
     // Si aún hay palabras por mostrar
-    if (wordsShown < words.length) {
+    if (tokensShown < wordTokens.length) {
       const timer = setTimeout(() => {
-        const nextWords = words.slice(0, wordsShown + 1).join(" ");
+        const nextText = wordTokens.slice(0, tokensShown + 1).join("");
         setDisplayedMessages((prev) => ({
           ...prev,
-          [lastMsg.id]: nextWords,
+          [lastMsg.id]: nextText,
         }));
-      }, 80);
+      }, 60);
 
       return () => clearTimeout(timer);
-    } else if (wordsShown >= words.length && lastMsg.isTyping) {
+    } else if (tokensShown >= wordTokens.length && lastMsg.isTyping) {
       // Asegurarse que se muestre el texto completo
       setDisplayedMessages((prev) => ({
         ...prev,
@@ -134,11 +132,11 @@ export default function TestChat() {
               <div className={styles.messageBubble}>{msg.text}</div>
             ) : (
               <div className={styles.botMessageWrapper}>
-                <div className={styles.botMessageContent}>
+                <pre className={styles.botMessageContent}>
                   {displayedMessages[msg.id] !== undefined
                     ? displayedMessages[msg.id]
                     : msg.text}
-                </div>
+                </pre>
                 <div className={styles.messageActions}>
                   <button className={styles.actionBtn} title="Me gusta">
                     <svg

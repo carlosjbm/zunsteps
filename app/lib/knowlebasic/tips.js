@@ -2,7 +2,8 @@ export const tips = [
   {
     source: "Desentendimiento con el usuario",
     text: "estas equivocado,no me refiero a eso, no me entendistes,eso no es lo que te estoy preguntando,piensa mejor",
-    answer: `🤔 Disculpa, creo que no te entendi bien, por favor re-formula la pregunta entonces para
+    answer: `🤔 Disculpa, 
+    creo que no te entendi bien, por favor re-formula la pregunta entonces para
     tratar de buscar una respuesta mas acertada.
     `,
   },
@@ -28,11 +29,13 @@ export const tips = [
   {
     source: "SQLServerInstalacion",
     text: "Que servicios tengo que tener en cuenta cuando instalo SQL server",
-    answer: `Durante la instalación de SQL Server es 🚩MUY IMPORTANTE  incluir:\n
-    🧩Database Engine Services\n
-    ✨Integration Services\n
-    📘SQL Server Books Online\n
-    🧰Management Tools Complete`,
+    steps: true,
+    answer: `Durante la instalación de SQL Server
+    🚩 MUY IMPORTANTE  incluir:
+    🧩 Database Engine Services
+    ✨ Integration Services
+    📘 SQL Server Books Online
+    🧰 Management Tools Complete`,
   },
   {
     source: "SQLServerInstalacion",
