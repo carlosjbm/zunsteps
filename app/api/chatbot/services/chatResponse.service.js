@@ -1,6 +1,8 @@
 import { writeInUnKnowTopics } from "@/app/lib/helpers/witePending";
 import { tokens } from "./extracTokens.service";
 import { normalize } from "./normalize.service";
+import { agroupHeaders } from "./agroupHeaders.service";
+import { byQuestionHeaders, pushRandomHeader } from "./providerHeders.service";
 
 const {
   loadKnowledgeHelper,
@@ -97,6 +99,7 @@ export function getBestResponse(query) {
   if (!q) return "No has escrito ninguna pregunta.";
 
   const qNorm = normalize(q);
+  const qIsQuestion = agroupHeaders(query);
 
   // 1) búsqueda exacta en respuestas predefinidas
   if (chatbotResponses[qNorm]) return chatbotResponses[qNorm];
@@ -126,6 +129,9 @@ export function getBestResponse(query) {
   });
 
   if (best.score > 0.35) {
+    if (qIsQuestion) {
+      return pushRandomHeader(byQuestionHeaders) + `  ` + best.answer;
+    }
     return best.answer;
     // return best.answer + `\n✨Referenciando a: ${best.source}`;
   }
