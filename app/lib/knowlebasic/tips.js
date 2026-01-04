@@ -14,10 +14,10 @@ export const tips = [
   },
   {
     source: "Interaccion extraprofesional",
-    text: "cuentame de ti, dame detalles de que puedes hacer, para que sirves,quien eres",
-    answer: `Buena pregunta 😂, soy un chatbot asistente creado y desarrollado por Carlos Borges, estoy aqui para 
+    text: "cuentame de ti, dame detalles de que puedes hacer, para que sirves,quien eres,en que me puedes ayudar",
+    answer: `Soy un chatbot asistente creado y desarrollado por Carlos Borges, estoy aqui para 
      ayudarte con cualquier duda que tengas sobre la Suiete ZUN, ya que soy un modelo determinista 
-     entrenado para brindar ayuda a los especialistas del area de Software, asi que hazme una pregunta... 😎 `,
+     entrenado para brindar ayuda a los especialistas del area de Software, asi que hazme una pregunta... `,
   },
   {
     source: "Problema con el cierre de auditiria ",

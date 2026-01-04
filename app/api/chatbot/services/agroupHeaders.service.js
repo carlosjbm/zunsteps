@@ -8,7 +8,6 @@ export const agroupHeaders = (text) => {
   questionsPatterns.map((qp) => {
     if (lowerText.includes(qp)) {
       isQuestion = true;
-      return isQuestion;
     }
   });
   return isQuestion;

@@ -8,6 +8,7 @@ export default function TestChat() {
   const { response, isLoading, sendMessage } = useGetResponseChatBot();
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState([]);
+  const [displayedMessages, setDisplayedMessages] = useState({});
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -37,10 +38,60 @@ export default function TestChat() {
         id: Date.now() + 1,
         text: response,
         sender: "bot",
+        isTyping: true,
       };
       setMessages((prev) => [...prev, botMessage]);
+      // Activar efecto de escritura para este mensaje
+      setDisplayedMessages((prev) => ({
+        ...prev,
+        [botMessage.id]: "",
+      }));
     }
   }, [response, isLoading]);
+
+  // Efecto de escritura por palabras para cada mensaje del bot
+  useEffect(() => {
+    const botMessages = messages.filter(
+      (msg) => msg.sender === "bot" && msg.isTyping
+    );
+
+    if (botMessages.length === 0) return;
+
+    const lastMsg = botMessages[botMessages.length - 1];
+    const currentDisplayed = displayedMessages[lastMsg.id] || "";
+    const fullText = lastMsg.text;
+    const words = fullText.split(" ").filter((w) => w.length > 0);
+
+    // Contar palabras que ya se han mostrado
+    const displayedWords = currentDisplayed
+      .split(" ")
+      .filter((w) => w.length > 0);
+    const wordsShown = displayedWords.length;
+
+    // Si aún hay palabras por mostrar
+    if (wordsShown < words.length) {
+      const timer = setTimeout(() => {
+        const nextWords = words.slice(0, wordsShown + 1).join(" ");
+        setDisplayedMessages((prev) => ({
+          ...prev,
+          [lastMsg.id]: nextWords,
+        }));
+      }, 80);
+
+      return () => clearTimeout(timer);
+    } else if (wordsShown >= words.length && lastMsg.isTyping) {
+      // Asegurarse que se muestre el texto completo
+      setDisplayedMessages((prev) => ({
+        ...prev,
+        [lastMsg.id]: fullText,
+      }));
+
+      // Marcar como completado
+      setMessages((prev) =>
+        prev.map((m) => (m.id === lastMsg.id ? { ...m, isTyping: false } : m))
+      );
+    }
+  }, [displayedMessages, messages]);
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -83,7 +134,11 @@ export default function TestChat() {
               <div className={styles.messageBubble}>{msg.text}</div>
             ) : (
               <div className={styles.botMessageWrapper}>
-                <div className={styles.botMessageContent}>{msg.text}</div>
+                <div className={styles.botMessageContent}>
+                  {displayedMessages[msg.id] !== undefined
+                    ? displayedMessages[msg.id]
+                    : msg.text}
+                </div>
                 <div className={styles.messageActions}>
                   <button className={styles.actionBtn} title="Me gusta">
                     <svg
