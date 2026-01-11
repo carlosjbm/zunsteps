@@ -369,9 +369,8 @@ export default function TestChat() {
                       size={isMobile ? "small" : "medium"}
                       sx={{
                         color: "text.secondary",
-                        border: "1px solid",
                         borderColor: "divider",
-                        borderRadius: 1,
+
                         transition: "all 0.2s ease",
                         "&:hover": {
                           borderColor: "#33d2a4",
@@ -390,9 +389,9 @@ export default function TestChat() {
                       size={isMobile ? "small" : "medium"}
                       sx={{
                         color: "text.secondary",
-                        border: "1px solid",
+
                         borderColor: "divider",
-                        borderRadius: 1,
+
                         transition: "all 0.2s ease",
                         "&:hover": {
                           borderColor: "#33d2a4",
@@ -411,9 +410,9 @@ export default function TestChat() {
                       size={isMobile ? "small" : "medium"}
                       sx={{
                         color: "text.secondary",
-                        border: "1px solid",
+
                         borderColor: "divider",
-                        borderRadius: 1,
+
                         transition: "all 0.2s ease",
                         "&:hover": {
                           borderColor: "#33d2a4",
@@ -439,10 +438,6 @@ export default function TestChat() {
                       sx={{
                         color:
                           copiedId === msg.id ? "#33d2a4" : "text.secondary",
-                        border: "1px solid",
-                        borderColor:
-                          copiedId === msg.id ? "#33d2a4" : "divider",
-                        borderRadius: 1,
                         transition: "all 0.2s ease",
                         backgroundColor:
                           copiedId === msg.id
@@ -518,6 +513,7 @@ export default function TestChat() {
             spacing={1}
             alignItems="flex-end"
             sx={{
+              alignItems: "center",
               gap: { xs: "6px", sm: "8px", md: "8px" },
             }}
           >
