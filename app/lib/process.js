@@ -36,7 +36,7 @@ export const process = [
   },
   {
     id: 2,
-    month: "diciembre",
+    month: "enero",
     title: "Cierre de Almacen",
     content:
       "El objetivo de este proceso es guiar al ususario durante la realización de un cierre de año en el módulo ZUNstock.",

@@ -66,11 +66,11 @@ export default function ChatBotSim({ responses }) {
   };
 
   return (
-    <Paper elevation={3} sx={{ maxWidth: 520, mx: "auto", p: 1 }}>
+    <Paper elevation={3} sx={{ maxWidth: 700, mx: "auto", p: 1 }}>
       <Box sx={{ display: "flex", alignItems: "center", gap: 1, p: 1 }}>
-        <Avatar sx={{ bgcolor: "primary.main" }}>A</Avatar>
+        <Avatar sx={{ bgcolor: "primary.main" }}>Zx</Avatar>
         <Box>
-          <Typography variant="subtitle1">CB Agent v1.0.0</Typography>
+          <Typography variant="subtitle1">ZUNex Core v1.0.0</Typography>
           <Typography variant="caption" color="text.secondary">
             Asistente de ayuda — respuestas instantáneas
           </Typography>
@@ -137,7 +137,7 @@ export default function ChatBotSim({ responses }) {
             >
               {msg.sender === "bot" && (
                 <ListItemAvatar>
-                  <Avatar sx={{ bgcolor: "secondary.main" }}>B</Avatar>
+                  <Avatar sx={{ bgcolor: "secondary.main" }}>ZX</Avatar>
                 </ListItemAvatar>
               )}
               <ListItemText

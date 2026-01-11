@@ -1,13 +1,7 @@
 export const tips = [
   {
     source: "ZUNpms",
-    text:
-      "No cierra el front" ||
-      "error en el cierre" ||
-      "problema con el cierre de zunpms" ||
-      "pone cerrando" ||
-      "no cierra el pms" ||
-      "tips de zunpms",
+    text: "No cierra el front,problemas con cierre de auditoria",
     answer: `Problema asociado a los campos procesa_llamada y cerrando de la tabla HOTETABL.
     La solucion es simple:Invierte los valores de estos campos. (ej:cerrando:true->false)`,
   },

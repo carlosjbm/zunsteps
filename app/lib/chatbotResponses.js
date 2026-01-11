@@ -45,54 +45,54 @@ loadKnowledgeHelper(tablasConocimientos, knowledge);
 //para diferentes tips
 loadKnowledgeHelper(tips, knowledge);
 //para el conocimieto de modulos
-modules.forEach((m) => {
-  if (!m) return;
-  const title = m.mNombre || "";
-  const summary = m.mResumen || "";
-  knowledge.push({
-    source: title,
-    text: `${title}. ${summary}`,
-    answer: summary,
-  });
+// modules.forEach((m) => {
+//   if (!m) return;
+//   const title = m.mNombre || "";
+//   const summary = m.mResumen || "";
+//   knowledge.push({
+//     source: title,
+//     text: `${title}. ${summary}`,
+//     answer: summary,
+//   });
 
-  if (Array.isArray(m.mSecciones)) {
-    m.mSecciones.forEach((sec) => {
-      if (!sec) return;
-      const sname = sec.sNombre || "";
-      const sResumen = sec.sResumen || "";
-      if (sname || sResumen) {
-        knowledge.push({
-          source: `${title} > ${sname}`,
-          text: `${sname}. ${sResumen}`,
-          answer: sResumen || sname,
-        });
-      }
-      if (Array.isArray(sec.acciones)) {
-        sec.acciones.forEach((act) => {
-          if (!act) return;
-          const aname = act.aNombre || "";
-          const aResumen = act.aResumen || "";
-          let pasosText = "";
-          if (Array.isArray(act.pasos)) {
-            pasosText = act.pasos
-              .map((p) =>
-                p.label
-                  ? `${p.label}: ${p.description || ""}`
-                  : p.description || ""
-              )
-              .join(" \n");
-          }
-          const combined = `${aname}. ${aResumen} ${pasosText}`.trim();
-          knowledge.push({
-            source: `${title} > ${sname} > ${aname}`,
-            text: combined,
-            answer: aResumen || aname,
-          });
-        });
-      }
-    });
-  }
-});
+//   if (Array.isArray(m.mSecciones)) {
+//     m.mSecciones.forEach((sec) => {
+//       if (!sec) return;
+//       const sname = sec.sNombre || "";
+//       const sResumen = sec.sResumen || "";
+//       if (sname || sResumen) {
+//         knowledge.push({
+//           source: `${title} > ${sname}`,
+//           text: `${sname}. ${sResumen}`,
+//           answer: sResumen || sname,
+//         });
+//       }
+//       if (Array.isArray(sec.acciones)) {
+//         sec.acciones.forEach((act) => {
+//           if (!act) return;
+//           const aname = act.aNombre || "";
+//           const aResumen = act.aResumen || "";
+//           let pasosText = "";
+//           if (Array.isArray(act.pasos)) {
+//             pasosText = act.pasos
+//               .map((p) =>
+//                 p.label
+//                   ? `${p.label}: ${p.description || ""}`
+//                   : p.description || ""
+//               )
+//               .join(" \n");
+//           }
+//           const combined = `${aname}. ${aResumen} ${pasosText}`.trim();
+//           knowledge.push({
+//             source: `${title} > ${sname} > ${aname}`,
+//             text: combined,
+//             answer: aResumen || aname,
+//           });
+//         });
+//       }
+//     });
+//   }
+// });
 
 // Añadir entradas exactas derivadas de knowledge para búsquedas rápidas
 knowledge.forEach((k) => {
@@ -136,7 +136,7 @@ export function getBestResponse(query) {
     }
   });
 
-  if (best.score > 0) {
+  if (best.score > 3.5) {
     return best.answer + `\n\n(Referenciando a: ${best.source})`;
   }
 

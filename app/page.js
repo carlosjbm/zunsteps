@@ -5,6 +5,7 @@ import Link from "next/link";
 import {
   FacebookOutlined,
   GitHub,
+  HelpOutlined,
   LinkedIn,
   WhatsApp,
   X,
@@ -128,6 +129,17 @@ export default function Home() {
               }}
             >
               <WhiteMiddButton text="Premium" icon={<VerifiedIcon />} />
+            </Link>
+            <Link
+              href="zunsteps/faqs/"
+              aria-label="Ir a FAQs"
+              style={{
+                display: "inline-flex",
+                justifyContent: "center",
+                width: "100%",
+              }}
+            >
+              <WhiteMiddButton text="FAQs" icon={<HelpOutlined />} />
             </Link>
             <Link
               href="/zunsteps/dashboard"
