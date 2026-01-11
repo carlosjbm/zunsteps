@@ -21,7 +21,7 @@ export const tips = [
      estoy aqui para ayudarte con cualquier duda que tengas sobre la Suiete ZUN, ya que soy un modelo determinista entrenado para brindar ayuda a los especialistas del area de Software, asi que hazme una pregunta... `,
   },
   {
-    source: "Problema con el cierre de auditiria ",
+    source: "Problema con la auditiria ",
     text: "A que se puede deber el problema de que el zunpms no permite hacer el cierre de auditoria, el error que lanza es que se encuentra cerrando ",
     answer: `Es muy comun que este problema este asociado a los campos procesa_llamada y cerrando de la tabla HOTETABL.
     Te sugiero que los revises personalmente, te pongo un ejemplo de lo que puede estar pasando. ej:cerrando:true(como esta)->false(como debe estar).`,
@@ -376,20 +376,23 @@ errores.
   },
   {
     source: "ZUNacc - UEB Autorizadas",
-    text: "pasos principales para crear una UEB autorizada",
+    text: "pasos principales para crear una UEB autorizada,como crear una liquidadora",
     steps: true,
-    answer: `1. Salvar la base de datos de ZUNacc y verificar que el periodo Junio esté cerrado.
-    2. Crear una base de datos limpia con plan de cuentas y centros de costos.
-    3. Configurar el periodo Julio 2021 en tablas y aplicación.
-    4. Crear la base de datos liquidadora y restaurarla con la salva.
-    5. Agregar la BD liquidadora en ZUNsa y dar acceso a operadores.
-    6. Exportar comprobantes de Julio desde la BD liquidadora.
-    7. Borrar comprobantes de Julio en la BD liquidadora con script.
-    8. Ejecutar la herramienta de cierre y apertura de cuentas.
-    9. Importar comprobantes generados por la herramienta en ambas BD.
-    10. Verificar cierre y apertura de cuentas en balances de comprobación.
-    11. Actualizar datos de empresa en la BD nueva (tabla CONTEMPR).
-    12. Importar comprobantes de Julio en la contabilidad nueva.
-    13. Actualizar entidades en ZUNcc y crear nuevo consolidado.`,
+    answer: `
+    Pasos para Crear una UEB autorizada (Liqudadora):
+    
+    1 Salvar la base de datos de ZUNacc y verificar que el periodo Junio esté cerrado.
+    2 Crear una base de datos limpia con plan de cuentas y centros de costos.
+    3 Configurar el periodo Julio 2021 en tablas y aplicación.
+    4 Crear la base de datos liquidadora y restaurarla con la salva.
+    5 Agregar la BD liquidadora en ZUNsa y dar acceso a operadores.
+    6 Exportar comprobantes de Julio desde la BD liquidadora.
+    7 Borrar comprobantes de Julio en la BD liquidadora con script.
+    8 Ejecutar la herramienta de cierre y apertura de cuentas.
+    9 Importar comprobantes generados por la herramienta en ambas BD.
+    10 Verificar cierre y apertura de cuentas en balances de comprobación.
+    11 Actualizar datos de empresa en la BD nueva (tabla CONTEMPR).
+    12 Importar comprobantes de Julio en la contabilidad nueva.
+    13 Actualizar entidades en ZUNcc y crear nuevo consolidado.`,
   },
 ];

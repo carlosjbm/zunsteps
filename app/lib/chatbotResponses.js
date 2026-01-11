@@ -145,15 +145,15 @@ export function getBestResponse(query) {
   }
 
   // 3) si no hay coincidencias, intentar búsqueda por substring en textos
-  const qLower = qNorm;
-  for (const k of knowledge) {
-    if (
-      k.text.toLowerCase().includes(qLower) ||
-      k.source.toLowerCase().includes(qLower)
-    ) {
-      return k.answer;
-    }
-  }
+  // const qLower = qNorm;
+  // for (const k of knowledge) {
+  //   if (
+  //     k.text.toLowerCase().includes(qLower) ||
+  //     k.source.toLowerCase().includes(qLower)
+  //   ) {
+  //     return k.answer;
+  //   }
+  // }
 
   // 4) fallback genérico
   return (
