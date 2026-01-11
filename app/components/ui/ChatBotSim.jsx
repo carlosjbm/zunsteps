@@ -21,6 +21,25 @@ import { getBestResponse } from "@/app/lib/chatbotResponses";
 import { SendOutlined } from "@mui/icons-material";
 import { CopyAllOutlined } from "@mui/icons-material";
 import { PsychologyAltOutlined } from "@mui/icons-material";
+import Image from "next/image";
+import AlarmIcon from "@mui/icons-material/Alarm";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import AddIcon from "@mui/icons-material/Add";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import AutoDeleteOutlinedIcon from "@mui/icons-material/AutoDeleteOutlined";
+import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
+import AddCommentOutlinedIcon from "@mui/icons-material/AddCommentOutlined";
+
+const chatlogo = "/chatlogo.png";
+
+const hoverLogoStyle = {
+  transition: "transform 0.3s",
+  "&:hover": {
+    transform: "scale(1.1)",
+    width: 36,
+    height: 36,
+  },
+};
 
 export default function ChatBotSim({ responses }) {
   const [showTopics, setShowTopics] = useState(false);
@@ -29,8 +48,7 @@ export default function ChatBotSim({ responses }) {
   const [suggestions] = useState([
     "Hola",
     "No cierra el front",
-    "Revertir un comprobante",
-    "¿Cómo generar un reporte de ventas?",
+    "Hablame de ti",
   ]);
   const listRef = useRef(null);
 
@@ -66,14 +84,42 @@ export default function ChatBotSim({ responses }) {
   };
 
   return (
-    <Paper elevation={3} sx={{ maxWidth: 700, mx: "auto", p: 1 }}>
+    <Paper elevation={3} sx={{ width: 700, mx: "auto", p: 1 }}>
       <Box sx={{ display: "flex", alignItems: "center", gap: 1, p: 1 }}>
-        <Avatar sx={{ bgcolor: "primary.main" }}>Zx</Avatar>
+        <Avatar sx={{ bgcolor: "primary.main", width: 72, height: 72 }}>
+          <Image src={chatlogo} alt="ChatBot" width={72} height={72} />
+        </Avatar>
         <Box>
-          <Typography variant="subtitle1">ZUNex Core v1.0.0</Typography>
+          <Typography variant="subtitle1">ZUNex Core v1.2.0</Typography>
           <Typography variant="caption" color="text.secondary">
             Asistente de ayuda — respuestas instantáneas
           </Typography>
+        </Box>
+        <Box
+          sx={{
+            marginLeft: 10,
+            display: "flex",
+            gap: "20px",
+            padding: 1,
+            borderRadius: 8,
+            backgroundColor: "#f0f0f0",
+          }}
+        >
+          <Tooltip title="Historial de chats">
+            <IconButton color="primary" aria-label="history chats">
+              <AccessTimeIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Nuevo Chat">
+            <IconButton color="primary" aria-label="add comment">
+              <AddCommentOutlinedIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Borrar Historial">
+            <IconButton color="primary" aria-label="delete conversation">
+              <AutoDeleteOutlinedIcon />
+            </IconButton>
+          </Tooltip>
         </Box>
         <Box sx={{ flex: 1 }} />
         {chat.length > 0 && (
@@ -126,34 +172,53 @@ export default function ChatBotSim({ responses }) {
           {chat.map((msg, idx) => (
             <ListItem
               key={idx}
-              sx={{ alignItems: "flex-start" }}
-              secondaryAction={
-                msg.sender === "bot" ? (
-                  <IconButton edge="end" onClick={() => handleCopy(msg.text)}>
-                    <CopyAllOutlined fontSize="small" />
-                  </IconButton>
-                ) : null
-              }
+              sx={{ display: "flex" }}
+              // secondaryAction={
+              //   msg.sender === "bot" ? (
+              //     // <IconButton edge="end" onClick={() => handleCopy(msg.text)}>
+              //     //   <CopyAllOutlined fontSize="small" />
+              //     // </IconButton>
+              //   ) : null
+              // }
             >
-              {msg.sender === "bot" && (
+              {/* {msg.sender === "bot" && (
                 <ListItemAvatar>
                   <Avatar sx={{ bgcolor: "secondary.main" }}>ZX</Avatar>
                 </ListItemAvatar>
-              )}
+              )} */}
               <ListItemText
                 primary={<Typography variant="body2">{msg.text}</Typography>}
                 secondary={
-                  <Typography variant="caption" color="text.secondary">
-                    {msg.time ? msg.time.toLocaleTimeString() : ""}
-                  </Typography>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      gap: "20px",
+                      alignItems: "center",
+                    }}
+                  >
+                    {msg.sender === "bot" && (
+                      <IconButton
+                        edge="end"
+                        onClick={() => handleCopy(msg.text)}
+                      >
+                        <CopyAllOutlined fontSize="small" />
+                      </IconButton>
+                    )}
+                    <Typography variant="caption" color="text.secondary">
+                      {msg.time ? msg.time.toLocaleTimeString() : ""}
+                    </Typography>
+                  </Box>
                 }
-                sx={{ textAlign: msg.sender === "user" ? "right" : "left" }}
+                sx={{
+                  textAlign: msg.sender === "user" ? "right" : "left",
+                  color: msg.sender === "user" ? "primary.blue" : "primary",
+                }}
               />
-              {msg.sender === "user" && (
+              {/* {msg.sender === "user" && (
                 <ListItemAvatar sx={{ ml: 1 }}>
                   <Avatar sx={{ bgcolor: "primary.main" }}>U</Avatar>
                 </ListItemAvatar>
-              )}
+              )} */}
             </ListItem>
           ))}
         </List>

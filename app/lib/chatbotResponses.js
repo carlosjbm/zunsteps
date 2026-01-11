@@ -136,8 +136,8 @@ export function getBestResponse(query) {
     }
   });
 
-  if (best.score > 3.5) {
-    return best.answer + `\n\n(Referenciando a: ${best.source})`;
+  if (best.score > 0.35) {
+    return best.answer;
   }
 
   // 3) si no hay coincidencias, intentar búsqueda por substring en textos
@@ -147,7 +147,7 @@ export function getBestResponse(query) {
       k.text.toLowerCase().includes(qLower) ||
       k.source.toLowerCase().includes(qLower)
     ) {
-      return k.answer + `\n\n(Encontrado en: ${k.source})`;
+      return k.answer;
     }
   }
 
