@@ -116,7 +116,9 @@ errores.
     source: "Servidor pfSense",
     text: "pasos para instalar pfsense",
     steps: true,
-    answer: `1. Descargar la imagen ISO:
+    answer: `
+    Pasos para lainstalacion de pfsense:
+    1. Descargar la imagen ISO:
        - Ir al sitio oficial https://www.pfsense.org/download/.
        - Seleccionar arquitectura (AMD64) y versión estable.
        - Descargar la ISO y grabarla en un USB con Rufus o Etcher.
@@ -158,7 +160,10 @@ errores.
     source: "Windows Server / Cliente",
     text: "como instalar netframework 3.5 desde la imagen de windows",
     steps: true,
-    answer: `1. Montar la imagen ISO de Windows:
+    answer: `
+    Pasos para instalar .NET Framework 3.5 desde la imagen de Windows:
+    
+    1. Montar la imagen ISO de Windows:
        - Inserta el DVD o monta la ISO del sistema operativo.
        - Verifica la letra de unidad asignada (ejemplo: D:).
 
@@ -184,7 +189,10 @@ errores.
     source: "SQL Consultas",
     text: "como buscar un elemento cualquiera en una base de datos en sql",
     steps: true,
-    answer: `1. Abrir el gestor de base de datos:
+    answer: `
+    Pasos para Buscar un elemento en una base de datos SQL 👌:
+    
+    1. Abrir el gestor de base de datos:
        - Inicia sesión en SQL Server Management Studio, MySQL Workbench o el cliente que uses.
        - Conéctate a la instancia de la base de datos.
 

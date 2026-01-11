@@ -40,6 +40,139 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 const chatlogo = "/chatlogo.png";
 
+// Componente para renderizar mensajes formateados
+const FormattedMessage = ({ text }) => {
+  // Dividir por saltos de línea
+  const lines = text.split("\n").filter((line) => line.trim());
+
+  return (
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+      {lines.map((line, idx) => {
+        const trimmed = line.trim();
+
+        // Detectar listas numeradas (1., 2., etc.)
+        const numberedMatch = trimmed.match(/^(\d+)\.\s+(.+)/);
+        if (numberedMatch) {
+          return (
+            <Box
+              key={idx}
+              sx={{ display: "flex", gap: 1.5, alignItems: "flex-start" }}
+            >
+              <Typography
+                variant="body2"
+                sx={{
+                  minWidth: "24px",
+                  fontWeight: 600,
+                  color: "primary.main",
+                }}
+              >
+                {numberedMatch[1]}.
+              </Typography>
+              <Typography variant="body2" sx={{ flex: 1 }}>
+                {numberedMatch[2]}
+              </Typography>
+            </Box>
+          );
+        }
+
+        // Detectar listas con viñetas (-, *, •)
+        const bulletMatch = trimmed.match(/^[-*•]\s+(.+)/);
+        if (bulletMatch) {
+          return (
+            <Box
+              key={idx}
+              sx={{ display: "flex", gap: 1.5, alignItems: "flex-start" }}
+            >
+              <Typography
+                variant="body2"
+                sx={{
+                  minWidth: "8px",
+                  fontWeight: 600,
+                  color: "primary.main",
+                  pt: 0.3,
+                }}
+              >
+                •
+              </Typography>
+              <Typography variant="body2" sx={{ flex: 1 }}>
+                {bulletMatch[1]}
+              </Typography>
+            </Box>
+          );
+        }
+
+        // Detectar texto en negrita con **
+        const withBold = trimmed.split(/\*\*(.+?)\*\*/).map((part, i) => {
+          if (i % 2 === 1) {
+            return (
+              <Typography
+                key={i}
+                component="span"
+                sx={{ fontWeight: 600, color: "primary.main" }}
+              >
+                {part}
+              </Typography>
+            );
+          }
+          return part;
+        });
+
+        // Detectar código con backticks
+        const withCode = withBold.map((part, i) => {
+          if (typeof part === "string") {
+            return part.split(/`([^`]+)`/).map((subpart, j) => {
+              if (j % 2 === 1) {
+                return (
+                  <Typography
+                    key={`${i}-${j}`}
+                    component="code"
+                    sx={{
+                      bgcolor: "action.hover",
+                      px: 0.75,
+                      py: 0.25,
+                      borderRadius: 0.5,
+                      fontFamily: "monospace",
+                      fontSize: "0.85em",
+                    }}
+                  >
+                    {subpart}
+                  </Typography>
+                );
+              }
+              return subpart;
+            });
+          }
+          return part;
+        });
+
+        // Si la línea es un encabezado (termina con :)
+        if (trimmed.endsWith(":")) {
+          return (
+            <Typography
+              key={idx}
+              variant="body2"
+              sx={{
+                fontWeight: 600,
+                color: "primary.main",
+                mt: idx > 0 ? 1 : 0,
+              }}
+            >
+              {trimmed}
+            </Typography>
+          );
+        }
+
+        // Texto normal
+        return (
+          <Typography key={idx} variant="body2">
+            {withCode}
+          </Typography>
+        );
+      })}
+    </Box>
+  );
+};
+
 export default function ChatBotSim({ responses }) {
   const theme = useTheme();
   const [input, setInput] = useState("");
@@ -332,7 +465,7 @@ export default function ChatBotSim({ responses }) {
             </Box>
             <Box sx={{ textAlign: "center" }}>
               <Typography variant="body2" sx={{ fontWeight: 500, mb: 0.5 }}>
-                ¿Cómo podemos ayudarte?
+                ¿Cómo puedo ayudarte?
               </Typography>
               <Typography variant="caption" color="text.secondary">
                 Haz una pregunta para comenzar
@@ -406,69 +539,73 @@ export default function ChatBotSim({ responses }) {
                   },
                 }}
               >
-                <ListItemText
-                  primary={
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 0.5,
+                    width: "100%",
+                  }}
+                >
+                  {msg.sender === "bot" ? (
+                    <FormattedMessage text={msg.text} />
+                  ) : (
                     <Typography
                       variant="body2"
                       sx={{
                         wordBreak: "break-word",
-                        fontWeight: msg.sender === "bot" ? 400 : 500,
+                        fontWeight: 500,
                       }}
                     >
                       {msg.text}
                     </Typography>
-                  }
-                  secondary={
-                    msg.sender === "bot" && (
-                      <Box
+                  )}
+                  {msg.sender === "bot" && (
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 1,
+                        mt: 0.5,
+                      }}
+                    >
+                      <Typography
+                        variant="caption"
                         sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: 1,
-                          mt: 0.5,
+                          opacity: 0.7,
+                          fontSize: "0.7rem",
                         }}
                       >
-                        <Typography
-                          variant="caption"
+                        {msg.time?.toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </Typography>
+                      <Tooltip
+                        title={copiedId === msg.id ? "Copiado!" : "Copiar"}
+                      >
+                        <IconButton
+                          size="small"
+                          onClick={() => handleCopy(msg.text, msg.id)}
                           sx={{
-                            opacity: 0.7,
-                            fontSize: "0.7rem",
+                            p: 0.25,
+                            opacity: copiedId === msg.id ? 1 : 0.6,
+                            color:
+                              copiedId === msg.id ? "success.main" : "inherit",
+                            transition: "all 0.2s",
+                            "&:hover": { opacity: 1 },
                           }}
                         >
-                          {msg.time?.toLocaleTimeString([], {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })}
-                        </Typography>
-                        <Tooltip
-                          title={copiedId === msg.id ? "Copiado!" : "Copiar"}
-                        >
-                          <IconButton
-                            size="small"
-                            onClick={() => handleCopy(msg.text, msg.id)}
-                            sx={{
-                              p: 0.25,
-                              opacity: copiedId === msg.id ? 1 : 0.6,
-                              color:
-                                copiedId === msg.id
-                                  ? "success.main"
-                                  : "inherit",
-                              transition: "all 0.2s",
-                              "&:hover": { opacity: 1 },
-                            }}
-                          >
-                            {copiedId === msg.id ? (
-                              <CheckCircleIcon fontSize="small" />
-                            ) : (
-                              <CopyAllOutlined fontSize="small" />
-                            )}
-                          </IconButton>
-                        </Tooltip>
-                      </Box>
-                    )
-                  }
-                  sx={{ m: 0 }}
-                />
+                          {copiedId === msg.id ? (
+                            <CheckCircleIcon fontSize="small" />
+                          ) : (
+                            <CopyAllOutlined fontSize="small" />
+                          )}
+                        </IconButton>
+                      </Tooltip>
+                    </Box>
+                  )}
+                </Box>
               </Box>
             </ListItem>
           ))}

@@ -30,9 +30,13 @@ const chatbotResponses = {
   hola: "¡Hola! ¿En qué puedo ayudarte hoy?",
   gracias: "¡De nada! Si tienes otra pregunta, escríbela aquí.",
   "cómo exporto mi proyecto":
-    "Usa el comando `pnpm run build && pnpm run export` y sube la carpeta `out` a Netlify (o usa el plugin oficial de Netlify para Next.js para soportar SSR).",
+    "Para exportar tu proyecto:\n1. Ejecuta el comando `pnpm run build`\n2. Luego ejecuta `pnpm run export`\n3. Sube la carpeta `out` a Netlify\n\nAlternativa: Usa el plugin oficial de Netlify para Next.js para soportar SSR.",
   "qué es renderpremium":
-    "`renderPremium` es una bandera que controla el acceso a la zona premium; si es `true`, el usuario puede ver contenido premium.",
+    "`renderPremium` es una **bandera de control de acceso**\n\n**¿Qué hace?**\n- Si es `true`: El usuario puede ver contenido premium\n- Si es `false`: El contenido premium está bloqueado\n\nÚsala para proteger secciones especiales de tu aplicación.",
+  "hablame de ti":
+    "**ZUNex Core v1.2.0**\n\nSoy tu asistente inteligente especializado en ayudarte con:\n- Módulos de gestión empresarial\n- Configuración de proyectos\n- Guías de implementación\n- Solución de problemas técnicos\n\n¿Qué necesitas hoy?",
+  "no cierra el front":
+    "Si tu aplicación no cierra el frontend correctamente:\n\n**Posibles causas:**\n- Procesos en background no detenidos\n- Conexiones activas sin cerrar\n- Timers o intervals sin limpiar\n\n**Soluciones:**\n1. Revisa los efectos (useEffect) y asegúrate de limpiar\n2. Cierra conexiones en componentes con estado\n3. Termina procesos en el servidor\n\n¿Necesitas ayuda con código específico?",
 };
 
 // Construir una base de conocimiento a partir de los módulos
