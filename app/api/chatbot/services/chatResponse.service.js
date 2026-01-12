@@ -1,13 +1,14 @@
 import { writeInUnKnowTopics } from "@/app/lib/helpers/witePending";
 import { tokens } from "./extracTokens.service";
 import { normalize } from "./normalize.service";
-import { detectQuestion } from "./agroupHeaders.service";
 import {
   byMathOppsHeaders,
+  byNotImperativRequest,
   byQuestionHeaders,
   pushRandomHeader,
 } from "./providerHeders.service";
 import { isMathOpp, mathOpsResolver } from "./adaptative.service";
+import { detectQuestion, detectRequest } from "./detectPatterns.service";
 
 const {
   loadKnowledgeHelper,
@@ -56,6 +57,7 @@ export function getBestResponse(query) {
 
   const qNorm = normalize(q);
   const qIsQuestion = detectQuestion(query);
+  const qIsRequest = detectRequest(query);
 
   // 1) búsqueda exacta en respuestas predefinidas
   if (chatbotResponses[qNorm]) return chatbotResponses[qNorm];
@@ -64,19 +66,21 @@ export function getBestResponse(query) {
   const qTokens = tokens(qNorm);
   let best = { score: 0, answer: null, source: null };
 
-  //capacidad de detectar operaciones matematicas y resolverlas
+  //capacidad de detectar operaciones matematicas y resolverlas feature 2.2.0
   const anyMathOpp = isMathOpp(query);
-  if (anyMathOpp && qIsQuestion) {
-    return (
-      pushRandomHeader(byQuestionHeaders) +
-      pushRandomHeader(byMathOppsHeaders) +
-      mathOpsResolver(query)
-    );
-  }
   if (anyMathOpp) {
-    return pushRandomHeader(byMathOppsHeaders) + mathOpsResolver(query);
+    if (qIsQuestion) {
+      return pushRandomHeader(byQuestionHeaders) + mathOpsResolver(query);
+    }
+    if (qIsRequest) {
+      return pushRandomHeader(byNotImperativRequest) + mathOpsResolver(query);
+    }
+    if (anyMathOpp) {
+      return pushRandomHeader(byMathOppsHeaders) + mathOpsResolver(query);
+    }
   }
 
+  //Capacidad de dar respuestas deterministas
   knowledge.forEach((k) => {
     if (!k || !k.text || !k.source) return;
     const kTokens = tokens(k.text);
@@ -102,6 +106,9 @@ export function getBestResponse(query) {
     if (qIsQuestion) {
       return pushRandomHeader(byQuestionHeaders) + `  ` + best.answer;
     }
+    if (qIsRequest) {
+      return pushRandomHeader(byNotImperativRequest) + ` ` + best.answer;
+    }
     return best.answer;
     // return best.answer + `\n✨Referenciando a: ${best.source}`;
   }
@@ -119,7 +126,6 @@ export function getBestResponse(query) {
   }
 
   // 4) fallback genérico
-
   writeInUnKnowTopics(query);
   return (
     "😢 Lo siento, no tengo una respuesta específica para esa pregunta. " +

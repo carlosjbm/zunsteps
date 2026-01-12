@@ -12,6 +12,13 @@ export const byMathOppsHeaders = [
   "la respuesta a esa operacion es:  ",
   "soy matematica hermano, el resultado es...",
 ];
+//Para peticiones no imperativas del usuario
+export const byNotImperativRequest = [
+  "claro que puedo hacerlo, ",
+  "si claro, ",
+  "estaria encantado, ",
+  "por su puesto, ",
+];
 
 //Para lograr que los headers sean mas ramdom evitando respuestas monotonas
 export const pushRandomHeader = (groupHeader) => {

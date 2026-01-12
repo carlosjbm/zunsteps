@@ -15,7 +15,7 @@ export const tips = [
   },
   {
     source: "Interaccion extraprofesional",
-    text: "cuentame de ti, dame detalles de que puedes hacer, para que sirves,quien eres,en que me puedes ayudar,como te llamas",
+    text: "cuentame de ti, dame detalles de que puedes hacer, para que sirves,quien eres,en que me puedes ayudar,como te llamas,hablarme sobre ti",
     answer: `
     Soy un chatbot✨ asistente creado y desarrollado por Carlos Borges 😉,
      estoy aqui para ayudarte con cualquier duda que tengas sobre la Suiete ZUN, ya que soy un modelo determinista entrenado para brindar ayuda a los especialistas del area de Software, asi que hazme una pregunta... `,
