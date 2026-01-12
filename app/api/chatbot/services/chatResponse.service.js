@@ -2,7 +2,12 @@ import { writeInUnKnowTopics } from "@/app/lib/helpers/witePending";
 import { tokens } from "./extracTokens.service";
 import { normalize } from "./normalize.service";
 import { agroupHeaders } from "./agroupHeaders.service";
-import { byQuestionHeaders, pushRandomHeader } from "./providerHeders.service";
+import {
+  byMathOppsHeaders,
+  byQuestionHeaders,
+  pushRandomHeader,
+} from "./providerHeders.service";
+import { isMathOpp, mathOpsResolver } from "./adaptative.service";
 
 const {
   loadKnowledgeHelper,
@@ -30,9 +35,9 @@ const nosabe = [];
 const modules = [zunacc, zunaft, zunhr, zunst, zunpr];
 const knowledge = [];
 //para las respuestas basicas
-loadKnowledgeHelper(basicAnswers, knowledge);
+//loadKnowledgeHelper(basicAnswers, knowledge);
 //para el conocimiento de las tablas
-loadKnowledgeHelper(tablasConocimientos, knowledge);
+//loadKnowledgeHelper(tablasConocimientos, knowledge);
 //para diferentes tips
 loadKnowledgeHelper(tips, knowledge);
 
@@ -59,7 +64,14 @@ export function getBestResponse(query) {
   const qTokens = tokens(qNorm);
   let best = { score: 0, answer: null, source: null };
 
+  //capacidad de detectar operaciones matematicas y resolverlas
+  const anyMathOpp = isMathOpp(query);
+  if (anyMathOpp) {
+    return pushRandomHeader(byMathOppsHeaders) + mathOpsResolver(query);
+  }
+
   knowledge.forEach((k) => {
+    if (!k || !k.text || !k.source) return;
     const kTokens = tokens(k.text);
     // contar tokens comunes
     let common = 0;
@@ -90,6 +102,7 @@ export function getBestResponse(query) {
   // 3) si no hay coincidencias, intentar búsqueda por substring en textos
   const qLower = qNorm;
   for (const k of knowledge) {
+    if (!k || !k.text || !k.source) continue;
     if (
       k.text.toLowerCase().includes(qLower) ||
       k.source.toLowerCase().includes(qLower)
@@ -99,6 +112,7 @@ export function getBestResponse(query) {
   }
 
   // 4) fallback genérico
+
   writeInUnKnowTopics(query);
   return (
     "😢 Lo siento, no tengo una respuesta específica para esa pregunta. " +

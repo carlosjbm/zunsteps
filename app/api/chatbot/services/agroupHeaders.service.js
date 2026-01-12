@@ -1,5 +1,5 @@
 export const agroupHeaders = (text) => {
-  const questionsPatterns = ["como", "que", "quien"];
+  const questionsPatterns = ["como", "que", "quien", "donde"];
   let isQuestion = false;
   const lowerText = text.toLowerCase();
   if (text.includes("?")) {
