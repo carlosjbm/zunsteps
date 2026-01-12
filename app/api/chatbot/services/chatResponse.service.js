@@ -1,7 +1,7 @@
 import { writeInUnKnowTopics } from "@/app/lib/helpers/witePending";
 import { tokens } from "./extracTokens.service";
 import { normalize } from "./normalize.service";
-import { agroupHeaders } from "./agroupHeaders.service";
+import { detectQuestion } from "./agroupHeaders.service";
 import {
   byMathOppsHeaders,
   byQuestionHeaders,
@@ -55,7 +55,7 @@ export function getBestResponse(query) {
   if (!q) return "No has escrito ninguna pregunta.";
 
   const qNorm = normalize(q);
-  const qIsQuestion = agroupHeaders(query);
+  const qIsQuestion = detectQuestion(query);
 
   // 1) búsqueda exacta en respuestas predefinidas
   if (chatbotResponses[qNorm]) return chatbotResponses[qNorm];
@@ -66,6 +66,13 @@ export function getBestResponse(query) {
 
   //capacidad de detectar operaciones matematicas y resolverlas
   const anyMathOpp = isMathOpp(query);
+  if (anyMathOpp && qIsQuestion) {
+    return (
+      pushRandomHeader(byQuestionHeaders) +
+      pushRandomHeader(byMathOppsHeaders) +
+      mathOpsResolver(query)
+    );
+  }
   if (anyMathOpp) {
     return pushRandomHeader(byMathOppsHeaders) + mathOpsResolver(query);
   }
