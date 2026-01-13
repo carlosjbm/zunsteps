@@ -1,6 +1,8 @@
 export const allContexts = [
   {
-    context: "resultado de una operacion matematica",
+    contextName: "operacion_matematica",
+    context:
+      "resultado operacion matematica sumar restar multiplicar dividir calculo",
     items: [
       {
         index: "el resultado",
@@ -11,8 +13,10 @@ export const allContexts = [
       },
     ],
   },
+
   {
-    context: "version en la que se encuentra",
+    contextName: "version_sistema",
+    context: "version sistema actual estado release informacion",
     items: [
       {
         index: "actualmente me encuentro en la version",

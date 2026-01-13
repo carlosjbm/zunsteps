@@ -5,9 +5,12 @@ export const detectContext = (prompt) => {
   const contextMatches = [];
 
   allContexts.forEach((ct) => {
+    const contextTokens = ct.context.toLowerCase().split(/\s+/);
+
     let weight = 0;
+
     tokens.forEach((token) => {
-      if (ct.context.toLowerCase().includes(token)) {
+      if (contextTokens.includes(token)) {
         weight++;
       }
     });
@@ -16,7 +19,7 @@ export const detectContext = (prompt) => {
       contextMatches.push({
         ...ct,
         weight,
-        tokens: tokens.filter((t) => ct.context.toLowerCase().includes(t)),
+        matchedTokens: tokens.filter((t) => contextTokens.includes(t)),
       });
     }
   });
