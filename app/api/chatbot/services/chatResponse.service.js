@@ -2,13 +2,21 @@ import { writeInUnKnowTopics } from "@/app/lib/helpers/witePending";
 import { tokens } from "./extracTokens.service";
 import { normalize } from "./normalize.service";
 import {
+  byComand,
   byMathOppsHeaders,
   byNotImperativRequest,
   byQuestionHeaders,
   pushRandomHeader,
 } from "./providerHeders.service";
 import { isMathOpp, mathOpsResolver } from "./adaptative.service";
-import { detectQuestion, detectRequest } from "./detectPatterns.service";
+import {
+  detectComand,
+  detectQuestion,
+  detectRequest,
+  toLowerText,
+} from "./detectPatterns.service";
+import { detectContext } from "./detectContext.service";
+import { buildResponse } from "./textGenerate.service";
 
 const {
   loadKnowledgeHelper,
@@ -58,6 +66,11 @@ export function getBestResponse(query) {
   const qNorm = normalize(q);
   const qIsQuestion = detectQuestion(query);
   const qIsRequest = detectRequest(query);
+  const { possiblity, extractComand } = detectComand(query);
+
+  //habilidades del modelo(agregar mas habilidades en el futuro)
+  const qIsMathOpp = isMathOpp(query); //detectar si el prompt es una operacion matematica
+  const qSolveMathOpp = mathOpsResolver(query); //resolver la operacion matematica
 
   // 1) búsqueda exacta en respuestas predefinidas
   if (chatbotResponses[qNorm]) return chatbotResponses[qNorm];
@@ -66,19 +79,66 @@ export function getBestResponse(query) {
   const qTokens = tokens(qNorm);
   let best = { score: 0, answer: null, source: null };
 
-  //capacidad de detectar operaciones matematicas y resolverlas feature 2.2.0
-  const anyMathOpp = isMathOpp(query);
-  if (anyMathOpp) {
-    if (qIsQuestion) {
-      return pushRandomHeader(byQuestionHeaders) + mathOpsResolver(query);
+  //capacidad de detectar operaciones matematicas y resolverlas feature 2.3.1
+  const builtResponse = buildResponse(query);
+  if (qIsQuestion) {
+    //habilidad de resolucion de operaciones matematicas basicas
+    if (qIsMathOpp) {
+      return (
+        pushRandomHeader(byQuestionHeaders) + builtResponse + qSolveMathOpp
+      );
     }
-    if (qIsRequest) {
-      return pushRandomHeader(byNotImperativRequest) + mathOpsResolver(query);
-    }
-    if (anyMathOpp) {
-      return pushRandomHeader(byMathOppsHeaders) + mathOpsResolver(query);
+    return pushRandomHeader(byQuestionHeaders) + builtResponse;
+  }
+  if (qIsRequest) {
+    //habilidad de resolucion de operaciones matematicas basicas
+    if (qIsMathOpp) {
+      return (
+        pushRandomHeader(byNotImperativRequest) + builtResponse + qSolveMathOpp
+      );
     }
   }
+  if (possiblity) {
+    //habilidad de resolucion de operaciones matematicas basicas
+    if (qIsMathOpp) {
+      return (
+        pushRandomHeader(byComand) +
+        toLowerText(extractComand) +
+        `,` +
+        ` ` +
+        ` esa operacion da como reslutado ` +
+        ` ` +
+        qSolveMathOpp
+      );
+    }
+  }
+  if (qIsMathOpp) {
+    return pushRandomHeader(byMathOppsHeaders) + builtResponse + qSolveMathOpp;
+  }
+
+  // const anyMathOpp = isMathOpp(query);
+  // if (anyMathOpp) {
+  //   if (qIsQuestion) {
+  //     return pushRandomHeader(byQuestionHeaders) + mathOpsResolver(query);
+  //   }
+  //   if (qIsRequest) {
+  //     return pushRandomHeader(byNotImperativRequest) + mathOpsResolver(query);
+  //   }
+  //   if (possiblity) {
+  //     return (
+  //       pushRandomHeader(byComand) +
+  //       toLowerText(extractComand) +
+  //       `,` +
+  //       ` ` +
+  //       ` esa operacion da como reslutado ` +
+  //       ` ` +
+  //       mathOpsResolver(query)
+  //     );
+  //   }
+  //   if (anyMathOpp) {
+  //     return pushRandomHeader(byMathOppsHeaders) + mathOpsResolver(query);
+  //   }
+  // }
 
   //Capacidad de dar respuestas deterministas
   knowledge.forEach((k) => {
@@ -108,6 +168,12 @@ export function getBestResponse(query) {
     }
     if (qIsRequest) {
       return pushRandomHeader(byNotImperativRequest) + ` ` + best.answer;
+    }
+    if (possiblity) {
+      pushRandomHeader(byComand) +
+        toLowerText(extractComand) +
+        ` ` +
+        best.answer;
     }
     return best.answer;
     // return best.answer + `\n✨Referenciando a: ${best.source}`;

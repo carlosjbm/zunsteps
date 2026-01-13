@@ -1,23 +1,11 @@
-const questionsPatterns = [
-  "como",
-  "que",
-  "quien",
-  "donde",
-  "cuando",
-  "cual",
-  "por que",
-  "cuanto",
-];
-const requestPatterns = [
-  "puedes",
-  "puede",
-  "puedes hacer",
-  "te parece",
-  "te parece si",
-  "pudieras",
-];
+import {
+  comandPatterns,
+  questionsPatterns,
+  requestPatterns,
+} from "./providers/patternsProvider";
 
 export const toLowerText = (textChain) => textChain.toLowerCase();
+
 //detecto intencion de pregunta por parte del usuario
 export const detectQuestion = (text) => {
   let isQuestion = false;
@@ -33,6 +21,7 @@ export const detectQuestion = (text) => {
   });
   return isQuestion;
 };
+
 //detecto intencion de peticion por parte del usuario
 export const detectRequest = (possibleRequest) => {
   let isRequest = false;
@@ -43,4 +32,17 @@ export const detectRequest = (possibleRequest) => {
     }
   });
   return isRequest;
+};
+//detectar intencion de orden imperativa
+export const detectComand = (possibleComand) => {
+  let isComnd = false;
+  let comand;
+  const loweredPossibleComand = toLowerText(possibleComand);
+  comandPatterns.map((pc) => {
+    if (loweredPossibleComand.includes(pc)) {
+      isComnd = true;
+      comand = possibleComand.replace(pc, "");
+    }
+  });
+  return { possiblity: isComnd, extractComand: comand };
 };
