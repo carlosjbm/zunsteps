@@ -6,20 +6,25 @@ export const detectContext = (prompt) => {
 
   allContexts.forEach((ct) => {
     const contextTokens = ct.context.toLowerCase().split(/\s+/);
-
     let weight = 0;
 
     tokens.forEach((token) => {
-      if (contextTokens.includes(token)) {
-        weight++;
-      }
+      if (contextTokens.includes(token)) weight++;
     });
 
     if (weight > 0) {
+      // detectar intención
+      let detectedIntent = null;
+
+      ct.intents.forEach((intent) => {
+        const intentMatch = intent.keywords.some((k) => tokens.includes(k));
+        if (intentMatch) detectedIntent = intent;
+      });
+
       contextMatches.push({
         ...ct,
         weight,
-        matchedTokens: tokens.filter((t) => contextTokens.includes(t)),
+        intent: detectedIntent,
       });
     }
   });

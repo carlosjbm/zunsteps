@@ -80,21 +80,19 @@ export function getBestResponse(query) {
   let best = { score: 0, answer: null, source: null };
 
   //capacidad de detectar operaciones matematicas y resolverlas feature 2.3.1
-  const builtResponse = buildResponse(query);
+  const bestRsponse = buildResponse(query);
   if (qIsQuestion) {
     //habilidad de resolucion de operaciones matematicas basicas
     if (qIsMathOpp) {
-      return (
-        pushRandomHeader(byQuestionHeaders) + builtResponse + qSolveMathOpp
-      );
+      return pushRandomHeader(byQuestionHeaders) + bestRsponse + qSolveMathOpp;
     }
-    return pushRandomHeader(byQuestionHeaders) + builtResponse;
+    return pushRandomHeader(byQuestionHeaders) + bestRsponse;
   }
   if (qIsRequest) {
     //habilidad de resolucion de operaciones matematicas basicas
     if (qIsMathOpp) {
       return (
-        pushRandomHeader(byNotImperativRequest) + builtResponse + qSolveMathOpp
+        pushRandomHeader(byNotImperativRequest) + bestRsponse + qSolveMathOpp
       );
     }
   }
@@ -113,7 +111,7 @@ export function getBestResponse(query) {
     }
   }
   if (qIsMathOpp) {
-    return pushRandomHeader(byMathOppsHeaders) + builtResponse + qSolveMathOpp;
+    return pushRandomHeader(byMathOppsHeaders) + bestRsponse + qSolveMathOpp;
   }
 
   // const anyMathOpp = isMathOpp(query);
