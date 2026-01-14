@@ -1,35 +1,66 @@
 import { allContexts } from "./providers/contextsProvider";
 
 export const detectContext = (prompt) => {
-  const tokens = prompt.toLowerCase().split(/\s+/);
-  const contextMatches = [];
+  const text = prompt.toLowerCase();
+  const tokens = text.split(/\s+/);
 
-  allContexts.forEach((ct) => {
-    const contextTokens = ct.context.toLowerCase().split(/\s+/);
-    let weight = 0;
+  let bestContext = null;
+  let bestContextScore = 0;
 
-    tokens.forEach((token) => {
-      if (contextTokens.includes(token)) weight++;
+  allContexts.forEach((ctx) => {
+    let contextScore = 0;
+
+    // 1. Coincidencia por keywords del contexto (ponderadas)
+    ctx.keywords.forEach((kw) => {
+      if (tokens.includes(kw.word)) {
+        contextScore += kw.weight;
+      }
     });
 
-    if (weight > 0) {
-      // detectar intención
-      let detectedIntent = null;
+    // Si no hay coincidencias, ignorar este contexto
+    if (contextScore === 0) return;
 
-      ct.intents.forEach((intent) => {
-        const intentMatch = intent.keywords.some((k) => tokens.includes(k));
-        if (intentMatch) detectedIntent = intent;
+    // 2. Evaluar intenciones dentro del contexto
+    let bestIntent = null;
+    let bestIntentScore = 0;
+
+    ctx.intents.forEach((intent) => {
+      let intentScore = 0;
+
+      // Coincidencia por keywords de la intención
+      intent.keywords.forEach((kw) => {
+        if (tokens.includes(kw.word)) {
+          intentScore += kw.weight;
+        }
       });
 
-      contextMatches.push({
-        ...ct,
-        weight,
-        intent: detectedIntent,
+      // Coincidencia por patrones completos
+      intent.patterns.forEach((pattern) => {
+        if (text.includes(pattern)) {
+          intentScore += 5; // peso fuerte por coincidencia exacta
+        }
       });
+
+      // Guardar la intención con mayor peso
+      if (intentScore > bestIntentScore) {
+        bestIntentScore = intentScore;
+        bestIntent = intent;
+      }
+    });
+
+    // 3. Sumar intención al puntaje del contexto
+    const totalScore = contextScore + bestIntentScore;
+
+    // 4. Seleccionar el contexto ganador
+    if (totalScore > bestContextScore) {
+      bestContextScore = totalScore;
+      bestContext = {
+        ...ctx,
+        weight: totalScore,
+        intent: bestIntent,
+      };
     }
   });
 
-  return contextMatches.length > 0
-    ? contextMatches.sort((a, b) => b.weight - a.weight)[0]
-    : "🤔";
+  return bestContext || "🤔";
 };
