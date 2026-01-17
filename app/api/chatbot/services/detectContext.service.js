@@ -2,7 +2,6 @@ import { allContexts } from "./providers/contextsProvider";
 
 export const detectContext = (prompt) => {
   const text = prompt.toLowerCase();
-  //const text = text.split(/\s+/);
 
   let bestContext = null;
   let bestContextScore = 0;

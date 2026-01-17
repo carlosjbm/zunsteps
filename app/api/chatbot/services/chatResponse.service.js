@@ -17,7 +17,10 @@ import {
 } from "./detectPatterns.service";
 import { detectContext } from "./detectContext.service";
 import { buildResponse } from "./textGenerate.service";
-import { creativeResponsesGenerator } from "./generate_creatives_responses.service";
+import {
+  creativeResponsesGenerator,
+  templateUserequest,
+} from "./generate_creatives_responses.service";
 
 const {
   loadKnowledgeHelper,
@@ -35,6 +38,7 @@ const { zunst } = require("@/app/lib/modulos/zunst");
 const chatbotResponses = {
   hola: "😊¡Hola! ¿En qué puedo ayudarte hoy?",
   gracias: "¡De nada! Si tienes otra pregunta, escríbela aquí.",
+  version: "1.3.2",
 };
 const unKnow = {
   ups: "Lo sient no conozco de es tema",
@@ -79,7 +83,7 @@ export function getBestResponse(query) {
   const qTokens = tokens(qNorm);
   let best = { score: 0, answer: null, source: null };
 
-  //capacidad de detectar operaciones matematicas y resolverlas feature 2.3.2
+  //capacidad de detectar preguntas, operaciones matematicas y resolverlas feature 2.3.2
   if (qIsQuestion) {
     //habilidad de resolucion de operaciones matematicas basicas
     if (qIsMathOpp) {
@@ -89,7 +93,7 @@ export function getBestResponse(query) {
         qSolveMathOpp
       );
     }
-    return pushRandomHeader(byQuestionHeaders) + detectContext(qSolveMathOpp);
+    return pushRandomHeader(byQuestionHeaders) + ` ` + detectContext(query);
   }
   if (qIsRequest) {
     //habilidad de resolucion de operaciones matematicas basicas
@@ -100,6 +104,7 @@ export function getBestResponse(query) {
         qSolveMathOpp
       );
     }
+    pushRandomHeader(byNotImperativRequest) + ` ` + detectContext(query);
   }
   if (possiblity) {
     //habilidad de resolucion de operaciones matematicas basicas
@@ -111,7 +116,14 @@ export function getBestResponse(query) {
         qSolveMathOpp
       );
     }
+    return (
+      pushRandomHeader(byComand) +
+      toLowerText(extractComand) +
+      ` ` +
+      detectContext(query)
+    );
   }
+  //habilidad de resolucion de operaciones matematicas basicas
   if (qIsMathOpp) {
     return (
       pushRandomHeader(byMathOppsHeaders) +
@@ -120,70 +132,58 @@ export function getBestResponse(query) {
     );
   }
 
-  // if (qIsMathOpp && qSolveMathOpp) {
-  //   return (
-  //     pushRandomHeader(byMathOppsHeaders) +
-  //     detectContext(qSolveMathOpp) +
-  //     qSolveMathOpp
-  //   );
+  //Capacidad de dar respuestas deterministas
+  // knowledge.forEach((k) => {
+  //   if (!k || !k.text || !k.source) return;
+  //   const kTokens = tokens(k.text);
+  //   // contar tokens comunes
+  //   let common = 0;
+  //   qTokens.forEach((t) => {
+  //     if (kTokens.includes(t)) common += 1;
+  //   });
+  //   // favorecer coincidencias en el título/source
+  //   const titleTokens = tokens(k.source);
+  //   titleTokens.forEach((t) => {
+  //     if (qTokens.includes(t)) common += 0.5; // menor peso, pero suma
+  //   });
+
+  //   // longitud normalizada
+  //   const score = common / (1 + Math.log(1 + kTokens.length));
+  //   if (score > best.score) {
+  //     best = { score, answer: k.answer, source: k.source };
+  //   }
+  // });
+
+  // if (best.score > 0.35) {
+  //   if (qIsQuestion) {
+  //     return pushRandomHeader(byQuestionHeaders) + ` ` + detectContext(query);
+  //   }
+  //   if (qIsRequest) {
+  //     return (
+  //       pushRandomHeader(byNotImperativRequest) + ` ` + detectContext(query)
+  //     );
+  //   }
+  //   if (possiblity) {
+  //     pushRandomHeader(byComand) +
+  //       toLowerText(extractComand) +
+  //       ` ` +
+  //       detectContext(query);
+  //   }
+
+  //   // return best.answer + `\n✨Referenciando a: ${best.source}`;
   // }
-  // if (qIsMathOpp) {
-  //   if (qSolveMathOpp) {
-  //     const bestRsponse = buildResponse(qSolveMathOpp);
-  //     return bestRsponse;
+
+  // // 3) si no hay coincidencias, intentar búsqueda por substring en textos
+  // const qLower = qNorm;
+  // for (const k of knowledge) {
+  //   if (!k || !k.text || !k.source) continue;
+  //   if (
+  //     k.text.toLowerCase().includes(qLower) ||
+  //     k.source.toLowerCase().includes(qLower)
+  //   ) {
+  //     return `\n😏 Suponiendo que te  refieres a: ${k.source}` + " " + k.answer;
   //   }
   // }
-
-  //Capacidad de dar respuestas deterministas
-  knowledge.forEach((k) => {
-    if (!k || !k.text || !k.source) return;
-    const kTokens = tokens(k.text);
-    // contar tokens comunes
-    let common = 0;
-    qTokens.forEach((t) => {
-      if (kTokens.includes(t)) common += 1;
-    });
-    // favorecer coincidencias en el título/source
-    const titleTokens = tokens(k.source);
-    titleTokens.forEach((t) => {
-      if (qTokens.includes(t)) common += 0.5; // menor peso, pero suma
-    });
-
-    // longitud normalizada
-    const score = common / (1 + Math.log(1 + kTokens.length));
-    if (score > best.score) {
-      best = { score, answer: k.answer, source: k.source };
-    }
-  });
-
-  if (best.score > 0.35) {
-    if (qIsQuestion) {
-      return pushRandomHeader(byQuestionHeaders) + `  ` + best.answer;
-    }
-    if (qIsRequest) {
-      return pushRandomHeader(byNotImperativRequest) + ` ` + best.answer;
-    }
-    if (possiblity) {
-      pushRandomHeader(byComand) +
-        toLowerText(extractComand) +
-        ` ` +
-        best.answer;
-    }
-    return best.answer;
-    // return best.answer + `\n✨Referenciando a: ${best.source}`;
-  }
-
-  // 3) si no hay coincidencias, intentar búsqueda por substring en textos
-  const qLower = qNorm;
-  for (const k of knowledge) {
-    if (!k || !k.text || !k.source) continue;
-    if (
-      k.text.toLowerCase().includes(qLower) ||
-      k.source.toLowerCase().includes(qLower)
-    ) {
-      return `\n😏 Suponiendo que te  refieres a: ${k.source}` + " " + k.answer;
-    }
-  }
 
   // 4) fallback genérico
   writeInUnKnowTopics(query);

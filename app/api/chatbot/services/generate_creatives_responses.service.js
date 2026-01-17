@@ -1,25 +1,30 @@
-import { detectContext } from "./detectContext.service";
-import { normalize } from "./normalize.service";
-import { buildResponse } from "./textGenerate.service";
+import {
+  byComand,
+  byNotImperativRequest,
+  byQuestionHeaders,
+  pushRandomHeader,
+} from "./providerHeders.service";
 
-// export async function creativeResponsesGenerator(textFragment) {
-//   try {
-//     const normalizadText = await normalize(textFragment);
-//     const splitedText = normalizadText.split(" ");
-
-//     const firstWord = splitedText[0];
-//     const lastWord = splitedText[splitedText.length - 1];
-//     const creativeResponse = await detectContext(textFragment);
-
-//     return creativeResponse;
-//   } catch (err) {
-//     return err;
-//   }
-// }
-
-export function creativeResponsesGenerator(textFragment) {
-  if (textFragment) {
-    const creativeResponse = buildResponse(textFragment);
-    return creativeResponse;
+export const templateUserequest = (
+  modelResponse,
+  questionResponse,
+  requestResponse,
+  possibilityResponse
+) => {
+  let template = [];
+  if (modelResponse) {
+    if (questionResponse) {
+      template.at(pushRandomHeader(byQuestionHeaders));
+      template.at(modelResponse);
+    }
+    if (requestResponse) {
+      template.at(pushRandomHeader(byNotImperativRequest));
+      template.at(modelResponse);
+    }
+    if (possibilityResponse) {
+      template.at(pushRandomHeader(byComand));
+      template.at(modelResponse);
+    }
+    return template;
   }
-}
+};

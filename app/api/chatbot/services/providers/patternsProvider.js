@@ -16,9 +16,10 @@ export const requestPatterns = [
   "te parece",
   "te parece si",
   "pudieras",
+  "quiero",
 ];
 
-export const comandPatterns = ["haz", "hazme", "quiero que hagas"];
+export const comandPatterns = ["haz", "hazme", "quiero que hagas", "hazme"];
 
 export const mathOppsPatterns = [
   "suma",
