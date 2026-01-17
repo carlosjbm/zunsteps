@@ -1,15 +1,15 @@
 //Para casos de preguntas
 export const byQuestionHeaders = [
-  "😎 Buena pregunta, ",
-  "Exelente pregunta, ",
-  "Es una buena interrogante, ",
-  "👌 Que buena pregunta, ",
+  "😎 Buena pregunta ",
+  "Exelente pregunta ",
+  "Es una buena interrogante ",
+  "👌 Que buena pregunta ",
 ];
 //Resultados matematicos
 export const byMathOppsHeaders = [
-  "puedo con eso ... ",
-  "si la cuenta no me falla, ",
-  "soy matematica hermano, ",
+  "puedo con eso",
+  "si la cuenta no me falla",
+  "soy matematica hermano",
 ];
 //Para peticiones no imperativas del usuario
 export const byNotImperativRequest = [
@@ -19,9 +19,9 @@ export const byNotImperativRequest = [
   "por su puesto, ",
 ];
 export const byComand = [
-  "perfecto, si hacemos  ",
+  "perfecto, si hacemos ",
   "por su puesto, al hacer ",
-  "ok, voy a trabajar   ",
+  "ok, voy a trabajar ",
 ];
 
 //Para lograr que los headers sean mas ramdom evitando respuestas monotonas
