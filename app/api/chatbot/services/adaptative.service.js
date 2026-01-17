@@ -32,7 +32,7 @@ export const mathOpsResolver = (char) => {
         .replace(/por/gi, "*")
         .replace(/más/gi, "+")
         .replace(/menos/gi, "-");
-      return eval(expression);
+      return eval(expression) + ` ` + `es el resultado.`;
     } catch (error) {
       return "Error al evaluar la expresión matemática.";
     }

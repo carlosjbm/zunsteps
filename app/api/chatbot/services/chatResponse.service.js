@@ -17,6 +17,7 @@ import {
 } from "./detectPatterns.service";
 import { detectContext } from "./detectContext.service";
 import { buildResponse } from "./textGenerate.service";
+import { creativeResponsesGenerator } from "./generate_creatives_responses.service";
 
 const {
   loadKnowledgeHelper,
@@ -71,7 +72,7 @@ export function getBestResponse(query) {
   //habilidades del modelo(agregar mas habilidades en el futuro)
   const qIsMathOpp = isMathOpp(query); //detectar si el prompt es una operacion matematica
   const qSolveMathOpp = mathOpsResolver(query); //resolver la operacion matematica
-
+  const qBestResponse = buildResponse(qSolveMathOpp);
   // 1) búsqueda exacta en respuestas predefinidas
   if (chatbotResponses[qNorm]) return chatbotResponses[qNorm];
 
@@ -80,49 +81,25 @@ export function getBestResponse(query) {
   let best = { score: 0, answer: null, source: null };
 
   //capacidad de detectar operaciones matematicas y resolverlas feature 2.3.1
-  const bestRsponse = buildResponse(query);
-  if (qIsQuestion) {
-    //habilidad de resolucion de operaciones matematicas basicas
-    if (qIsMathOpp) {
-      return pushRandomHeader(byQuestionHeaders) + bestRsponse + qSolveMathOpp;
-    }
-    return pushRandomHeader(byQuestionHeaders) + bestRsponse;
-  }
-  if (qIsRequest) {
-    //habilidad de resolucion de operaciones matematicas basicas
-    if (qIsMathOpp) {
-      return (
-        pushRandomHeader(byNotImperativRequest) + bestRsponse + qSolveMathOpp
-      );
-    }
-  }
-  if (possiblity) {
-    //habilidad de resolucion de operaciones matematicas basicas
-    if (qIsMathOpp) {
-      return (
-        pushRandomHeader(byComand) +
-        toLowerText(extractComand) +
-        `,` +
-        ` ` +
-        ` esa operacion da como reslutado ` +
-        ` ` +
-        qSolveMathOpp
-      );
-    }
-  }
-  if (qIsMathOpp) {
-    return pushRandomHeader(byMathOppsHeaders) + bestRsponse + qSolveMathOpp;
-  }
-
-  // const anyMathOpp = isMathOpp(query);
-  // if (anyMathOpp) {
-  //   if (qIsQuestion) {
-  //     return pushRandomHeader(byQuestionHeaders) + mathOpsResolver(query);
+  // const bestRsponse = buildResponse(query);
+  // if (qIsQuestion) {
+  //   //habilidad de resolucion de operaciones matematicas basicas
+  //   if (qIsMathOpp) {
+  //     return pushRandomHeader(byQuestionHeaders) + bestRsponse + qSolveMathOpp;
   //   }
-  //   if (qIsRequest) {
-  //     return pushRandomHeader(byNotImperativRequest) + mathOpsResolver(query);
+  //   return pushRandomHeader(byQuestionHeaders) + bestRsponse;
+  // }
+  // if (qIsRequest) {
+  //   //habilidad de resolucion de operaciones matematicas basicas
+  //   if (qIsMathOpp) {
+  //     return (
+  //       pushRandomHeader(byNotImperativRequest) + bestRsponse + qSolveMathOpp
+  //     );
   //   }
-  //   if (possiblity) {
+  // }
+  // if (possiblity) {
+  //   //habilidad de resolucion de operaciones matematicas basicas
+  //   if (qIsMathOpp) {
   //     return (
   //       pushRandomHeader(byComand) +
   //       toLowerText(extractComand) +
@@ -130,11 +107,21 @@ export function getBestResponse(query) {
   //       ` ` +
   //       ` esa operacion da como reslutado ` +
   //       ` ` +
-  //       mathOpsResolver(query)
+  //       qSolveMathOpp
   //     );
   //   }
-  //   if (anyMathOpp) {
-  //     return pushRandomHeader(byMathOppsHeaders) + mathOpsResolver(query);
+  // }
+  if (qIsMathOpp && qSolveMathOpp) {
+    return (
+      pushRandomHeader(byMathOppsHeaders) +
+      detectContext(qSolveMathOpp) +
+      qSolveMathOpp
+    );
+  }
+  // if (qIsMathOpp) {
+  //   if (qSolveMathOpp) {
+  //     const bestRsponse = buildResponse(qSolveMathOpp);
+  //     return bestRsponse;
   //   }
   // }
 

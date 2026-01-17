@@ -8,9 +8,8 @@ export const byQuestionHeaders = [
 //Resultados matematicos
 export const byMathOppsHeaders = [
   "puedo con eso ... ",
-  "si la cuenta no me falla, el resultado es...",
-  "la respuesta a esa operacion es:  ",
-  "soy matematica hermano, el resultado es...",
+  "si la cuenta no me falla, ",
+  "soy matematica hermano, ",
 ];
 //Para peticiones no imperativas del usuario
 export const byNotImperativRequest = [

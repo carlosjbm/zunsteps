@@ -68,61 +68,61 @@ export default function TestChat() {
       setMessages((prev) => [...prev, botMessage]);
       // Activar efecto de escritura para este mensaje
       displayedMessagesRef.current[botMessage.id] = "";
-      startTypingEffect(botMessage.id, response);
+      // startTypingEffect(botMessage.id, response);
     }
   }, [response, isLoading]);
 
-  const startTypingEffect = useCallback((messageId, fullText) => {
-    // Dividir el texto en fragmentos grandes (por párrafos o líneas)
-    const chunks = fullText
-      .split("\n")
-      .filter((line) => line.trim().length > 0);
+  // const startTypingEffect = useCallback((messageId, fullText) => {
+  //   // Dividir el texto en fragmentos grandes (por párrafos o líneas)
+  //   // const chunks = fullText
+  //   //   .split("\n")
+  //   //   .filter((line) => line.trim().length > 0);
 
-    // Si no hay saltos de línea, dividir en fragmentos de ~100 caracteres
-    const textChunks =
-      chunks.length > 1
-        ? chunks
-        : fullText.match(/.{1,100}(?:\s|$)/g) || [fullText];
+  //   // Si no hay saltos de línea, dividir en fragmentos de ~100 caracteres
+  //   const textChunks =
+  //     chunks.length > 1
+  //       ? chunks
+  //       : fullText.match(/.{1,100}(?:\s|$)/g) || [fullText];
 
-    let chunkIndex = 0;
+  //   let chunkIndex = 0;
 
-    const showNextChunk = () => {
-      if (chunkIndex < textChunks.length) {
-        const chunk = textChunks[chunkIndex];
-        const currentText = displayedMessagesRef.current[messageId] || "";
-        const nextText =
-          currentText +
-          (chunkIndex > 0 && chunks.length > 1 ? "\n" : "") +
-          chunk;
+  //   const showNextChunk = () => {
+  //     if (chunkIndex < textChunks.length) {
+  //       const chunk = textChunks[chunkIndex];
+  //       const currentText = displayedMessagesRef.current[messageId] || "";
+  //       const nextText =
+  //         currentText +
+  //         (chunkIndex > 0 && chunks.length > 1 ? "\n" : "") +
+  //         chunk;
 
-        displayedMessagesRef.current[messageId] = nextText;
-        setDisplayedMessages({ ...displayedMessagesRef.current });
+  //       displayedMessagesRef.current[messageId] = nextText;
+  //       setDisplayedMessages({ ...displayedMessagesRef.current });
 
-        chunkIndex++;
+  //       chunkIndex++;
 
-        // Delay progresivo: comienza en 40ms y baja a 5ms
-        const progress = chunkIndex / textChunks.length;
-        const delay = Math.max(5, 40 * Math.pow(1 - progress, 2));
+  //       // Delay progresivo: comienza en 40ms y baja a 5ms
+  //       const progress = chunkIndex / textChunks.length;
+  //       const delay = Math.max(5, 40 * Math.pow(1 - progress, 2));
 
-        typingTimerRef.current = setTimeout(showNextChunk, delay);
-      } else {
-        // Completar el mensaje
-        displayedMessagesRef.current[messageId] = fullText;
-        setDisplayedMessages({ ...displayedMessagesRef.current });
+  //       typingTimerRef.current = setTimeout(showNextChunk, delay);
+  //     } else {
+  //       // Completar el mensaje
+  //       displayedMessagesRef.current[messageId] = fullText;
+  //       setDisplayedMessages({ ...displayedMessagesRef.current });
 
-        setMessages((prev) =>
-          prev.map((m) => (m.id === messageId ? { ...m, isTyping: false } : m))
-        );
-      }
-    };
+  //       setMessages((prev) =>
+  //         prev.map((m) => (m.id === messageId ? { ...m, isTyping: false } : m))
+  //       );
+  //     }
+  //   };
 
-    // Limpiar timer anterior
-    if (typingTimerRef.current) {
-      clearTimeout(typingTimerRef.current);
-    }
+  //   // Limpiar timer anterior
+  //   if (typingTimerRef.current) {
+  //     clearTimeout(typingTimerRef.current);
+  //   }
 
-    showNextChunk();
-  }, []);
+  //   showNextChunk();
+  // }, []);
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -146,6 +146,11 @@ export default function TestChat() {
     };
   }, []);
 
+  if (response) {
+    console.log(response);
+  } else {
+    console.log("no esta cogiendo la respuesta");
+  }
   return (
     <Paper
       elevation={3}

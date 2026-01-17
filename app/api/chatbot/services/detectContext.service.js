@@ -2,7 +2,7 @@ import { allContexts } from "./providers/contextsProvider";
 
 export const detectContext = (prompt) => {
   const text = prompt.toLowerCase();
-  const tokens = text.split(/\s+/);
+  //const text = text.split(/\s+/);
 
   let bestContext = null;
   let bestContextScore = 0;
@@ -12,7 +12,7 @@ export const detectContext = (prompt) => {
 
     // 1. Coincidencia por keywords del contexto (ponderadas)
     ctx.keywords.forEach((kw) => {
-      if (tokens.includes(kw.word)) {
+      if (text.includes(kw.word)) {
         contextScore += kw.weight;
       }
     });
@@ -29,7 +29,7 @@ export const detectContext = (prompt) => {
 
       // Coincidencia por keywords de la intención
       intent.keywords.forEach((kw) => {
-        if (tokens.includes(kw.word)) {
+        if (text.includes(kw.word)) {
           intentScore += kw.weight;
         }
       });
@@ -61,6 +61,7 @@ export const detectContext = (prompt) => {
       };
     }
   });
-
-  return bestContext || "🤔";
+  const indexResponse = bestContext.intent.response.index;
+  const tokensResponse = bestContext.intent.response.tokens;
+  return tokensResponse || "🤔";
 };
