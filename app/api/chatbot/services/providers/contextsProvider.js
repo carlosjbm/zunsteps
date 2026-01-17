@@ -33,10 +33,9 @@ export const allContexts = [
       { word: "resumen", weight: 1 },
       { word: "breve", weight: 1 },
     ],
-
     intents: [
       {
-        intentName: "resume_suite_zun",
+        intentName: "resumir_suite_zun",
         // Palabras clave específicas de la intención
         keywords: [{ word: "resumen", weight: 5 }],
         // Patrones opcionales (frases completas)
@@ -50,7 +49,7 @@ export const allContexts = [
         },
       },
       {
-        intentName: "detalles_suite_zun",
+        intentName: "detallar_suite_zun",
         // Palabras clave específicas de la intención
         keywords: [
           { word: "detalles", weight: 3 },

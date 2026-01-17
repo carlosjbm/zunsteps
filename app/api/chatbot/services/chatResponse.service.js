@@ -83,7 +83,7 @@ export function getBestResponse(query) {
   const qTokens = tokens(qNorm);
   let best = { score: 0, answer: null, source: null };
 
-  //capacidad de detectar preguntas, operaciones matematicas y resolverlas feature 2.3.2
+  //capacidad de detectar preguntas, operaciones matematicas y resolverlas feature 1.4.2
   if (qIsQuestion) {
     //habilidad de resolucion de operaciones matematicas basicas
     if (qIsMathOpp) {
@@ -131,59 +131,6 @@ export function getBestResponse(query) {
       qSolveMathOpp
     );
   }
-
-  //Capacidad de dar respuestas deterministas
-  // knowledge.forEach((k) => {
-  //   if (!k || !k.text || !k.source) return;
-  //   const kTokens = tokens(k.text);
-  //   // contar tokens comunes
-  //   let common = 0;
-  //   qTokens.forEach((t) => {
-  //     if (kTokens.includes(t)) common += 1;
-  //   });
-  //   // favorecer coincidencias en el título/source
-  //   const titleTokens = tokens(k.source);
-  //   titleTokens.forEach((t) => {
-  //     if (qTokens.includes(t)) common += 0.5; // menor peso, pero suma
-  //   });
-
-  //   // longitud normalizada
-  //   const score = common / (1 + Math.log(1 + kTokens.length));
-  //   if (score > best.score) {
-  //     best = { score, answer: k.answer, source: k.source };
-  //   }
-  // });
-
-  // if (best.score > 0.35) {
-  //   if (qIsQuestion) {
-  //     return pushRandomHeader(byQuestionHeaders) + ` ` + detectContext(query);
-  //   }
-  //   if (qIsRequest) {
-  //     return (
-  //       pushRandomHeader(byNotImperativRequest) + ` ` + detectContext(query)
-  //     );
-  //   }
-  //   if (possiblity) {
-  //     pushRandomHeader(byComand) +
-  //       toLowerText(extractComand) +
-  //       ` ` +
-  //       detectContext(query);
-  //   }
-
-  //   // return best.answer + `\n✨Referenciando a: ${best.source}`;
-  // }
-
-  // // 3) si no hay coincidencias, intentar búsqueda por substring en textos
-  // const qLower = qNorm;
-  // for (const k of knowledge) {
-  //   if (!k || !k.text || !k.source) continue;
-  //   if (
-  //     k.text.toLowerCase().includes(qLower) ||
-  //     k.source.toLowerCase().includes(qLower)
-  //   ) {
-  //     return `\n😏 Suponiendo que te  refieres a: ${k.source}` + " " + k.answer;
-  //   }
-  // }
 
   // 4) fallback genérico
   writeInUnKnowTopics(query);

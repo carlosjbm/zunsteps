@@ -19,7 +19,13 @@ export const requestPatterns = [
   "quiero",
 ];
 
-export const comandPatterns = ["haz", "hazme", "quiero que hagas", "hazme"];
+export const comandPatterns = [
+  "haz",
+  "hazme",
+  "quiero que hagas",
+  "hazme",
+  "dame",
+];
 
 export const mathOppsPatterns = [
   "suma",

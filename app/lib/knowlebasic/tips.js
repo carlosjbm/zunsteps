@@ -1,9 +1,9 @@
 export const tips = [
-  {
-    source: "Que es la suite zun",
-    text: "suite zun",
-    answer: `resumen de la suite zun.`,
-  },
+  // {
+  //   source: "Que es la suite zun",
+  //   text: "suite zun",
+  //   answer: `resumen de la suite zun.`,
+  // },
   {
     source: "Cultura General Integral",
     text: "que es sql",

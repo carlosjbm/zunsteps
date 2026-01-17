@@ -42,3 +42,5 @@ Es necesario indagar sobre :detalles de suite zun
 Es necesario indagar sobre :resumen de suite zun
 Es necesario indagar sobre :resumen de suite zun
 Es necesario indagar sobre :resumen de la suite zun
+Es necesario indagar sobre :detallame la suite zun
+Es necesario indagar sobre :dame detalles de la suite zun

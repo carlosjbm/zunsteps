@@ -60,7 +60,7 @@ export const detectContext = (prompt) => {
       };
     }
   });
-  const indexResponse = bestContext.intent.response.index;
-  const tokensResponse = bestContext.intent.response.tokens;
-  return tokensResponse || "🤔";
+  const indexResponse = bestContext?.intent?.response?.index;
+  const tokensResponse = bestContext?.intent?.response?.tokens;
+  return tokensResponse || bestContext?.intents[0]?.response?.tokens;
 };
