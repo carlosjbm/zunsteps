@@ -61,6 +61,9 @@ export const detectContext = (prompt) => {
     }
   });
   const indexResponse = bestContext?.intent?.response?.index;
-  const tokensResponse = bestContext?.intent?.response?.tokens;
-  return tokensResponse || bestContext?.intents[0]?.response?.tokens;
+  //const tokensResponse = bestContext?.intent?.response?.tokens;
+  const tokensResponse = bestContext?.intent?.response?.tokens.sort(
+    (a, b) => b.weight - a.weight
+  )[0];
+  return tokensResponse?.word; //|| bestContext?.intents[0]?.response?.tokens;
 };

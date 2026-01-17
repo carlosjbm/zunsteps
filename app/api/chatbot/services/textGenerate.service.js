@@ -26,7 +26,8 @@ export const buildResponse = (intro) => {
   }
 
   // Construir la frase final: index + token con mayor peso
-  const generatedText = `${index} ${topToken}`;
+  const generatedText = `${topToken}`;
 
-  return generatedText;
+  //return generatedText;
+  return detected;
 };

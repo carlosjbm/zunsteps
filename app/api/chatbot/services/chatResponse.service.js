@@ -93,7 +93,7 @@ export function getBestResponse(query) {
         qSolveMathOpp
       );
     }
-    return pushRandomHeader(byQuestionHeaders) + ` ` + detectContext(query);
+    // return pushRandomHeader(byQuestionHeaders) + ` ` + detectContext(query);
   }
   if (qIsRequest) {
     //habilidad de resolucion de operaciones matematicas basicas
@@ -132,6 +132,7 @@ export function getBestResponse(query) {
     );
   }
 
+  return detectContext(query);
   // 4) fallback genérico
   writeInUnKnowTopics(query);
   return (
