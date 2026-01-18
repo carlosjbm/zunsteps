@@ -1,30 +1,27 @@
-import {
-  byComand,
-  byNotImperativRequest,
-  byQuestionHeaders,
-  pushRandomHeader,
-} from "./providerHeders.service";
+import { detectContext } from "./detectContext.service";
 
-export const templateUserequest = (
-  modelResponse,
-  questionResponse,
-  requestResponse,
-  possibilityResponse
+export const generatedText = (
+  prompt,
+  res = "",
+  iterations = 0,
+  maxIterations = detectContext(prompt).tokensCount || 1
 ) => {
-  let template = [];
-  if (modelResponse) {
-    if (questionResponse) {
-      template.at(pushRandomHeader(byQuestionHeaders));
-      template.at(modelResponse);
-    }
-    if (requestResponse) {
-      template.at(pushRandomHeader(byNotImperativRequest));
-      template.at(modelResponse);
-    }
-    if (possibilityResponse) {
-      template.at(pushRandomHeader(byComand));
-      template.at(modelResponse);
-    }
-    return template;
+  // Límite de iteraciones para evitar recursión infinita
+  if (iterations >= maxIterations) {
+    return res;
   }
+
+  const contextResponse = detectContext(prompt).token;
+  const newToken = res + ` ` + contextResponse;
+
+  // Evitar repetir el mismo prompt
+  if (newToken === prompt) {
+    return newToken;
+  }
+
+  // Acumular la respuesta a res
+  res = newToken;
+
+  // Pasar res como parámetro para la siguiente iteración
+  return generatedText(res, res, iterations + 1, maxIterations);
 };

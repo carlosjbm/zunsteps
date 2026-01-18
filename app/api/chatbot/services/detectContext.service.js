@@ -1,7 +1,7 @@
 import { allContexts } from "./providers/contextsProvider";
 
 export const detectContext = (prompt) => {
-  const text = prompt.toLowerCase();
+  const text = prompt;
 
   let bestContext = null;
   let bestContextScore = 0;
@@ -60,10 +60,11 @@ export const detectContext = (prompt) => {
       };
     }
   });
-  const indexResponse = bestContext?.intent?.response?.index;
+  const tokensLength = bestContext?.intent?.response?.tokens.length || 0;
   //const tokensResponse = bestContext?.intent?.response?.tokens;
   const tokensResponse = bestContext?.intent?.response?.tokens.sort(
     (a, b) => b.weight - a.weight
   )[0];
-  return tokensResponse?.word; //|| bestContext?.intents[0]?.response?.tokens;
+
+  return { token: tokensResponse?.word, tokensCount: tokensLength }; //|| bestContext?.intents[0]?.response?.tokens tokensResponse?.word
 };

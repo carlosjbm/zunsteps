@@ -19,6 +19,7 @@ import { detectContext } from "./detectContext.service";
 import { buildResponse } from "./textGenerate.service";
 import {
   creativeResponsesGenerator,
+  generatedText,
   templateUserequest,
 } from "./generate_creatives_responses.service";
 
@@ -94,6 +95,7 @@ export function getBestResponse(query) {
       );
     }
     // return pushRandomHeader(byQuestionHeaders) + ` ` + detectContext(query);
+    return pushRandomHeader(byQuestionHeaders) + `,` + generatedText(query);
   }
   if (qIsRequest) {
     //habilidad de resolucion de operaciones matematicas basicas
@@ -104,7 +106,7 @@ export function getBestResponse(query) {
         qSolveMathOpp
       );
     }
-    pushRandomHeader(byNotImperativRequest) + ` ` + detectContext(query);
+    pushRandomHeader(byNotImperativRequest) + ` ` + generatedText(query);
   }
   if (possiblity) {
     //habilidad de resolucion de operaciones matematicas basicas
@@ -120,7 +122,7 @@ export function getBestResponse(query) {
       pushRandomHeader(byComand) +
       toLowerText(extractComand) +
       ` ` +
-      detectContext(query)
+      generatedText(query)
     );
   }
   //habilidad de resolucion de operaciones matematicas basicas
@@ -131,8 +133,8 @@ export function getBestResponse(query) {
       qSolveMathOpp
     );
   }
-
-  return detectContext(query);
+  //probando con generateText
+  return generatedText(query);
   // 4) fallback genérico
   writeInUnKnowTopics(query);
   return (

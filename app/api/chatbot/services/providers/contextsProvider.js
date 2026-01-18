@@ -169,51 +169,66 @@ export const allContexts = [
     ],
   },
   {
-    contextName: "cosas_de_gatos",
+    contextName: "cosas_que_hacen_los_gatos",
 
     // Palabras clave del contexto (para detectContext)
-    keywords: [{ word: "gato", weight: 5 }],
+    keywords: [
+      { word: "los", weight: 5 },
+      { word: "gatos", weight: 5 },
+    ],
     intents: [
       {
-        intentName: "accion",
+        intentName: "acciones_realizan_gatos",
         // Palabras clave específicas de la intención
-        keywords: [
-          { word: "hace", weight: 3 },
-          { word: "y", weight: 2 },
-        ],
+        keywords: [{ word: "hacen", weight: 10 }],
         // Patrones opcionales (frases completas)
-        patterns: [
-          "resumeme que es la suite zun",
-          "hazme un resumen de que es la suite zun",
-        ],
+        patterns: [""],
         response: {
           index: "el",
-          tokens: [{ word: "mauia", weight: 3 }, ,],
+          tokens: [
+            { word: "generan", weight: 1 },
+            { word: "sueltan", weight: 1.25 },
+            { word: "ronronean", weight: 0.9 },
+          ],
+        },
+      },
+      {
+        intentName: "como_hacen_los_gatos",
+        // Palabras clave específicas de la intención
+        keywords: [
+          { word: "como", weight: 5.1 },
+          { word: "hacen", weight: 5 },
+        ],
+        // Patrones opcionales (frases completas)
+        patterns: [""],
+        response: {
+          index: "el",
+          tokens: [
+            { word: "ronronean", weight: 1 },
+            { word: "cazan", weight: 1.25 },
+            { word: "mauian", weight: 1.5 },
+          ],
         },
       },
     ],
   },
   {
-    contextName: "cosas_de_patps",
-
+    contextName: "cosas_generan",
     // Palabras clave del contexto (para detectContext)
-    keywords: [{ word: "pato", weight: 5 }],
+    keywords: [
+      { word: "generan", weight: 1 },
+      { word: "sueltan", weight: 1.5 },
+    ],
     intents: [
       {
         intentName: "accion",
         // Palabras clave específicas de la intención
-        keywords: [
-          { word: "hace", weight: 3 },
-          { word: "y", weight: 2 },
-        ],
+        keywords: [{ word: "generan", weight: 1 }],
         // Patrones opcionales (frases completas)
-        patterns: [
-          "resumeme que es la suite zun",
-          "hazme un resumen de que es la suite zun",
-        ],
+        patterns: [""],
         response: {
           index: "el",
-          tokens: [{ word: "cuack!", weight: 3 }],
+          tokens: [{ word: "pelo", weight: 1 }],
         },
       },
     ],
