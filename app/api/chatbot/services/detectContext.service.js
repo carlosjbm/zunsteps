@@ -61,10 +61,16 @@ export const detectContext = (prompt) => {
     }
   });
   const tokensLength = bestContext?.intent?.response?.tokens.length || 0;
-  //const tokensResponse = bestContext?.intent?.response?.tokens;
+  const contextKeywords = bestContext?.keywords;
+  const contextName = bestContext?.contextName;
   const tokensResponse = bestContext?.intent?.response?.tokens.sort(
     (a, b) => b.weight - a.weight
   )[0];
 
-  return { token: tokensResponse?.word, tokensCount: tokensLength }; //|| bestContext?.intents[0]?.response?.tokens tokensResponse?.word
+  return {
+    contextName: contextName,
+    token: tokensResponse?.word,
+    tokensCount: tokensLength,
+    keywords: contextKeywords,
+  }; //|| bestContext?.intents[0]?.response?.tokens tokensResponse?.word
 };
