@@ -1,5 +1,6 @@
 import {
   comandPatterns,
+  friendlyPatterns,
   questionsPatterns,
   requestPatterns,
 } from "./providers/patternsProvider";
@@ -45,4 +46,15 @@ export const detectComand = (possibleComand) => {
     }
   });
   return { possiblity: isComnd, extractComand: comand };
+};
+//detectar intencion amistosa
+export const detectFriendly = (possibleFriendly) => {
+  let isFriendly = false;
+  const loweredPossibleFriendly = toLowerText(possibleFriendly);
+  friendlyPatterns.map((pf) => {
+    if (loweredPossibleFriendly.includes(pf)) {
+      isFriendly = true;
+    }
+  });
+  return isFriendly;
 };

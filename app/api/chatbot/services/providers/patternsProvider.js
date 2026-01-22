@@ -37,3 +37,5 @@ export const mathOppsPatterns = [
   "division",
   "multiplicacion",
 ];
+
+export const friendlyPatterns = ["hermano", "amigo", "compadre", "asere"];

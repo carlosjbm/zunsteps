@@ -24,6 +24,8 @@ export const byComand = [
   "ok, voy a trabajar ",
 ];
 
+export const byFriend = ["Hermano", "Compadre", "Compañero", "😎"];
+
 //Para lograr que los headers sean mas ramdom evitando respuestas monotonas
 export const pushRandomHeader = (groupHeader) => {
   return groupHeader[Math.floor(Math.random() * groupHeader.length)];
