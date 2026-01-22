@@ -22,6 +22,7 @@ import {
   generatedText,
   templateUserequest,
 } from "./generate_creatives_responses.service";
+import { pairFrequencies, writte } from "./training.service";
 
 const {
   loadKnowledgeHelper,
@@ -66,6 +67,8 @@ knowledge.forEach((k) => {
 
 // Función que intenta devolver la mejor respuesta posible
 export function getBestResponse(query) {
+  //pairFrequencies(query);
+
   const q = (query || "").toString().trim();
   if (!q) return "No has escrito ninguna pregunta.";
 
@@ -94,7 +97,6 @@ export function getBestResponse(query) {
         qSolveMathOpp
       );
     }
-    // return pushRandomHeader(byQuestionHeaders) + ` ` + detectContext(query);
     return pushRandomHeader(byQuestionHeaders) + `,` + generatedText(query);
   }
   if (qIsRequest) {
@@ -122,7 +124,7 @@ export function getBestResponse(query) {
       pushRandomHeader(byComand) +
       toLowerText(extractComand) +
       ` ` +
-      generatedText(query)
+      +generatedText(query)
     );
   }
   //habilidad de resolucion de operaciones matematicas basicas
@@ -134,13 +136,14 @@ export function getBestResponse(query) {
     );
   }
   //probando con generateText
+
   return generatedText(query);
   // 4) fallback genérico
-  writeInUnKnowTopics(query);
-  return (
-    "😢 Lo siento, no tengo una respuesta específica para esa pregunta. " +
-    "Pero intentare prepararme mejor para cuando regreses de nuevo por aqui"
-  );
+  // writeInUnKnowTopics(query);
+  // return (
+  //   "😢 Lo siento, no tengo una respuesta específica para esa pregunta. " +
+  //   "Pero intentare prepararme mejor para cuando regreses de nuevo por aqui"
+  // );
 }
 
 export default chatbotResponses;

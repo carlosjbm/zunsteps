@@ -6,6 +6,19 @@ export const detectContext = (prompt) => {
   let bestContext = null;
   let bestContextScore = 0;
 
+  const notResponse = {
+    contextName: null,
+    token: null,
+    tokensCount: null,
+    intentName: null,
+    keywords: null,
+  };
+
+  //para manejar el caso de un prompt vacio o que no cumpla las espacificaciones
+  if (!prompt) {
+    return notResponse;
+  }
+
   allContexts.forEach((ctx) => {
     let contextScore = 0;
 
@@ -50,6 +63,10 @@ export const detectContext = (prompt) => {
     // 3. Sumar intención al puntaje del contexto
     const totalScore = contextScore + bestIntentScore;
 
+    if (totalScore === 0) {
+      return notResponse;
+    }
+
     // 4. Seleccionar el contexto ganador
     if (totalScore > bestContextScore) {
       bestContextScore = totalScore;
@@ -63,6 +80,7 @@ export const detectContext = (prompt) => {
   const tokensLength = bestContext?.intent?.response?.tokens.length || 0;
   const contextKeywords = bestContext?.keywords;
   const contextName = bestContext?.contextName;
+  const intentName = bestContext?.intent?.intentName;
   const tokensResponse = bestContext?.intent?.response?.tokens.sort(
     (a, b) => b.weight - a.weight
   )[0];
@@ -71,6 +89,7 @@ export const detectContext = (prompt) => {
     contextName: contextName,
     token: tokensResponse?.word,
     tokensCount: tokensLength,
+    intentName: intentName,
     keywords: contextKeywords,
   }; //|| bestContext?.intents[0]?.response?.tokens tokensResponse?.word
 };

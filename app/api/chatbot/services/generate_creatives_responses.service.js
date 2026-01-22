@@ -1,28 +1,12 @@
 import { detectContext } from "./detectContext.service";
 
-export const generatedText = (
-  prompt,
-  res = detectContext(prompt).contextName,
-  iterations = 1,
-  maxIterations = detectContext(prompt).tokensCount || 0
-) => {
-  const { token, keywords } = detectContext(prompt);
+export const generatedText = (prompt) => {
+  const { contextName, token, tokensCount, intentName, keywords } =
+    detectContext(prompt);
+  //para poder
+  //tener un mejor manejo
+  //de las plantillas de respuestas
+  const templates = { basicTemplate: `${intentName} ${token}.` };
 
-  // Límite de iteraciones para evitar recursión infinita
-  if (iterations >= maxIterations) {
-    return res;
-  }
-
-  const contextResponse = token;
-  const newToken = res + ` ` + contextResponse;
-
-  // Evitar repetir el mismo prompt
-  if (newToken === prompt) {
-    return newToken;
-  }
-
-  // Acumular la respuesta a res
-  res = newToken;
-  // Pasar res como parámetro para la siguiente iteración
-  return generatedText(res, res, iterations + 1, maxIterations);
+  return templates.basicTemplate;
 };
