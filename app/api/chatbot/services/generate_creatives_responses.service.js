@@ -23,7 +23,7 @@ export const generatedText = (prompt) => {
   //de las plantillas de respuestas
   const templates = {
     basicTemplate: `${conectedKeys} ${tokenConector} ${token}.`,
-    friendlyTemplate: `${friendWord} ${tokenConector} ${token}.`,
+    friendlyTemplate: `${friendWord} ${conectedKeys} ${tokenConector} ${token}.`,
   };
   if (pIsFriendly) {
     return templates.friendlyTemplate;
