@@ -2,7 +2,7 @@ const STOPWORDS = [
   // "y", "de", "la", "el", "las", "un", "una", "en", "a", "que",
   // "por", "con", "se", "su", "es", "al", "del"
 ];
-const text = "los gatos y los pajaros son amigos";
+const text = "los gatos y los pajaros son amigos son peludos ";
 export const getConections = () => {
   // 1. Normalizar texto y separar por puntuación
   const clean = text

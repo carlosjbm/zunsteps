@@ -23,6 +23,7 @@ import {
   templateUserequest,
 } from "./generate_creatives_responses.service";
 import { pairFrequencies, writte } from "./training.service";
+import { getBestConector } from "./bestConector.service";
 
 const {
   loadKnowledgeHelper,
