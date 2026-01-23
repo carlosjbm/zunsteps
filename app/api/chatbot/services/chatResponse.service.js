@@ -16,20 +16,13 @@ import {
   toLowerText,
 } from "./detectPatterns.service";
 import { detectContext } from "./detectContext.service";
-import { buildResponse } from "./textGenerate.service";
-import {
-  creativeResponsesGenerator,
-  generatedText,
-  templateUserequest,
-} from "./generate_creatives_responses.service";
+import { generatedText } from "./generate_creatives_responses.service";
 import { pairFrequencies, writte } from "./training.service";
 import { getBestConector } from "./bestConector.service";
 
 const {
   loadKnowledgeHelper,
 } = require("@/app/lib/helpers/loadKnowledgeHelper");
-const { basicAnswers } = require("@/app/lib/knowlebasic/basicAnswers");
-const { tablasConocimientos } = require("@/app/lib/knowlebasic/tablas");
 const { tips } = require("@/app/lib/knowlebasic/tips");
 const { zunacc } = require("@/app/lib/modulos/zunacc");
 const { zunaft } = require("@/app/lib/modulos/zunaft");
