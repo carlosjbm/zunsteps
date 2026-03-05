@@ -17,8 +17,13 @@ import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 /*Modulos */
 import { ModuloContext } from "@/app/lib/contexts/ModulosContext";
 import useMark from "@/app/lib/hooks/useMark";
+import { useFetch } from "@/app/lib/hooks/useFetch";
+import { SideBtnListSkeleton } from "@/app/components/skeletons/SideBtnItemSkeleton";
 
 export default function Dashboard(params) {
+  const { data, loading, error } = useFetch(
+    "http://localhost:3000/api/modulos/",
+  );
   const {
     modulo,
     setZunacc,
@@ -75,14 +80,18 @@ export default function Dashboard(params) {
               p: 1,
             }}
           >
-            <SideBtnItem
-              title={"ZUNacc"}
-              icon={<CurrencyExchangeOutlinedIcon />}
-              handleModulo={setZunacc}
-              modulesStatus={itemsMarked}
-              toMark={() => handleMark("ZUNacc")}
-            />
-
+            {loading && <SideBtnListSkeleton />}
+            {data?.map((el) => {
+              return (
+                <SideBtnItem
+                  title={el.nombre}
+                  icon={<CurrencyExchangeOutlinedIcon />}
+                  handleModulo={setZunacc}
+                  modulesStatus={itemsMarked}
+                  toMark={() => handleMark("ZUNacc")}
+                />
+              );
+            })}
             {/* In Dev */}
             {/* <SideBtnItem
               title={"ZUNpms"}
@@ -91,30 +100,27 @@ export default function Dashboard(params) {
               handleModulo={devModule}
               marked={dev}
             /> */}
-
-            <SideBtnItem
+            {/* <SideBtnItem
               title={"ZUNst"}
               icon={<Inventory2OutlinedIcon />}
               handleModulo={setZunst}
               modulesStatus={itemsMarked}
               toMark={() => handleMark("ZUNst")}
-            />
-            <SideBtnItem
+            /> */}
+            {/* <SideBtnItem
               title={"ZUNhr"}
               icon={<Diversity3OutlinedIcon />}
               handleModulo={setZunhr}
               modulesStatus={itemsMarked}
               toMark={() => handleMark("ZUNhr")}
-            />
-
-            <SideBtnItem
+            /> */}
+            {/* <SideBtnItem
               title={"ZUNpr"}
               icon={<PaymentsOutlinedIcon />}
               handleModulo={setZunpr}
               modulesStatus={itemsMarked}
               toMark={() => handleMark("ZUNpr")}
-            />
-
+            /> */}
             {/* In Dev */}
             {/* <SideBtnItem
               title={"ZUNcc"}
@@ -123,15 +129,13 @@ export default function Dashboard(params) {
               handleModulo={devModule}
               marked={dev}
             /> */}
-
-            <SideBtnItem
+            {/* <SideBtnItem
               title={"ZUNaft"}
               icon={<ChairOutlinedIcon />}
               handleModulo={setZunaft}
               modulesStatus={itemsMarked}
               toMark={() => handleMark("ZUNaft")}
-            />
-
+            /> */}
             {/* In Dev */}
             {/* <SideBtnItem
               title={"ZUNut"}
@@ -140,15 +144,12 @@ export default function Dashboard(params) {
               handleModulo={devModule}
               marked={dev}
             /> */}
-
             <Box>
               <Link href={"/zunsteps/faqs"}>
                 <DefaultButton text={"Preguntas"} icon={<HelpOutlineIcon />} />
               </Link>
             </Box>
-
             <Divider sx={{ width: "100%", my: 1 }} />
-
             <NavButtonGroup />
           </Box>
         </Card>

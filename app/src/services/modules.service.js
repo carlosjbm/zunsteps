@@ -1,5 +1,5 @@
 import pool from "@/app/lib/db";
-//Logica de negocio.
+//todos los modulos
 export async function getModules() {
   const [rows] = await pool.query("select * from modulos");
   return rows;
