@@ -30,7 +30,7 @@ export const useFetch = (url, options = {}, immediate = true) => {
     if (immediate && url) {
       fetchData();
     }
-  }, [url, options, immediate, fetchData]);
+  }, [url]);
 
   return { data, error, loading, refetch: fetchData };
 };
