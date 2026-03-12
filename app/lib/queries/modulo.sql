@@ -1,6 +1,5 @@
-import pool from "@/app/lib/db";
-export async function getPasos(modulo = 1) {
-  const [pasos] = await pool.query(`SELECT 
+-- Optener los pasos que corresponden al modulo que busco
+SELECT 
 m.nombre AS Modulo, 
 s.nombre AS Seccion, 
 a.nombre AS Accion, 
@@ -11,6 +10,6 @@ modulos m JOIN secciones s ON s.id_modulo = m.id JOIN
  acciones a ON a.id_seccion = s.id JOIN
   pasos p ON p.id_accion = a.id 
   WHERE 
-  m.id = ${modulo} `);
-  return pasos;
-}
+  m.nombre = 'ZUNaft' 
+  
+  
