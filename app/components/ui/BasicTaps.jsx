@@ -39,7 +39,28 @@ function a11yProps(index) {
 export default function BasicTabs() {
   const [value, setValue] = React.useState(0);
 
-  const { modulo } = React.useContext(ModuloContext);
+  const { modulo, loading } = React.useContext(ModuloContext);
+
+  // Mientras carga, mostrar loading
+  if (loading || !modulo) {
+    return (
+      <Box
+        sx={{
+          width: "100%",
+          maxWidth: 1000,
+          mx: "auto",
+          px: { xs: 0.5, sm: 2 },
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: 400,
+        }}
+      >
+        <p>Cargando módulo...</p>
+      </Box>
+    );
+  }
+
   const { mSecciones, mNombre, mResumen } = modulo;
 
   const handleChange = (event, newValue) => {

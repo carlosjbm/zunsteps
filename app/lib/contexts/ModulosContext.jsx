@@ -1,54 +1,82 @@
 "use client";
 
-import { zunacc } from "../modulos/zunacc";
-import { zunaft } from "../modulos/zunaft";
-import { zunhr } from "../modulos/zunhr";
-import { zunst } from "../modulos/zunst";
-import { zunpr } from "../modulos/zunpr";
-const { createContext, useState } = require("react");
+import { createContext, useState, useEffect } from "react";
 
 export const ModuloContext = createContext();
 
 export const ModuloProvider = ({ children }) => {
-  const [modulo, setModulo] = useState(zunacc);
+  const [modulo, setModulo] = useState(null);
+  const [modulos, setModulos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  //Funcion para cuando el modulo esta en desarrollo
+  // Cargar todos los módulos desde la API
+  useEffect(() => {
+    const fetchModulos = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch("/api/modulos");
+
+        if (!response.ok) {
+          throw new Error(`Error ${response.status}`);
+        }
+
+        const data = await response.json();
+        setModulos(data);
+
+        // Establecer el primer módulo como default
+        if (data.length > 0) {
+          setModulo(data[0]);
+        }
+      } catch (err) {
+        setError(err.message);
+        console.error("Error al cargar módulos:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchModulos();
+  }, []);
+
+  // Función para cuando el módulo está en desarrollo
   const devModule = () => {
     window.alert(
-      "Ups! Módulo en desarrollo, no es posible acceder a el en estos momentos."
+      "Ups! Módulo en desarrollo, no es posible acceder a el en estos momentos.",
     );
   };
 
-  //Funcion que activa el modulo zunacc
-  const setZunacc = () => {
-    setModulo(zunacc);
+  // Función genérica para establecer módulo por nombre
+  const setModuleByName = (moduleName) => {
+    const foundModulo = modulos.find((m) =>
+      m.mNombre.toLowerCase().includes(moduleName.toLowerCase()),
+    );
+    if (foundModulo) {
+      setModulo(foundModulo);
+    }
   };
-  //funcion que activa zunhr
-  const setZunhr = () => {
-    setModulo(zunhr); //cambiar aqui
-  };
-  //funcion que activa zunaft
-  const setZunaft = () => {
-    setModulo(zunaft); //cambiar aqui
-  };
-  //funcion para activar zunst
-  const setZunst = () => {
-    setModulo(zunst); //cambiar aqui
-  };
-  //funcion para activar zunpr
-  const setZunpr = () => {
-    setModulo(zunpr);
-  };
+
+  // Funciones específicas para cada módulo
+  const setZunacc = () => setModuleByName("contabilidad");
+  const setZunhr = () => setModuleByName("recursos");
+  const setZunaft = () => setModuleByName("activos");
+  const setZunst = () => setModuleByName("almacén");
+  const setZunpr = () => setModuleByName("procesos");
 
   const values = {
     modulo,
+    modulos,
+    loading,
+    error,
     setZunacc,
     setZunhr,
     setZunaft,
     setZunst,
     setZunpr,
     devModule,
+    setModulo,
   };
+
   return (
     <ModuloContext.Provider value={values}>{children}</ModuloContext.Provider>
   );

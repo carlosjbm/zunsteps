@@ -19,21 +19,67 @@ import { ModuloContext } from "@/app/lib/contexts/ModulosContext";
 import useMark from "@/app/lib/hooks/useMark";
 import { useFetch } from "@/app/lib/hooks/useFetch";
 import { SideBtnListSkeleton } from "@/app/components/skeletons/SideBtnItemSkeleton";
+import { LoadingSpinner } from "@/app/components/ui/LoadingSpinner";
 
 export default function Dashboard(params) {
-  const { data, loading, error } = useFetch(
-    "http://localhost:3000/api/modulos/",
-  );
   const {
     modulo,
+    modulos,
+    loading,
+    error,
     setZunacc,
     setZunhr,
     setZunaft,
     setZunst,
     setZunpr,
+    setModulo,
     devModule,
   } = useContext(ModuloContext);
   const { itemsMarked, handleMark } = useMark();
+
+  // Mapear módulos a iconos y funciones
+  const moduloConfig = {
+    contabilidad: {
+      icon: <CurrencyExchangeOutlinedIcon />,
+      handler: setZunacc,
+      markName: "ZUNacc",
+    },
+    activos: {
+      icon: <ChairOutlinedIcon />,
+      handler: setZunaft,
+      markName: "ZUNaft",
+    },
+    almacén: {
+      icon: <Inventory2OutlinedIcon />,
+      handler: setZunst,
+      markName: "ZUNst",
+    },
+    recursos: {
+      icon: <Diversity3OutlinedIcon />,
+      handler: setZunhr,
+      markName: "ZUNhr",
+    },
+    procesos: {
+      icon: <PaymentsOutlinedIcon />,
+      handler: setZunpr,
+      markName: "ZUNpr",
+    },
+  };
+
+  // Función para obtener configuración del módulo
+  const getModuloConfig = (moduloName) => {
+    if (!moduloName || typeof moduloName !== "string") {
+      return null;
+    }
+    const lowerName = moduloName.toLowerCase();
+    for (const key in moduloConfig) {
+      if (lowerName.includes(key)) {
+        return moduloConfig[key];
+      }
+    }
+    return null;
+  };
+
   return (
     <Box
       sx={{
@@ -81,69 +127,28 @@ export default function Dashboard(params) {
             }}
           >
             {loading && <SideBtnListSkeleton />}
-            {data?.map((el) => {
-              return (
-                <SideBtnItem
-                  title={el.nombre}
-                  icon={<CurrencyExchangeOutlinedIcon />}
-                  handleModulo={setZunacc}
-                  modulesStatus={itemsMarked}
-                  toMark={() => handleMark("ZUNacc")}
-                />
-              );
-            })}
-            {/* In Dev */}
-            {/* <SideBtnItem
-              title={"ZUNpms"}
-              icon={<ScienceOutlined />}
-              toMark={handleMarkupDev}
-              handleModulo={devModule}
-              marked={dev}
-            /> */}
-            {/* <SideBtnItem
-              title={"ZUNst"}
-              icon={<Inventory2OutlinedIcon />}
-              handleModulo={setZunst}
-              modulesStatus={itemsMarked}
-              toMark={() => handleMark("ZUNst")}
-            /> */}
-            {/* <SideBtnItem
-              title={"ZUNhr"}
-              icon={<Diversity3OutlinedIcon />}
-              handleModulo={setZunhr}
-              modulesStatus={itemsMarked}
-              toMark={() => handleMark("ZUNhr")}
-            /> */}
-            {/* <SideBtnItem
-              title={"ZUNpr"}
-              icon={<PaymentsOutlinedIcon />}
-              handleModulo={setZunpr}
-              modulesStatus={itemsMarked}
-              toMark={() => handleMark("ZUNpr")}
-            /> */}
-            {/* In Dev */}
-            {/* <SideBtnItem
-              title={"ZUNcc"}
-              icon={<ScienceOutlined />}
-              toMark={handleMarkupDev}
-              handleModulo={devModule}
-              marked={dev}
-            /> */}
-            {/* <SideBtnItem
-              title={"ZUNaft"}
-              icon={<ChairOutlinedIcon />}
-              handleModulo={setZunaft}
-              modulesStatus={itemsMarked}
-              toMark={() => handleMark("ZUNaft")}
-            /> */}
-            {/* In Dev */}
-            {/* <SideBtnItem
-              title={"ZUNut"}
-              icon={<ScienceOutlined />}
-              toMark={handleMarkupDev}
-              handleModulo={devModule}
-              marked={dev}
-            /> */}
+
+            {error && (
+              <Typography color="error" variant="body2">
+                Error al cargar módulos
+              </Typography>
+            )}
+
+            {!loading &&
+              modulos.map((el) => {
+                const config = getModuloConfig(el.mNombre);
+                return (
+                  <SideBtnItem
+                    key={el.id}
+                    title={el.mNombre}
+                    icon={config?.icon || <AppsOutlinedIcon />}
+                    handleModulo={() => setModulo(el)}
+                    modulesStatus={itemsMarked}
+                    toMark={() => handleMark(config?.markName || el.mNombre)}
+                  />
+                );
+              })}
+
             <Box>
               <Link href={"/zunsteps/faqs"}>
                 <DefaultButton text={"Preguntas"} icon={<HelpOutlineIcon />} />
