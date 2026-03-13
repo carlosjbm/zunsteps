@@ -19,6 +19,7 @@ import { ModuloContext } from "@/app/lib/contexts/ModulosContext";
 import useMark from "@/app/lib/hooks/useMark";
 import { useFetch } from "@/app/lib/hooks/useFetch";
 import { SideBtnListSkeleton } from "@/app/components/skeletons/SideBtnItemSkeleton";
+import { BasicTabsSkeleton } from "@/app/components/skeletons/BasicTabsSkeleton";
 import { LoadingSpinner } from "@/app/components/ui/LoadingSpinner";
 
 export default function Dashboard(params) {
@@ -160,7 +161,7 @@ export default function Dashboard(params) {
         </Card>
       </Box>
       <Box sx={{ flex: 1, width: { xs: "100%", md: "auto" } }}>
-        <BasicTabs />
+        {loading ? <BasicTabsSkeleton /> : <BasicTabs />}
       </Box>
     </Box>
   );
