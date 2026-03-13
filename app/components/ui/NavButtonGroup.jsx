@@ -11,11 +11,11 @@ export function NavButtonGroup() {
       label: "Inicio",
       icon: <HomeOutlinedIcon />,
     },
-    {
-      href: "/zunsteps/premium",
-      label: "Premium",
-      icon: <VerifiedOutlinedIcon />,
-    },
+    // {
+    //   href: "/zunsteps/premium",
+    //   label: "Premium",
+    //   icon: <VerifiedOutlinedIcon />,
+    // },
   ];
 
   return (

@@ -57,8 +57,8 @@ export const ModuloProvider = ({ children }) => {
   };
 
   // Funciones específicas para cada módulo
-  const setZunacc = () => setModuleByName("contabilidad");
-  const setZunhr = () => setModuleByName("recursos");
+  const setServer = () => setModuleByName("server");
+  const setSuite = () => setModuleByName("suite");
   const setZunaft = () => setModuleByName("activos");
   const setZunst = () => setModuleByName("almacén");
   const setZunpr = () => setModuleByName("procesos");
@@ -68,8 +68,8 @@ export const ModuloProvider = ({ children }) => {
     modulos,
     loading,
     error,
-    setZunacc,
-    setZunhr,
+    setServer,
+    setSuite,
     setZunaft,
     setZunst,
     setZunpr,

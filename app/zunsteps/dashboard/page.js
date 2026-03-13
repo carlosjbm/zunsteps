@@ -13,6 +13,9 @@ import Inventory2OutlinedIcon from "@mui/icons-material/Inventory2Outlined";
 import PaymentsOutlinedIcon from "@mui/icons-material/PaymentsOutlined";
 import Link from "next/link";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import StorageIcon from "@mui/icons-material/Storage";
+import WidgetsIcon from "@mui/icons-material/Widgets";
+import MenuBookIcon from "@mui/icons-material/MenuBook";
 
 /*Modulos */
 import { ModuloContext } from "@/app/lib/contexts/ModulosContext";
@@ -28,7 +31,7 @@ export default function Dashboard(params) {
     modulos,
     loading,
     error,
-    setZunacc,
+    setServer,
     setZunhr,
     setZunaft,
     setZunst,
@@ -38,29 +41,40 @@ export default function Dashboard(params) {
   } = useContext(ModuloContext);
   const { itemsMarked, handleMark } = useMark();
 
-  // Mapear módulos a iconos y funciones
+  // Mapear módulos a iconos y funciones basado en palabras clave mejoradas
   const moduloConfig = {
-    contabilidad: {
-      icon: <CurrencyExchangeOutlinedIcon />,
-      handler: setZunacc,
-      markName: "ZUNacc",
+    server: {
+      keywords: ["server"],
+      icon: <StorageIcon />,
+      handler: setServer,
+      markName: "server",
     },
-    activos: {
-      icon: <ChairOutlinedIcon />,
+    suite: {
+      keywords: ["suite", "zun"],
+      icon: <WidgetsIcon />,
       handler: setZunaft,
-      markName: "ZUNaft",
+      markName: "SUITE ZUN",
     },
-    almacén: {
+    manuales: {
+      keywords: ["manuales"],
+      icon: <MenuBookIcon />,
+      handler: setZunaft,
+      markName: "Manuales",
+    },
+    zunst: {
+      keywords: ["zunst", "stock", "almacén", "inventario"],
       icon: <Inventory2OutlinedIcon />,
       handler: setZunst,
       markName: "ZUNst",
     },
-    recursos: {
+    zunhr: {
+      keywords: ["zunhr", "recursos", "humanos"],
       icon: <Diversity3OutlinedIcon />,
       handler: setZunhr,
       markName: "ZUNhr",
     },
-    procesos: {
+    zunpr: {
+      keywords: ["zunpr", "procesos"],
       icon: <PaymentsOutlinedIcon />,
       handler: setZunpr,
       markName: "ZUNpr",
@@ -73,9 +87,12 @@ export default function Dashboard(params) {
       return null;
     }
     const lowerName = moduloName.toLowerCase();
+
     for (const key in moduloConfig) {
-      if (lowerName.includes(key)) {
-        return moduloConfig[key];
+      const config = moduloConfig[key];
+      // Buscar si alguna palabra clave coincide
+      if (config.keywords.some((keyword) => lowerName.includes(keyword))) {
+        return config;
       }
     }
     return null;
@@ -114,7 +131,7 @@ export default function Dashboard(params) {
               color="primary.main"
               fontFamily="monospace"
             >
-              Módulos
+              Contenidos
             </Typography>
           </Box>
           <Box
