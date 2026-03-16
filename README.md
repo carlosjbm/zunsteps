@@ -221,7 +221,6 @@ zunsteps/
 │   │   ├── ui/                    # Componentes reutilizables
 │   │   │   ├── PremiumProtection.jsx  # Componente de protección premium
 │   │   │   ├── BasicCard.jsx
-│   │   │   ├── ChatBotSim.jsx
 │   │   │   ├── ConceptItem.jsx
 │   │   │   ├── ConteTable.jsx
 │   │   │   ├── CudeSnippet.jsx
@@ -251,7 +250,6 @@ zunsteps/
 │   │   │   └── utils.js             # Scripts y utilidades SQL
 │   │   ├── helpers/
 │   │   │   └── cargoHelper.js       # Funciones auxiliares para cargos
-│   │   ├── chatbotResponses.js  # Base de conocimiento del chatbot
 │   │   ├── cargos.js            # Definiciones de cargos
 │   │   ├── links.js             # Enlaces globales
 │   │   ├── myTheme.js           # Configuración de tema
@@ -513,12 +511,6 @@ pnpm run export
 localStorage.removeItem("premium_key");
 localStorage.removeItem("premium_authenticated");
 ```
-
-### El Chatbot no responde
-
-- Verifica que `chatbotResponses.js` esté correctamente cargado
-- Revisa la consola del navegador (F12) para errores
-- Asegúrate de que los módulos estén exportados correctamente
 
 ---
 

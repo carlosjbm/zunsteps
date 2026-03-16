@@ -6,7 +6,6 @@ import Box from "@mui/material/Box";
 import TerminalIcon from "@mui/icons-material/Terminal";
 import NotificationsActiveOutlinedIcon from "@mui/icons-material/NotificationsActiveOutlined";
 import LinkOutlinedIcon from "@mui/icons-material/LinkOutlined";
-import TipsAndUpdatesOutlinedIcon from "@mui/icons-material/TipsAndUpdatesOutlined";
 import AccountTreeOutlinedIcon from "@mui/icons-material/AccountTreeOutlined";
 import CodeSnippet from "../ui/CudeSnippet";
 import Badge from "@mui/material/Badge";
@@ -23,8 +22,6 @@ import { Typography } from "@mui/material";
 import "../../styles/premium.css";
 import Utilinks from "./Utilinks";
 import { links } from "@/app/lib/links";
-import ChatBotSim from "./ChatBotSim";
-import chatBotResponses from "@/app/lib/chatbotResponses";
 import BasicAccordion from "./BasicAccordion";
 import useCurrentMonth from "@/app/lib/hooks/useCurrentMonth";
 
@@ -59,7 +56,6 @@ function a11yProps(index) {
 
 export default function PremiumTabs() {
   const [value, setValue] = React.useState(0);
-  const responses = chatBotResponses;
   const [
     currentMonth,
     allProcess,
@@ -86,11 +82,8 @@ export default function PremiumTabs() {
           <Tooltip title="Links Útiles" arrow>
             <Tab label={<LinkOutlinedIcon />} {...a11yProps(1)} />
           </Tooltip>
-          <Tooltip title="ChatBot" arrow>
-            <Tab label={<TipsAndUpdatesOutlinedIcon />} {...a11yProps(2)} />
-          </Tooltip>
           <Tooltip title="Procesos" arrow>
-            <Tab label={<AccountTreeOutlinedIcon />} {...a11yProps(3)} />
+            <Tab label={<AccountTreeOutlinedIcon />} {...a11yProps(2)} />
           </Tooltip>
           <Tooltip title="Sugerencias del Mes" arrow>
             <Tab
@@ -102,7 +95,7 @@ export default function PremiumTabs() {
                   <NotificationsActiveOutlinedIcon color="action" />
                 </Badge>
               }
-              {...a11yProps(4)}
+              {...a11yProps(3)}
             />
           </Tooltip>
         </Tabs>
@@ -139,14 +132,13 @@ export default function PremiumTabs() {
           />
         </Box>
       </CustomTabPanel>
-      {/* <CustomTabPanel value={value} index={1}></CustomTabPanel> */}
       <CustomTabPanel value={value} index={1}>
         <Typography variant="h6" sx={{ margin: "2%" }} gutterBottom>
           Links Utilitarios
         </Typography>
         <Utilinks links={links} />
       </CustomTabPanel>
-      <CustomTabPanel value={value} index={3}>
+      <CustomTabPanel value={value} index={2}>
         <Typography variant="h6" sx={{ margin: "2%" }} gutterBottom>
           Procesos
         </Typography>
@@ -154,12 +146,7 @@ export default function PremiumTabs() {
           <BasicAccordion items={allProcess} isLoading={isLoading} />
         </Box>
       </CustomTabPanel>
-      <CustomTabPanel value={value} index={2}>
-        <Box sx={{ display: "flex", gap: "1%" }}>
-          <ChatBotSim responses={responses} />
-        </Box>
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={4}>
+      <CustomTabPanel value={value} index={3}>
         <Typography variant="h6" sx={{ margin: "2%" }} gutterBottom>
           Sugerencias para el mes de {currentMonth.monthName}
           {`(${currentMonth.monthName.slice(0, 3)})`}

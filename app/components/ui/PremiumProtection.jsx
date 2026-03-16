@@ -3,18 +3,18 @@
 import React from "react";
 import { usePremiumAuth } from "@/app/lib/contexts/PremiumAuthContext";
 import { useRouter } from "next/navigation";
-import { Box, CircularProgress } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 
 export function PremiumProtection({ children }) {
-  const { isPremium, isLoading } = usePremiumAuth();
+  const { isAuthenticated, isLoading } = usePremiumAuth();
   const router = useRouter();
 
   React.useEffect(() => {
     // Solo redirigir después de que se cargue el estado
-    if (!isLoading && !isPremium) {
+    if (!isLoading && !isAuthenticated) {
       router.push("/premium-access");
     }
-  }, [isLoading, isPremium, router]);
+  }, [isLoading, isAuthenticated, router]);
 
   if (isLoading) {
     return (
@@ -23,13 +23,16 @@ export function PremiumProtection({ children }) {
         justifyContent="center"
         alignItems="center"
         minHeight="100vh"
+        flexDirection="column"
+        gap={2}
       >
         <CircularProgress />
+        <Typography>Verificando autenticación...</Typography>
       </Box>
     );
   }
 
-  if (!isPremium) {
+  if (!isAuthenticated) {
     return null;
   }
 

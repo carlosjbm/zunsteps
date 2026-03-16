@@ -5,6 +5,7 @@ import { Box, Container, Typography } from "@mui/material";
 import PremiumTabs from "@/app/components/ui/PremiumTaps";
 import VerifiedIcon from "@mui/icons-material/Verified";
 import LogoutIcon from "@mui/icons-material/Logout";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import { useRouter } from "next/navigation";
 import { usePremiumAuth } from "@/app/lib/contexts/PremiumAuthContext";
 import { PremiumProtection } from "@/app/components/ui/PremiumProtection";
@@ -12,13 +13,14 @@ import Link from "next/link";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import { Button } from "@mui/material";
 import Card from "@mui/material/Card";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 function PremiumPageContent() {
   const router = useRouter();
-  const { logout } = usePremiumAuth();
+  const { logout, user } = usePremiumAuth();
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await logout();
     router.push("/premium-access");
   };
 
@@ -35,7 +37,7 @@ function PremiumPageContent() {
           Zona Premium
         </Typography>
         <Typography variant="subtitle1" color="text.secondary" sx={{ mb: 2 }}>
-          ¡Bienvenido a tu área exclusiva!
+          ¡Bienvenido{user?.nombre ? `, ${user.nombre}` : ""}!
         </Typography>
         {/* Navigation */}
         <Box
@@ -60,6 +62,15 @@ function PremiumPageContent() {
               Dashboard
             </Button>
           </Link>
+          <Link href="/admin">
+            <Button
+              size="small"
+              variant="outlined"
+              startIcon={<SettingsIcon />}
+            >
+              Gestión
+            </Button>
+          </Link>
           <Button
             size="small"
             variant="contained"
@@ -71,6 +82,16 @@ function PremiumPageContent() {
           </Button>
         </Box>
       </Box>
+
+      {/* User Info */}
+      {user && (
+        <Card sx={{ mb: 4, p: 2, backgroundColor: "info.lighter" }}>
+          <Typography variant="body2">
+            <strong>Usuario:</strong> {user.nombre} • <strong>Teléfono:</strong>{" "}
+            {user.telefono}
+          </Typography>
+        </Card>
+      )}
 
       {/* Benefits Section */}
       <Box mb={4}>
