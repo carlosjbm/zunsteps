@@ -1,13 +1,8 @@
 "use client";
 
-import { Box } from "@mui/material";
 import LoadingSpinner from "./components/ui/LoadingSpinner";
 
 const Loading = () => {
-  return (
-    <Box>
-      <LoadingSpinner />
-    </Box>
-  );
+  return <LoadingSpinner />;
 };
 export default Loading;

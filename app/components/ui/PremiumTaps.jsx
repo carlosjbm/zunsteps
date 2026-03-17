@@ -18,12 +18,14 @@ import {
   prodMachete,
   claveAlmacen,
 } from "@/app/lib/scipts/utils";
-import { Typography } from "@mui/material";
+import { CircularProgress, Typography } from "@mui/material";
 import "../../styles/premium.css";
 import Utilinks from "./Utilinks";
 import { links } from "@/app/lib/links";
 import BasicAccordion from "./BasicAccordion";
 import useCurrentMonth from "@/app/lib/hooks/useCurrentMonth";
+import { useFetch } from "@/app/lib/hooks/useFetch";
+import LoadingSpinner from "./LoadingSpinner";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -64,6 +66,10 @@ export default function PremiumTabs() {
     setFiltredProcess,
     toFiltre,
   ] = useCurrentMonth("es-ES");
+  //Fetch al endpoint de los scripts
+  const { loading, error, data } = useFetch(
+    "http://localhost:3000/api/scripts/",
+  );
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -105,31 +111,23 @@ export default function PremiumTabs() {
           Scripts Utilitarios
         </Typography>
         <Box className="copy-section">
-          <CodeSnippet
-            name={resetGet.name}
-            code={resetGet.code}
-            description={resetGet.description}
-          />
-          <CodeSnippet
-            name={clearStock.name}
-            description={clearStock.description}
-            code={clearStock.code}
-          />
-          <CodeSnippet
-            name={resetPassOpes.name}
-            description={resetPassOpes.description}
-            code={resetPassOpes.code}
-          />
-          <CodeSnippet
-            name={prodMachete.name}
-            description={prodMachete.description}
-            code={prodMachete.code}
-          />
-          <CodeSnippet
-            name={claveAlmacen.name}
-            description={claveAlmacen.description}
-            code={claveAlmacen.code}
-          />
+          {loading ? (
+            <>
+              <CircularProgress size={20} sx={{ mr: 1 }} />
+              Cargando Scripts...
+            </>
+          ) : (
+            data.map((s) => {
+              return (
+                <CodeSnippet
+                  key={s.id}
+                  name={s.nombre}
+                  code={s.code}
+                  description={s.descripcion}
+                />
+              );
+            })
+          )}
         </Box>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
