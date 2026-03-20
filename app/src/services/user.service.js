@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from "uuid";
 export async function getAllUsers() {
   try {
     const query = `
-      SELECT id, nombre, telefono, is_active
+      SELECT id, nombre, telefono, is_active,token
       FROM usuarios
       ORDER BY id DESC
     `;

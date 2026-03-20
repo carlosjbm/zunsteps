@@ -397,7 +397,7 @@ export default function AdminUsuariosPage() {
                             size="small"
                             color="info"
                             onClick={() => {
-                              setSelectedToken("*".repeat(32));
+                              setSelectedToken(usuario?.token);
                               setOpenTokenDialog(true);
                             }}
                           >
