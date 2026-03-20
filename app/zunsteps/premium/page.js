@@ -14,6 +14,7 @@ import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import { Button } from "@mui/material";
 import Card from "@mui/material/Card";
 import SettingsIcon from "@mui/icons-material/Settings";
+import { QuickNavigation } from "@/app/components/ui/QuickNavigation";
 
 function PremiumPageContent() {
   const router = useRouter();
@@ -48,7 +49,7 @@ function PremiumPageContent() {
             flexWrap: "wrap",
           }}
         >
-          <Link href="/">
+          {/* <Link href="/">
             <Button
               size="small"
               variant="outlined"
@@ -70,17 +71,18 @@ function PremiumPageContent() {
             >
               Gestión
             </Button>
-          </Link>
-          <Button
-            size="small"
-            variant="contained"
-            color="error"
-            startIcon={<LogoutIcon />}
-            onClick={handleLogout}
-          >
-            Cerrar Sesión
-          </Button>
+          </Link> */}
+          <QuickNavigation premiun={false} />
         </Box>
+        <Button
+          size="small"
+          variant="contained"
+          color="error"
+          startIcon={<LogoutIcon />}
+          onClick={handleLogout}
+        >
+          Cerrar Sesión
+        </Button>
       </Box>
 
       {/* User Info */}
@@ -113,7 +115,6 @@ function PremiumPageContent() {
             "Acceso a contenido exclusivo",
             "Soporte prioritario",
             "Utilitarios exclusivos",
-            "Agente de ayuda 24/7",
           ].map((benefit) => (
             <Card
               key={benefit}
