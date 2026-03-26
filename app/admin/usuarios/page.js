@@ -37,6 +37,7 @@ import { Share } from "@mui/icons-material";
 import { QuickNavigation } from "@/app/components/ui/QuickNavigation";
 
 export default function AdminUsuariosPage() {
+  const [isRegeneratingToken, setIsRegeneratingToken] = useState(false);
   const [usuarios, setUsuarios] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");

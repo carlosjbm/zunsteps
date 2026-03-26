@@ -41,7 +41,7 @@ export default function PremiumAccessPage() {
     setError("");
     setLoading(true);
 
-    // Validar campos
+    // Validar campos vacios
     if (!phone.trim() || !token.trim()) {
       setError("Teléfono y token son requeridos");
       setLoading(false);
