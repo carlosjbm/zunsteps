@@ -26,13 +26,13 @@ export default function AccordionExpandIcon({ seccion }) {
   const [resultSearch, setResultSearch] = React.useState();
   const [selectedCargo, setSelectedCargo] = React.useState("");
   const [filteredActions, setFilteredActions] = React.useState(
-    seccion.acciones
+    seccion.acciones,
   );
 
   const orderActionBycargos = (cargo) => {
     if (seccion && cargo) {
       const filtered = seccion.acciones.filter((accion) =>
-        accion.cargos?.includes(cargo)
+        accion.cargos?.includes(cargo),
       );
       setFilteredActions(filtered);
       setLeftValue(0);
@@ -63,7 +63,7 @@ export default function AccordionExpandIcon({ seccion }) {
   const searchAccion = (goal, list) => {
     let lowerGoal = goal.toLowerCase();
     let result = list.filter((el) =>
-      el.aNombre.toLowerCase().includes(lowerGoal)
+      el.aNombre.toLowerCase().includes(lowerGoal),
     );
     setResultSearch(result);
   };

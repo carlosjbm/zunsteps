@@ -5,7 +5,7 @@ import { Box, Card, Divider, Typography } from "@mui/material";
 import AppsOutlinedIcon from "@mui/icons-material/AppsOutlined";
 import { DefaultButton } from "@/app/components/ui/DefaultButton";
 import { NavButtonGroup } from "@/app/components/ui/NavButtonGroup";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useRef, useCallback } from "react";
 import CurrencyExchangeOutlinedIcon from "@mui/icons-material/CurrencyExchangeOutlined";
 import Diversity3OutlinedIcon from "@mui/icons-material/Diversity3Outlined";
 import ChairOutlinedIcon from "@mui/icons-material/ChairOutlined";
@@ -25,6 +25,7 @@ import { SideBtnListSkeleton } from "@/app/components/skeletons/SideBtnItemSkele
 import { BasicTabsSkeleton } from "@/app/components/skeletons/BasicTabsSkeleton";
 import { LoadingSpinner } from "@/app/components/ui/LoadingSpinner";
 import { QuickNavigation } from "../../components/ui/QuickNavigation";
+import { InfiniteTips } from "@/app/components/ui/InfiniteTips";
 
 export default function Dashboard(params) {
   const {
@@ -103,18 +104,27 @@ export default function Dashboard(params) {
     <Box
       sx={{
         display: "flex",
-        flexDirection: { xs: "column", md: "row" },
+        flexDirection: { xs: "column", lg: "row" },
         gap: { xs: 2, md: 3 },
         py: { xs: 2, md: 4 },
         px: { xs: 1, md: 2 },
       }}
     >
-      <Box sx={{ width: { xs: "100%", md: "auto" } }}>
+      {/* Sidebar Izquierdo - Contenidos + Tips */}
+      <Box
+        sx={{
+          width: { xs: "100%", lg: "350px" },
+          display: "flex",
+          flexDirection: "column",
+          gap: 2,
+        }}
+      >
+        {/* Card de Contenidos */}
         <Card
           sx={{
-            minWidth: { xs: "100%", md: "300px" },
             display: "flex",
             flexDirection: "column",
+            maxHeight: "500px",
           }}
         >
           <Box
@@ -178,9 +188,12 @@ export default function Dashboard(params) {
           </Box>
         </Card>
       </Box>
-      <Box sx={{ flex: 1, width: { xs: "100%", md: "auto" } }}>
+
+      {/* Contenido Principal - Derecha */}
+      <Box sx={{ flex: 1, width: { xs: "100%", lg: "auto" } }}>
         <QuickNavigation dashboard={false} />
         {loading ? <BasicTabsSkeleton /> : <BasicTabs />}
+        <InfiniteTips />
       </Box>
     </Box>
   );
