@@ -33,6 +33,8 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import Link from "next/link";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import { Share } from "@mui/icons-material";
+import { QuickNavigation } from "@/app/components/ui/QuickNavigation";
 
 export default function AdminUsuariosPage() {
   const [usuarios, setUsuarios] = useState([]);
@@ -239,16 +241,8 @@ export default function AdminUsuariosPage() {
         >
           Administración de Usuarios
         </Typography>
-        <Link href="/">
-          <Button
-            variant="outlined"
-            startIcon={<HomeOutlinedIcon />}
-            size="small"
-          >
-            Inicio
-          </Button>
-        </Link>
       </Box>
+      <QuickNavigation admin={false} />
 
       {/* Alerts */}
       {error && (

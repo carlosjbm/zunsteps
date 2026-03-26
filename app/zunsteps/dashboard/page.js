@@ -24,6 +24,7 @@ import { useFetch } from "@/app/lib/hooks/useFetch";
 import { SideBtnListSkeleton } from "@/app/components/skeletons/SideBtnItemSkeleton";
 import { BasicTabsSkeleton } from "@/app/components/skeletons/BasicTabsSkeleton";
 import { LoadingSpinner } from "@/app/components/ui/LoadingSpinner";
+import { QuickNavigation } from "../../components/ui/QuickNavigation";
 
 export default function Dashboard(params) {
   const {
@@ -169,7 +170,7 @@ export default function Dashboard(params) {
 
             <Box>
               <Link href={"/zunsteps/faqs"}>
-                <DefaultButton text={"Preguntas"} icon={<HelpOutlineIcon />} />
+                <DefaultButton text={"Pregunta"} icon={<HelpOutlineIcon />} />
               </Link>
             </Box>
             <Divider sx={{ width: "100%", my: 1 }} />
@@ -178,6 +179,7 @@ export default function Dashboard(params) {
         </Card>
       </Box>
       <Box sx={{ flex: 1, width: { xs: "100%", md: "auto" } }}>
+        <QuickNavigation dashboard={false} />
         {loading ? <BasicTabsSkeleton /> : <BasicTabs />}
       </Box>
     </Box>
