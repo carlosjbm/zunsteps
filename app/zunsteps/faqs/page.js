@@ -15,6 +15,7 @@ import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
 import { Searcher } from "@/app/components/ui/Searcher";
+import { QuickNavigation } from "@/app/components/ui/QuickNavigation";
 
 const faqsData = [
   {
@@ -119,6 +120,7 @@ export default function FAQsPage() {
         px: { xs: 2, md: 4 },
       }}
     >
+      <QuickNavigation faqs={false} />
       <Container maxWidth="md">
         {/* Header */}
         <Box sx={{ mb: 4, textAlign: "center" }}>

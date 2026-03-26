@@ -19,9 +19,9 @@ export const QuickNavigation = ({
   return (
     <Card
       sx={{
-        mb: 5,
+        mb: 1,
         p: { xs: 1.5, sm: 2 },
-        backgroundColor: "background.paper",
+        backgroundColor: "primary.main",
         border: "1px solid",
         borderColor: "divider",
       }}
@@ -40,7 +40,13 @@ export const QuickNavigation = ({
               startIcon={<HomeOutlinedIcon />}
               variant="text"
               size="small"
-              sx={{ fontSize: { xs: "0.75rem", sm: "0.875rem" } }}
+              sx={{
+                fontSize: {
+                  xs: "0.75rem",
+                  sm: "0.875rem",
+                },
+                color: "background.antiflash",
+              }}
             >
               Inicio
             </Button>
@@ -52,7 +58,10 @@ export const QuickNavigation = ({
               startIcon={<DashboardIcon />}
               variant="text"
               size="small"
-              sx={{ fontSize: { xs: "0.75rem", sm: "0.875rem" } }}
+              sx={{
+                fontSize: { xs: "0.75rem", sm: "0.875rem" },
+                color: "background.antiflash",
+              }}
             >
               Dashboard
             </Button>
@@ -64,7 +73,10 @@ export const QuickNavigation = ({
               startIcon={<HelpIcon />}
               variant="text"
               size="small"
-              sx={{ fontSize: { xs: "0.75rem", sm: "0.875rem" } }}
+              sx={{
+                fontSize: { xs: "0.75rem", sm: "0.875rem" },
+                color: "background.antiflash",
+              }}
             >
               FAQs
             </Button>
@@ -78,7 +90,7 @@ export const QuickNavigation = ({
               size="small"
               sx={{
                 fontSize: { xs: "0.75rem", sm: "0.875rem" },
-                color: "primary.main",
+                color: "background.green",
                 fontWeight: 600,
               }}
             >
@@ -94,7 +106,7 @@ export const QuickNavigation = ({
               size="small"
               sx={{
                 fontSize: { xs: "0.75rem", sm: "0.875rem" },
-                color: "primary.main",
+                color: "background.antiflash",
                 fontWeight: 600,
               }}
             >

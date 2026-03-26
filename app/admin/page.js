@@ -29,6 +29,8 @@ export default function AdminPage() {
 
   return (
     <Container maxWidth="lg" sx={{ py: { xs: 2, md: 4 } }}>
+      {/* Quick Navigation */}
+      <QuickNavigation admin={false} />
       {/* Header */}
       <Box
         sx={{
@@ -61,8 +63,6 @@ export default function AdminPage() {
         </Box>
       </Box>
 
-      {/* Quick Navigation */}
-      <QuickNavigation admin={false} />
       {/* Admin Modules Grid */}
       <Grid container spacing={{ xs: 2, sm: 3 }}>
         {adminModules.map((module) => {

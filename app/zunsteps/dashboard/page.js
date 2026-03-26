@@ -110,6 +110,8 @@ export default function Dashboard(params) {
         px: { xs: 1, md: 2 },
       }}
     >
+      <QuickNavigation dashboard={false} />
+
       {/* Sidebar Izquierdo - Contenidos + Tips */}
       <Box
         sx={{
@@ -191,7 +193,6 @@ export default function Dashboard(params) {
 
       {/* Contenido Principal - Derecha */}
       <Box sx={{ flex: 1, width: { xs: "100%", lg: "auto" } }}>
-        <QuickNavigation dashboard={false} />
         {loading ? <BasicTabsSkeleton /> : <BasicTabs />}
         <InfiniteTips />
       </Box>

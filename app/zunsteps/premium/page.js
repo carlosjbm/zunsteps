@@ -27,6 +27,7 @@ function PremiumPageContent() {
 
   return (
     <Container maxWidth="md" sx={{ py: { xs: 2, md: 4 } }}>
+      <QuickNavigation premiun={false} />
       {/* Header */}
       <Box textAlign="center" mb={4}>
         <Typography
@@ -40,40 +41,6 @@ function PremiumPageContent() {
         <Typography variant="subtitle1" color="text.secondary" sx={{ mb: 2 }}>
           ¡Bienvenido{user?.nombre ? `, ${user.nombre}` : ""}!
         </Typography>
-        {/* Navigation */}
-        <Box
-          sx={{
-            display: "flex",
-            gap: 1,
-            justifyContent: "center",
-            flexWrap: "wrap",
-          }}
-        >
-          {/* <Link href="/">
-            <Button
-              size="small"
-              variant="outlined"
-              startIcon={<HomeOutlinedIcon />}
-            >
-              Inicio
-            </Button>
-          </Link>
-          <Link href="/zunsteps/dashboard">
-            <Button size="small" variant="outlined">
-              Dashboard
-            </Button>
-          </Link>
-          <Link href="/admin">
-            <Button
-              size="small"
-              variant="outlined"
-              startIcon={<SettingsIcon />}
-            >
-              Gestión
-            </Button>
-          </Link> */}
-          <QuickNavigation premiun={false} />
-        </Box>
         <Button
           size="small"
           variant="contained"
