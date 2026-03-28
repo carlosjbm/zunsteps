@@ -11,3 +11,9 @@ export async function getClientFacturated() {
   const [rows] = await pool.query(query);
   return rows;
 }
+
+export async function updateClientFacturado(clientId, facturado) {
+  const query = `UPDATE clientes SET facturado = ? WHERE id = ?`;
+  const [result] = await pool.query(query, [facturado ? 1 : 0, clientId]);
+  return result;
+}

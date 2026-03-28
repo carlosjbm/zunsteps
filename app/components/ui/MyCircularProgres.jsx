@@ -5,9 +5,11 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { Box } from "@mui/material";
 export const MyCircularProgres = ({ value = 70, label = "Label" }) => {
   return (
-    <Box>
+    <Box
+      sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+    >
       <Box sx={{ position: "relative", display: "inline-flex" }}>
-        <CircularProgress variant="determinate" value={80} />
+        <CircularProgress variant="determinate" value={value} />
         <Box
           sx={{
             top: 0,
