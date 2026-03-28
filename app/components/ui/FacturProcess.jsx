@@ -8,7 +8,10 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Box } from "@mui/material";
 import { MyCircularProgres } from "./MyCircularProgres";
+import { useFetch } from "@/app/lib/hooks/useFetch";
 export const FacturProcess = () => {
+  const { data, loading, error } = useFetch("/api/facturation/clientes/");
+
   return (
     <Box sx={{ marginBottom: "5%" }}>
       <Accordion>
@@ -27,10 +30,24 @@ export const FacturProcess = () => {
             justifyContent: "center",
           }}
         >
-          <MyCircularProgres />
-          <MyCircularProgres />
-          <MyCircularProgres />
-          <MyCircularProgres />
+          {loading && <Typography>Cargando...</Typography>}
+          {data && (
+            <>
+              <MyCircularProgres
+                label="General"
+                value={data?.generalPorcentage}
+              />
+              <MyCircularProgres
+                label="Gaviota"
+                value={data?.gaviotaPorcentage}
+              />
+              <MyCircularProgres
+                label="Islazul"
+                value={data?.islazulPorcentage}
+              />
+              <MyCircularProgres label="Otros" value={data?.otrosPorcentage} />
+            </>
+          )}
         </AccordionDetails>
       </Accordion>
       <Accordion>
