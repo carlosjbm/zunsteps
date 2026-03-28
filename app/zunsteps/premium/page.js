@@ -15,6 +15,7 @@ import { Button } from "@mui/material";
 import Card from "@mui/material/Card";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { QuickNavigation } from "@/app/components/ui/QuickNavigation";
+import { FacturProcess } from "@/app/components/ui/FacturProcess";
 
 function PremiumPageContent() {
   const router = useRouter();
@@ -69,8 +70,9 @@ function PremiumPageContent() {
           gutterBottom
           sx={{ fontSize: { xs: "1.25rem", md: "1.5rem" }, mb: 2 }}
         >
-          Beneficios Premium
+          Control de la Facturación
         </Typography>
+        <FacturProcess />
         <Box
           sx={{
             display: "grid",
