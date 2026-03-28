@@ -132,24 +132,6 @@ export default function Dashboard(params) {
           <Box
             sx={{
               display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 1,
-              p: 2,
-            }}
-          >
-            <AppsOutlinedIcon />
-            <Typography
-              variant="h6"
-              color="primary.main"
-              fontFamily="monospace"
-            >
-              Contenidos
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
               flexDirection: "column",
               gap: 1,
               overflowY: "auto",
@@ -179,13 +161,7 @@ export default function Dashboard(params) {
                   />
                 );
               })}
-
-            <Box>
-              <Link href={"/zunsteps/faqs"}>
-                <DefaultButton text={"Pregunta"} icon={<HelpOutlineIcon />} />
-              </Link>
-            </Box>
-            <Divider sx={{ width: "100%", my: 1 }} />
+            <Divider sx={{ width: "100%", my: 0.5 }} />
             <NavButtonGroup />
           </Box>
         </Card>

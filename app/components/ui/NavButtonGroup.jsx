@@ -4,37 +4,42 @@ import { Box, Button } from "@mui/material";
 import Link from "next/link";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import VerifiedOutlinedIcon from "@mui/icons-material/VerifiedOutlined";
+import { WhatsApp } from "@mui/icons-material";
+import { Telegram } from "@mui/icons-material";
 export function NavButtonGroup() {
   const buttons = [
     {
       href: "/",
-      label: "Inicio",
-      icon: <HomeOutlinedIcon />,
+      label: "grupo de whatsapp",
+      icon: <WhatsApp />,
     },
-    // {
-    //   href: "/zunsteps/premium",
-    //   label: "Premium",
-    //   icon: <VerifiedOutlinedIcon />,
-    // },
+    {
+      href: "/",
+      label: "Bot en telegram",
+      icon: <Telegram />,
+    },
   ];
 
   return (
     <Box
       sx={{
         display: "flex",
-        flexDirection: { xs: "row", md: "column" },
+        flexDirection: { xs: "column ", md: "row" },
         gap: { xs: 0.5, md: 1 },
         width: "100%",
       }}
     >
       {buttons.map((button) => (
-        <Link key={button.href} href={button.href} style={{ flex: 1 }}>
+        <Link
+          key={`${button.href}-${button.label}`}
+          href={button.href}
+          style={{ flex: 1 }}
+        >
           <Button
             fullWidth
             sx={{
               display: "flex",
-              gap: "8px",
-              padding: { xs: "10px 12px", md: "12px 16px" },
+              gap: "8Spx",
               backgroundColor: "background.antiflash",
               border: "1.5px solid #f0f0f0",
               color: "primary.main",
@@ -60,7 +65,7 @@ export function NavButtonGroup() {
                   md: "1.3rem",
                   display: "flex",
                   alignItems: "center",
-                  gap: 1,
+                  gap: 1.5,
                 },
               }}
             >
