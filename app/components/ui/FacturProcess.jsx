@@ -18,12 +18,22 @@ import {
   Paper,
   Button,
   Alert,
+  Chip,
+  Tooltip,
 } from "@mui/material";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CancelIcon from "@mui/icons-material/Cancel";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import SaveIcon from "@mui/icons-material/Save";
+import StorefrontIcon from "@mui/icons-material/Storefront";
+import ReceiptIcon from "@mui/icons-material/Receipt";
+import RefreshIcon from "@mui/icons-material/Refresh";
 import { MyCircularProgres } from "./MyCircularProgres";
 import { useFetch } from "@/app/lib/hooks/useFetch";
 import { useState, useEffect } from "react";
 import { Searcher } from "./Searcher";
 import { PaginatorDots } from "./PaginatorDots";
+import { FormatListBulleted } from "@mui/icons-material";
 
 export const FacturProcess = () => {
   const { data, loading, error, refetch } = useFetch(
@@ -58,12 +68,43 @@ export const FacturProcess = () => {
       [clientId]: !prev[clientId],
     }));
   };
-  const handleResetFacturatedStatus = () => {
+  const handleResetFacturatedStatus = async () => {
     const resetStatus = {};
     data?.clients.forEach((client) => {
       resetStatus[client.id] = false;
     });
     setClientesFacturacion(resetStatus);
+    setGuardando(true);
+    setGuardando(true);
+    setMensaje(null);
+    try {
+      const response = await fetch("/api/facturation/clientes/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          clientesFacturacion,
+        }),
+      });
+
+      if (response.ok) {
+        setTipoMensaje("success");
+        setMensaje("Cambios guardados correctamente");
+        // Refrescar los datos después de guardar
+        await refetch();
+        setTimeout(() => setMensaje(null), 3000);
+      } else {
+        setTipoMensaje("error");
+        setMensaje("Error al guardar los cambios");
+      }
+    } catch (error) {
+      console.error("Error al guardar:", error);
+      setTipoMensaje("error");
+      setMensaje("Error al guardar los cambios");
+    } finally {
+      setGuardando(false);
+    }
   };
 
   const handleGuardarFacturacion = async () => {
@@ -155,13 +196,31 @@ export const FacturProcess = () => {
 
   return (
     <Box sx={{ marginBottom: "5%" }}>
-      <Accordion>
+      <Accordion
+        sx={{
+          boxShadow: 2,
+          borderRadius: 2,
+          marginBottom: 2,
+        }}
+      >
         <AccordionSummary
           expandIcon={<ArrowDownwardIcon />}
           aria-controls="panel1-content"
           id="panel1-header"
+          sx={{
+            "& .MuiAccordionSummary-content": {
+              alignItems: "center",
+              gap: 1,
+            },
+          }}
         >
-          <Typography component="span">Estado de la Facturacion</Typography>
+          <ReceiptIcon sx={{ color: "main", marginRight: 1 }} />
+          <Typography
+            component="span"
+            sx={{ color: "main", fontWeight: 600, fontSize: "1.1rem" }}
+          >
+            Estado de la Facturación
+          </Typography>
         </AccordionSummary>
         <AccordionDetails
           sx={{
@@ -169,9 +228,17 @@ export const FacturProcess = () => {
             alignItems: "center",
             gap: "10%",
             justifyContent: "center",
+            padding: "2%",
+            backgroundColor: "#f8f9fa",
+            flexWrap: "wrap",
           }}
         >
-          {loading && <Typography>Cargando Estado...</Typography>}
+          {loading && (
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <CircularProgress size={24} />
+              <Typography>Cargando Estado...</Typography>
+            </Box>
+          )}
           {data && (
             <>
               <MyCircularProgres
@@ -180,13 +247,16 @@ export const FacturProcess = () => {
               />
               <MyCircularProgres
                 label="Gaviota"
-                value={data?.gaviotaPorcentage}
+                value={data?.gaviotaData?.gaviotaPorcentage}
               />
               <MyCircularProgres
                 label="Islazul"
-                value={data?.islazulPorcentage}
+                value={data?.islazulData?.islazulPorcentage}
               />
-              <MyCircularProgres label="Otros" value={data?.otrosPorcentage} />
+              <MyCircularProgres
+                label="Otros"
+                value={data?.otrosData?.otrosPorcentage}
+              />
             </>
           )}
         </AccordionDetails>
@@ -200,7 +270,12 @@ export const FacturProcess = () => {
           <Typography component="span">Gestión de Clientes</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          {loading && <Typography>Cargando clientes...</Typography>}
+          {loading && (
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <CircularProgress size={24} />
+              <Typography>Cargando Clientes...</Typography>
+            </Box>
+          )}
           {data?.clients && (
             <Box>
               <Box sx={{ marginBottom: "2%" }}>
@@ -224,7 +299,7 @@ export const FacturProcess = () => {
                   color="primary"
                   onClick={handleResetSearch}
                 >
-                  Todos
+                  <FormatListBulleted /> Todos
                 </Button>
                 <Button
                   variant={
@@ -233,7 +308,7 @@ export const FacturProcess = () => {
                   color="success"
                   onClick={handleFilterFacturados}
                 >
-                  Facturados
+                  <CheckCircleIcon />
                 </Button>
                 <Button
                   variant={
@@ -242,7 +317,7 @@ export const FacturProcess = () => {
                   color="error"
                   onClick={handleFilterSinFacturar}
                 >
-                  Sin Facturar
+                  <CancelIcon />
                 </Button>
               </Box>
 

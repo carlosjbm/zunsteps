@@ -2,24 +2,20 @@ import {
   getClients,
   getClientFacturated,
   updateClientFacturado,
+  getCountClientesByCadena,
+  getFacturatedClientsByCadena,
 } from "@/app/src/services/facturation.service";
 /**Ojo cambiar esta logica para facturation.service.js */
 const { NextResponse } = require("next/server");
 export async function GET() {
   const clients = await getClients();
   const facturated = await getClientFacturated();
-  const gaviota = clients.filter((client) => client.id_cadena === 1).length;
-  const gaviotaFacturated = facturated.filter(
-    (client) => client.id_cadena === 1 && client.facturado === 1,
-  ).length;
-  const islazul = clients.filter((client) => client.id_cadena === 2).length;
-  const islazulFacturated = facturated.filter(
-    (client) => client.id_cadena === 2 && client.facturado === 1,
-  ).length;
-  const otros = clients.filter((client) => client.id_cadena === 3).length;
-  const otrosFacturated = facturated.filter(
-    (client) => client.id_cadena === 3 && client.facturado === 1,
-  ).length;
+  const gaviota = await getCountClientesByCadena(1);
+  const gaviotaFacturated = await getFacturatedClientsByCadena(1);
+  const islazul = await getCountClientesByCadena(2);
+  const islazulFacturated = await getFacturatedClientsByCadena(2);
+  const otros = await getCountClientesByCadena(3);
+  const otrosFacturated = await getFacturatedClientsByCadena(3);
   const generalPorcentage = Math.round(
     (facturated.length / clients.length) * 100,
   );
@@ -28,13 +24,10 @@ export async function GET() {
   const otrosPorcentage = Math.round((otrosFacturated / otros) * 100);
   return NextResponse.json({
     clients,
-    gaviota,
-    islazul,
-    otros,
+    gaviotaData: { gaviota, gaviotaFacturated, gaviotaPorcentage },
+    islazulData: { islazul, islazulFacturated, islazulPorcentage },
+    otrosData: { otros, otrosFacturated, otrosPorcentage },
     generalPorcentage,
-    gaviotaPorcentage,
-    islazulPorcentage,
-    otrosPorcentage,
   });
 }
 

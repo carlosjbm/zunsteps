@@ -4,12 +4,26 @@ import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Box } from "@mui/material";
 export const MyCircularProgres = ({ value = 70, label = "Label" }) => {
+  //Control del cambio de color
+  let color = "background.green";
+  if (value <= 30) {
+    color = "primary.red";
+  }
+  if (value <= 70 && value >= 40) {
+    color = "primary.blue";
+  }
+
   return (
     <Box
       sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
       <Box sx={{ position: "relative", display: "inline-flex" }}>
-        <CircularProgress variant="determinate" value={value} />
+        <CircularProgress
+          variant="determinate"
+          value={value}
+          size={60}
+          sx={{ color: color }}
+        />
         <Box
           sx={{
             top: 0,
@@ -22,14 +36,10 @@ export const MyCircularProgres = ({ value = 70, label = "Label" }) => {
             justifyContent: "center",
           }}
         >
-          <Typography color={value > 30 ? "background.green" : "red"}>
-            {value}%
-          </Typography>
+          <Typography color={color}>{value}%</Typography>
         </Box>
       </Box>
-      <Typography color={value > 30 ? "background.green" : "red"}>
-        {label}
-      </Typography>
+      <Typography color={color}>{label}</Typography>
     </Box>
   );
 };
