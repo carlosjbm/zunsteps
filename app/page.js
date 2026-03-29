@@ -15,6 +15,7 @@ import { WhiteMiddButton } from "./components/ui/WhiteMiddButton";
 import Image from "next/image";
 import { KeyOutlined } from "@mui/icons-material";
 import VerifiedIcon from "@mui/icons-material/Verified";
+import { GenericFactState } from "./components/ui/GenericFactuState";
 
 export default function Home() {
   return (
@@ -131,17 +132,6 @@ export default function Home() {
               <WhiteMiddButton text="Premium" icon={<VerifiedIcon />} />
             </Link>
             <Link
-              href="zunsteps/faqs/"
-              aria-label="Ir a FAQs"
-              style={{
-                display: "inline-flex",
-                justifyContent: "center",
-                width: "100%",
-              }}
-            >
-              <WhiteMiddButton text="FAQs" icon={<HelpOutlined />} />
-            </Link>
-            <Link
               href="/zunsteps/dashboard"
               aria-label="Ir al Dashboard"
               style={{
@@ -152,13 +142,15 @@ export default function Home() {
             >
               <DefaultButton text="Iniciar" />
             </Link>
+            <Divider sx={{ my: 2 }} />
+            <GenericFactState />
           </Box>
 
           <Divider sx={{ my: 2 }} />
 
           <Box sx={{ textAlign: "center" }}>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-              Powered by Carlinhos
+              Desarrollado por Carlinhos
             </Typography>
             <Box
               sx={{

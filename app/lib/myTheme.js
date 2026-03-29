@@ -18,3 +18,14 @@ export const myTheme = createTheme({
     fontFamily: "monospace",
   },
 });
+export const dinamicColorChange = (value = 100) => {
+  //Control del cambio de color
+  let color = "background.green";
+  if (value <= 30) {
+    color = "primary.red";
+  }
+  if (value <= 70 && value >= 40) {
+    color = "primary.blue";
+  }
+  return color;
+};
