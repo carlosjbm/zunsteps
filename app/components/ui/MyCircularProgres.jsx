@@ -13,7 +13,9 @@ export const MyCircularProgres = ({ value = 70, label = "Label" }) => {
   // if (value <= 70 && value >= 40) {
   //   color = "primary.blue";
   // }
-  const color = dinamicColorChange(value);
+  // Asegurar que value es siempre un número válido
+  const safeValue = typeof value === "number" && !isNaN(value) ? value : 0;
+  const color = dinamicColorChange(safeValue);
 
   return (
     <Box
@@ -22,7 +24,7 @@ export const MyCircularProgres = ({ value = 70, label = "Label" }) => {
       <Box sx={{ position: "relative", display: "inline-flex" }}>
         <CircularProgress
           variant="determinate"
-          value={value}
+          value={safeValue}
           size={60}
           sx={{ color: color }}
         />
@@ -38,7 +40,7 @@ export const MyCircularProgres = ({ value = 70, label = "Label" }) => {
             justifyContent: "center",
           }}
         >
-          <Typography color={color}>{value}%</Typography>
+          <Typography color={color}>{safeValue}%</Typography>
         </Box>
       </Box>
       <Typography color={color}>{label}</Typography>
