@@ -324,7 +324,7 @@ export const FacturProcess = () => {
               fontWeight: 600,
             }}
           >
-            Gestión de Clientes
+            Gestión de Facturación
           </Typography>
         </AccordionSummary>
         <AccordionDetails

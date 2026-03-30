@@ -14,7 +14,7 @@ export const GenericFactState = () => {
   const { data, error, loading, refetch } = useFetch(
     "/api/facturation/clientes/",
   );
-  const porcentage = data?.generalPorcentage ? data?.generalPorcentage : 100;
+  const porcentage = data?.generalPorcentage;
   const color = dinamicColorChange(porcentage);
 
   if (loading) {
@@ -149,7 +149,8 @@ export const GenericFactState = () => {
       >
         <Typography sx={{ fontSize: "inherit" }}>Softur</Typography>
         <Typography sx={{ fontSize: "inherit" }}>
-          {porcentage >= 100 ? "Completado" : "En progreso"}
+          {porcentage === 0 ? "Sin Comenzar" : "En progreso"}
+          {porcentage === 100 && "Completado al 100%"}
         </Typography>
       </Box>
     </Box>

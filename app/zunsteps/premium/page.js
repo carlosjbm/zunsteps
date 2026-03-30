@@ -16,6 +16,8 @@ import Card from "@mui/material/Card";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { QuickNavigation } from "@/app/components/ui/QuickNavigation";
 import { FacturProcess } from "@/app/components/ui/FacturProcess";
+import { Person } from "@mui/icons-material";
+import { Phone } from "@mui/icons-material";
 
 function PremiumPageContent() {
   const router = useRouter();
@@ -55,11 +57,24 @@ function PremiumPageContent() {
 
       {/* User Info */}
       {user && (
-        <Card sx={{ mb: 4, p: 2, backgroundColor: "info.lighter" }}>
-          <Typography variant="body2">
-            <strong>Usuario:</strong> {user.nombre} • <strong>Teléfono:</strong>{" "}
-            {user.telefono}
-          </Typography>
+        <Card
+          sx={{ display: "flex", mb: 4, p: 2, backgroundColor: "info.lighter" }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              alignContent: "center",
+              justifyContent: "space-between",
+              gap: 4,
+            }}
+          >
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <Person /> {user.nombre}
+            </Box>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <Phone /> {user.telefono}
+            </Box>
+          </Box>
         </Card>
       )}
 
@@ -73,34 +88,6 @@ function PremiumPageContent() {
           Control de la Facturación
         </Typography>
         <FacturProcess />
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
-            gap: 2,
-          }}
-        >
-          {[
-            "Acceso a contenido exclusivo",
-            "Soporte prioritario",
-            "Utilitarios exclusivos",
-          ].map((benefit) => (
-            <Card
-              key={benefit}
-              sx={{
-                p: 2,
-                background:
-                  "linear-gradient(135deg, rgba(25,118,210,0.1) 0%, rgba(56,142,60,0.1) 100%)",
-                border: "1px solid",
-                borderColor: "divider",
-              }}
-            >
-              <Typography variant="body2" color="text.primary">
-                ✓ {benefit}
-              </Typography>
-            </Card>
-          ))}
-        </Box>
       </Box>
 
       <Box mb={4}>
