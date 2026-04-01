@@ -767,16 +767,6 @@ export const FacturProcess = () => {
                                   }
                                   onChange={() => handleClientToggle(client.id)}
                                   color="primary"
-                                  size="small"
-                                  sx={{
-                                    "& .MuiSwitch-track": {
-                                      height: { xs: "24px", md: "28px" },
-                                    },
-                                    "& .MuiSwitch-thumb": {
-                                      width: { xs: "20px", md: "24px" },
-                                      height: { xs: "20px", md: "24px" },
-                                    },
-                                  }}
                                 />
                               </TableCell>
                             </TableRow>
@@ -816,7 +806,7 @@ export const FacturProcess = () => {
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      marginBottom: { xs: "1%", sm: 0 },
+                      marginBottom: { xs: "3%", sm: 0 },
                       gap: { xs: 0.5, sm: 0.75 },
                       padding: {
                         xs: "0.6rem 1rem",
@@ -824,11 +814,11 @@ export const FacturProcess = () => {
                         md: "0.8rem 1.5rem",
                       },
                       borderRadius: "0.5rem",
-                      backgroundColor: "#e95354",
+                      backgroundColor: "primary.red",
                       color: "#fff",
                       cursor: guardando ? "not-allowed" : "pointer",
                       transition: "all 0.3s ease",
-                      border: "1px solid #e95354",
+                      border: "1px solid primary.main",
                       fontWeight: 600,
                       fontSize: { xs: "0.875rem", sm: "0.95rem", md: "1rem" },
                       opacity: guardando ? 0.6 : 1,
