@@ -9,6 +9,29 @@ import HelpIcon from "@mui/icons-material/Help";
 import VerifiedIcon from "@mui/icons-material/Verified";
 import SettingsIcon from "@mui/icons-material/Settings";
 
+export function LinkWithIcon({ link, icon, text }) {
+  return (
+    <Box>
+      <Link href={link} style={{ textDecoration: "none" }}>
+        <Button
+          startIcon={icon}
+          variant="text"
+          size="small"
+          sx={{
+            fontSize: {
+              xs: "0.75rem",
+              sm: "0.875rem",
+            },
+            color: "background.antiflash",
+          }}
+        >
+          {text}
+        </Button>
+      </Link>
+    </Box>
+  );
+}
+
 export const QuickNavigation = ({
   home = true,
   dashboard = true,
@@ -32,87 +55,43 @@ export const QuickNavigation = ({
           gap: { xs: 1, sm: 1.5 },
           flexWrap: "wrap",
           justifyContent: "center",
+          alignItems: "center",
         }}
       >
         {home && (
-          <Link href="/" style={{ textDecoration: "none" }}>
-            <Button
-              startIcon={<HomeOutlinedIcon />}
-              variant="text"
-              size="small"
-              sx={{
-                fontSize: {
-                  xs: "0.75rem",
-                  sm: "0.875rem",
-                },
-                color: "background.antiflash",
-              }}
-            >
-              Inicio
-            </Button>
-          </Link>
+          <LinkWithIcon
+            icon={<HomeOutlinedIcon />}
+            link={"/"}
+            text={"Inicio"}
+          />
         )}
         {dashboard && (
-          <Link href="/zunsteps/dashboard" style={{ textDecoration: "none" }}>
-            <Button
-              startIcon={<DashboardIcon />}
-              variant="text"
-              size="small"
-              sx={{
-                fontSize: { xs: "0.75rem", sm: "0.875rem" },
-                color: "background.antiflash",
-              }}
-            >
-              Dashboard
-            </Button>
-          </Link>
+          <LinkWithIcon
+            icon={<DashboardIcon />}
+            link={"/zunsteps/dashboard"}
+            text={"Dashboard"}
+          />
         )}
         {faqs && (
-          <Link href="/zunsteps/faqs" style={{ textDecoration: "none" }}>
-            <Button
-              startIcon={<HelpIcon />}
-              variant="text"
-              size="small"
-              sx={{
-                fontSize: { xs: "0.75rem", sm: "0.875rem" },
-                color: "background.antiflash",
-              }}
-            >
-              FAQs
-            </Button>
-          </Link>
+          <LinkWithIcon
+            icon={<HelpIcon />}
+            link={"/zunsteps/faqs"}
+            text={"FAQs"}
+          />
         )}
         {premiun && (
-          <Link href="/zunsteps/premium" style={{ textDecoration: "none" }}>
-            <Button
-              startIcon={<VerifiedIcon />}
-              variant="text"
-              size="small"
-              sx={{
-                fontSize: { xs: "0.75rem", sm: "0.875rem" },
-                color: "background.green",
-                fontWeight: 600,
-              }}
-            >
-              Premium
-            </Button>
-          </Link>
+          <LinkWithIcon
+            icon={<VerifiedIcon />}
+            link={"/zunsteps/premium"}
+            text={"Premium"}
+          />
         )}
         {admin && (
-          <Link href="/admin" style={{ textDecoration: "none" }}>
-            <Button
-              startIcon={<SettingsIcon />}
-              variant="text"
-              size="small"
-              sx={{
-                fontSize: { xs: "0.75rem", sm: "0.875rem" },
-                color: "background.antiflash",
-                fontWeight: 600,
-              }}
-            >
-              Gestión
-            </Button>
-          </Link>
+          <LinkWithIcon
+            icon={<SettingsIcon />}
+            link={"/admin"}
+            text={"Gestión"}
+          />
         )}
       </Box>
     </Card>
