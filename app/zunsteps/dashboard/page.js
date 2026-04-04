@@ -5,7 +5,13 @@ import { Box, Card, Divider, Typography } from "@mui/material";
 import AppsOutlinedIcon from "@mui/icons-material/AppsOutlined";
 import { DefaultButton } from "@/app/components/ui/DefaultButton";
 import { NavButtonGroup } from "@/app/components/ui/NavButtonGroup";
-import React, { useContext, useEffect, useRef, useCallback } from "react";
+import React, {
+  useContext,
+  useEffect,
+  useRef,
+  useCallback,
+  useState,
+} from "react";
 import CurrencyExchangeOutlinedIcon from "@mui/icons-material/CurrencyExchangeOutlined";
 import Diversity3OutlinedIcon from "@mui/icons-material/Diversity3Outlined";
 import ChairOutlinedIcon from "@mui/icons-material/ChairOutlined";
@@ -26,6 +32,7 @@ import { BasicTabsSkeleton } from "@/app/components/skeletons/BasicTabsSkeleton"
 import { LoadingSpinner } from "@/app/components/ui/LoadingSpinner";
 import { QuickNavigation } from "../../components/ui/QuickNavigation";
 import { InfiniteTips } from "@/app/components/ui/InfiniteTips";
+import { ShowTips } from "@/app/components/button-features/ShowTips";
 
 export default function Dashboard(params) {
   const {
@@ -42,6 +49,7 @@ export default function Dashboard(params) {
     devModule,
   } = useContext(ModuloContext);
   const { itemsMarked, handleMark } = useMark();
+  const [showInfiniTips, setShowInfiniTips] = useState(false);
 
   // Mapear módulos a iconos y funciones basado en palabras clave mejoradas
   const moduloConfig = {
@@ -81,6 +89,11 @@ export default function Dashboard(params) {
       handler: setZunpr,
       markName: "ZUNpr",
     },
+  };
+
+  //Funcion para el manejo de mostrar o nolos Tips
+  const handleShowTips = () => {
+    setShowInfiniTips(!showInfiniTips);
   };
 
   // Función para obtener configuración del módulo
@@ -170,7 +183,17 @@ export default function Dashboard(params) {
       {/* Contenido Principal - Derecha */}
       <Box sx={{ flex: 1, width: { xs: "100%", lg: "auto" } }}>
         {loading ? <BasicTabsSkeleton /> : <BasicTabs />}
-        <InfiniteTips />
+        {showInfiniTips ? (
+          <Box sx={{ display: "flex", flexDirection: "column", gap: "15px" }}>
+            <ShowTips
+              isShow={!showInfiniTips}
+              manageFunction={handleShowTips}
+            />
+            <InfiniteTips />
+          </Box>
+        ) : (
+          <ShowTips isShow={!showInfiniTips} manageFunction={handleShowTips} />
+        )}
       </Box>
     </Box>
   );
