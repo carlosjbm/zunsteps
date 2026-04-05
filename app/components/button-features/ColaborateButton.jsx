@@ -9,7 +9,6 @@ import Typography from "@mui/material/Typography";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import { useState } from "react";
@@ -19,6 +18,19 @@ import Alert from "@mui/material/Alert";
 import CircularProgress from "@mui/material/CircularProgress";
 import { usePremiumAuth } from "@/app/lib/contexts/PremiumAuthContext";
 import { useFetch } from "@/app/lib/hooks/useFetch";
+import LightbulbOutlinedIcon from "@mui/icons-material/LightbulbOutlined";
+import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
+import SchoolIcon from "@mui/icons-material/School";
+import DescriptionIcon from "@mui/icons-material/Description";
+import PeopleOutlineIcon from "@mui/icons-material/PeopleOutline";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import TextField from "@mui/material/TextField";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import Divider from "@mui/material/Divider";
+import { ShareOutlined } from "@mui/icons-material";
 
 const actions = [
   {
@@ -165,223 +177,304 @@ export default function ColaborateButton() {
         >
           <DialogTitle id="dialog-title">{selectedAction.title}</DialogTitle>
           <DialogContent>
-            <DialogContentText sx={{ marginBottom: "20px" }}>
-              {selectedAction.rAccion}
-            </DialogContentText>
-
-            {message && (
-              <Box sx={{ marginBottom: "15px" }}>
-                <Alert severity={message.type}>{message.text}</Alert>
-              </Box>
-            )}
-
             {selectedAction.type === "tip" ? (
-              <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                {/* Título del Tip */}
-                <Box>
-                  <label
-                    style={{
-                      display: "block",
-                      marginBottom: "5px",
-                      fontWeight: 500,
-                      color: "#2c3e50",
-                      fontSize: "0.9rem",
+              <>
+                {/* Header motivador */}
+                <Box
+                  sx={{
+                    backgroundColor: "background.antiflash",
+                    borderRadius: 2,
+                    padding: 3,
+                    marginBottom: 3,
+                    textAlign: "center",
+                    borderLeft: "4px solid",
+                    borderColor: "background.green",
+                  }}
+                >
+                  <Box
+                    sx={{ display: "flex", justifyContent: "center", mb: 1 }}
+                  >
+                    <PeopleOutlineIcon
+                      sx={{ fontSize: 40, color: "background.green", mr: 1 }}
+                    />
+                  </Box>
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontWeight: 700,
+                      color: "primary.main",
+                      marginBottom: 1,
                     }}
                   >
-                    Título del Tip
-                  </label>
-                  <Box
-                    component="input"
-                    type="text"
-                    name="nombre"
-                    value={formData.nombre}
-                    onChange={handleFormChange}
-                    placeholder="Ej: Cómo optimizar tu flujo de trabajo"
-                    sx={{
-                      width: "100%",
-                      padding: "10px",
-                      borderRadius: "4px",
-                      border: "1px solid #ccc",
-                      fontFamily: "inherit",
-                      fontSize: "1rem",
-                      boxSizing: "border-box",
-                      "&:focus": {
-                        outline: "none",
-                        borderColor: "primary.blue",
-                        boxShadow: "0 0 0 2px rgba(25, 118, 210, 0.1)",
-                      },
-                    }}
-                  />
+                    ¡Comparte tu conocimiento!
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: "primary.text", fontSize: "0.95rem" }}
+                  >
+                    Tu experiencia puede ayudar a otros a crecer. Juntos
+                    construimos una comunidad más fuerte.
+                  </Typography>
                 </Box>
 
-                {/* Tema */}
-                <Box>
-                  <label
-                    style={{
-                      display: "block",
-                      marginBottom: "5px",
-                      fontWeight: 500,
-                      color: "#2c3e50",
-                      fontSize: "0.9rem",
-                    }}
-                  >
-                    Tema
-                  </label>
-                  <Box
-                    component="select"
-                    name="tema_id"
-                    value={formData.tema_id}
-                    onChange={handleFormChange}
-                    sx={{
-                      width: "100%",
-                      padding: "10px",
-                      borderRadius: "4px",
-                      border: "1px solid #ccc",
-                      fontFamily: "inherit",
-                      fontSize: "1rem",
-                      boxSizing: "border-box",
-                      backgroundColor: "white",
-                      cursor: "pointer",
-                      "&:focus": {
-                        outline: "none",
-                        borderColor: "primary.blue",
-                        boxShadow: "0 0 0 2px rgba(25, 118, 210, 0.1)",
-                      },
-                    }}
-                  >
-                    //Tema
-                    <option value="">Selecciona un tema</option>
-                    {data ? (
-                      data.map((tema) => (
-                        <option key={tema.id} value={tema.id}>
-                          {tema.nombre}
-                        </option>
-                      ))
-                    ) : (
-                      <option value="">Cargando temas...</option>
-                    )}
+                {message && (
+                  <Box sx={{ marginBottom: "20px" }}>
+                    <Alert
+                      severity={message.type}
+                      icon={
+                        message.type === "success" ? (
+                          <CheckCircleOutlineIcon />
+                        ) : undefined
+                      }
+                    >
+                      {message.text}
+                    </Alert>
                   </Box>
-                </Box>
+                )}
 
-                {/* Clase */}
-                {/* <Box>
-                  <label
-                    style={{
-                      display: "block",
-                      marginBottom: "5px",
-                      fontWeight: 500,
-                      color: "#2c3e50",
-                      fontSize: "0.9rem",
-                    }}
-                  >
-                    Clase
-                  </label>
-                  <Box
-                    component="select"
-                    name="clase_id"
-                    value={formData.clase_id}
-                    onChange={handleFormChange}
-                    sx={{
-                      width: "100%",
-                      padding: "10px",
-                      borderRadius: "4px",
-                      border: "1px solid #ccc",
-                      fontFamily: "inherit",
-                      fontSize: "1rem",
-                      boxSizing: "border-box",
-                      backgroundColor: "white",
-                      cursor: "pointer",
-                      "&:focus": {
-                        outline: "none",
-                        borderColor: "primary.blue",
-                        boxShadow: "0 0 0 2px rgba(25, 118, 210, 0.1)",
-                      },
-                    }}
-                  >
-                    //clase
-                    <option value="">Selecciona una clase</option>
+                {/* Formulario con mejor UX */}
+                <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
+                  {/* Campo Título */}
+                  <Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 1,
+                        mb: 1.5,
+                      }}
+                    >
+                      <LightbulbOutlinedIcon
+                        sx={{ color: "primary.blue", fontSize: 22 }}
+                      />
+                      <Typography
+                        variant="body1"
+                        sx={{ fontWeight: 600, color: "primary.main" }}
+                      >
+                        Título del Tip
+                      </Typography>
+                    </Box>
+                    <TextField
+                      fullWidth
+                      name="nombre"
+                      value={formData.nombre}
+                      onChange={handleFormChange}
+                      placeholder="Ej: Siempre usa el usuario Administrador"
+                      variant="outlined"
+                      size="small"
+                      disabled={loading}
+                      sx={{
+                        "& .MuiOutlinedInput-root": {
+                          backgroundColor: "background.main",
+                          borderRadius: 1.5,
+                          "&:hover fieldset": {
+                            borderColor: "primary.blue",
+                          },
+                          "&.Mui-focused fieldset": {
+                            borderColor: "primary.blue",
+                          },
+                        },
+                      }}
+                    />
                   </Box>
-                </Box> */}
-                {/* Descripción */}
-                <Box>
-                  <label
-                    style={{
-                      display: "block",
-                      marginBottom: "5px",
-                      fontWeight: 500,
-                      color: "#2c3e50",
-                      fontSize: "0.9rem",
+
+                  {/* Campo Tema */}
+                  <Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 1,
+                        mb: 1.5,
+                      }}
+                    >
+                      <SchoolIcon
+                        sx={{ color: "primary.blue", fontSize: 22 }}
+                      />
+                      <Typography
+                        variant="body1"
+                        sx={{ fontWeight: 600, color: "primary.main" }}
+                      >
+                        Tema
+                      </Typography>
+                    </Box>
+                    <FormControl fullWidth size="small" disabled={loading}>
+                      <InputLabel>Selecciona un tema</InputLabel>
+                      <Select
+                        name="tema_id"
+                        value={formData.tema_id}
+                        onChange={handleFormChange}
+                        label="Selecciona un tema"
+                        sx={{
+                          backgroundColor: "background.main",
+                          borderRadius: 1.5,
+                          "& .MuiOutlinedInput-notchedOutline": {
+                            borderColor: "#e0e0e0",
+                          },
+                          "&:hover .MuiOutlinedInput-notchedOutline": {
+                            borderColor: "primary.blue",
+                          },
+                          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                            borderColor: "primary.blue",
+                          },
+                        }}
+                      >
+                        <MenuItem value="">
+                          <em>Selecciona un tema</em>
+                        </MenuItem>
+                        {data ? (
+                          data.map((tema) => (
+                            <MenuItem key={tema.id} value={tema.id}>
+                              {tema.nombre}
+                            </MenuItem>
+                          ))
+                        ) : (
+                          <MenuItem disabled>
+                            <em>Cargando temas...</em>
+                          </MenuItem>
+                        )}
+                      </Select>
+                    </FormControl>
+                  </Box>
+
+                  {/* Campo Descripción */}
+                  <Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 1,
+                        mb: 1.5,
+                      }}
+                    >
+                      <DescriptionIcon
+                        sx={{ color: "primary.blue", fontSize: 22 }}
+                      />
+                      <Typography
+                        variant="body1"
+                        sx={{ fontWeight: 600, color: "primary.main" }}
+                      >
+                        Descripción
+                      </Typography>
+                    </Box>
+                    <TextField
+                      fullWidth
+                      name="descripcion"
+                      value={formData.descripcion}
+                      onChange={handleFormChange}
+                      placeholder="Comparte los detalles de tu tip. Sé específico y práctico para que otros puedan aplicarlo fácilmente..."
+                      variant="outlined"
+                      multiline
+                      rows={6}
+                      disabled={loading}
+                      sx={{
+                        "& .MuiOutlinedInput-root": {
+                          backgroundColor: "background.main",
+                          borderRadius: 1.5,
+                          "&:hover fieldset": {
+                            borderColor: "primary.blue",
+                          },
+                          "&.Mui-focused fieldset": {
+                            borderColor: "primary.blue",
+                          },
+                        },
+                      }}
+                    />
+                  </Box>
+
+                  {/* Footer con motivación */}
+                  <Divider />
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1.5,
+                      padding: 2,
+                      backgroundColor: "rgba(51, 210, 164, 0.05)",
+                      borderRadius: 1.5,
                     }}
                   >
-                    Descripción del Tip
-                  </label>
-                  <Box
-                    component="textarea"
-                    name="descripcion"
-                    value={formData.descripcion}
-                    onChange={handleFormChange}
-                    placeholder="Describe tu tip en detalle..."
-                    rows={5}
-                    sx={{
-                      width: "100%",
-                      padding: "10px",
-                      borderRadius: "4px",
-                      border: "1px solid #ccc",
-                      fontFamily: "inherit",
-                      fontSize: "1rem",
-                      resize: "vertical",
-                      boxSizing: "border-box",
-                      "&:focus": {
-                        outline: "none",
-                        borderColor: "primary.blue",
-                        boxShadow: "0 0 0 2px rgba(25, 118, 210, 0.1)",
-                      },
-                    }}
-                  />
+                    <LocalFireDepartmentIcon
+                      sx={{ color: "background.green", fontSize: 24 }}
+                    />
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        color: "primary.text",
+                        fontStyle: "italic",
+                        fontSize: "0.9rem",
+                      }}
+                    >
+                      Cada tip que publicas ayuda a la comunidad a crecer.
+                      ¡Gracias por contribuir!
+                    </Typography>
+                  </Box>
                 </Box>
-              </Box>
+              </>
             ) : (
               <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                <Box
-                  component="input"
+                <TextField
+                  fullWidth
                   type="text"
                   placeholder="Pega el link que deseas compartir"
-                  sx={{
-                    padding: "10px",
-                    borderRadius: "4px",
-                    border: "1px solid #ccc",
-                    fontFamily: "inherit",
-                    fontSize: "1rem",
-                    "&:focus": {
-                      outline: "none",
-                      borderColor: "primary.blue",
-                      boxShadow: "0 0 0 2px rgba(25, 118, 210, 0.1)",
-                    },
-                  }}
+                  variant="outlined"
+                  size="small"
+                  disabled={loading}
                 />
               </Box>
             )}
           </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseDialog} disabled={loading}>
+          <DialogActions
+            sx={{
+              padding: 2,
+              gap: 1,
+              backgroundColor: "background.antiflash",
+              borderTop: "1px solid #e0e0e0",
+            }}
+          >
+            <Button
+              onClick={handleCloseDialog}
+              disabled={loading}
+              sx={{
+                color: "primary.text",
+                textTransform: "none",
+                fontSize: "1rem",
+                "&:hover": {
+                  backgroundColor: "rgba(0, 0, 0, 0.04)",
+                },
+              }}
+            >
               Cancelar
             </Button>
             <Button
               onClick={handleSubmit}
               variant="contained"
               disabled={loading}
+              startIcon={
+                loading ? (
+                  <CircularProgress size={20} sx={{ color: "white" }} />
+                ) : (
+                  <ShareOutlined />
+                )
+              }
               sx={{
                 backgroundColor: "background.green",
+                color: "white",
+                fontWeight: 600,
+                textTransform: "none",
+                fontSize: "1rem",
+                paddingX: 3,
                 "&:hover": {
                   backgroundColor: "background.green",
-                  opacity: 0.9,
+                  opacity: 0.85,
+                },
+                "&:disabled": {
+                  backgroundColor: "background.green",
+                  opacity: 0.6,
                 },
               }}
             >
-              {loading ? (
-                <CircularProgress size={20} sx={{ mr: 1, color: "white" }} />
-              ) : null}
-              {loading ? "Guardando..." : "Enviar"}
+              {loading ? "Compartiendo..." : "Compartir"}
             </Button>
           </DialogActions>
         </Dialog>
