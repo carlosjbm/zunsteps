@@ -18,6 +18,7 @@ import { QuickNavigation } from "@/app/components/ui/QuickNavigation";
 import { FacturProcess } from "@/app/components/ui/FacturProcess";
 import { Person } from "@mui/icons-material";
 import { Phone } from "@mui/icons-material";
+import ColaborateButton from "@/app/components/button-features/ColaborateButton";
 
 function PremiumPageContent() {
   const router = useRouter();
@@ -100,6 +101,7 @@ function PremiumPageContent() {
           <VerifiedIcon sx={{ color: "blue" }} />
         </Typography>
         <PremiumTabs />
+        <ColaborateButton />
       </Box>
       <Box textAlign="center" color="text.secondary" mt={6}>
         <Typography variant="body2">
