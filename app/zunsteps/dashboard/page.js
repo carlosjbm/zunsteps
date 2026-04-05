@@ -126,7 +126,7 @@ export default function Dashboard(params) {
           handleShowContents={handleShowContents}
           handleShowTips={handleShowTips}
           isShown={showContents}
-          isShownTips={showInfiniTips}
+          isShowTips={showInfiniTips}
         />
       </Box>
       <Box
@@ -203,7 +203,10 @@ export default function Dashboard(params) {
         <Box sx={{ flex: 1, width: { xs: "100%", lg: "auto" } }}>
           {loading ? <BasicTabsSkeleton /> : <BasicTabs />}
           {showInfiniTips && (
-            <Box sx={{ display: "flex", flexDirection: "column", gap: "15px" }}>
+            <Box
+              id="infinite-tips-section"
+              sx={{ display: "flex", flexDirection: "column", gap: "15px" }}
+            >
               <InfiniteTips />
             </Box>
           )}
