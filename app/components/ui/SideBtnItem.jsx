@@ -33,7 +33,7 @@ export const SideBtnItem = ({
         sx={{
           display: "flex",
           width: "100%",
-          maxWidth: "280px",
+          // maxWidth: "280px",
           padding: "12px 16px",
           gap: "12px",
           backgroundColor: valueMark ? "primary.main" : "background.antiflah",
@@ -41,8 +41,8 @@ export const SideBtnItem = ({
           borderColor: isHovered
             ? "primary.main"
             : valueMark
-            ? "primary.main"
-            : "#f0f0f0",
+              ? "primary.main"
+              : "#f0f0f0",
           color: valueMark ? "white" : "primary.text",
           borderRadius: "8px",
           fontWeight: 600,

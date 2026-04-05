@@ -10,12 +10,12 @@ export function NavButtonGroup() {
   const buttons = [
     {
       href: "/",
-      label: "grupo de whatsapp",
+      label: "whatsapp",
       icon: <WhatsApp />,
     },
     {
       href: "/",
-      label: "Bot en telegram",
+      label: "telegram",
       icon: <Telegram />,
     },
   ];

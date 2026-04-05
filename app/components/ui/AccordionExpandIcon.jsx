@@ -190,7 +190,7 @@ export default function AccordionExpandIcon({ seccion }) {
           </Typography>
 
           {/* Filtro por Cargo */}
-          <FormControl
+          {/* <FormControl
             sx={{ minWidth: { xs: "100%", sm: "250px" } }}
             size="small"
           >
@@ -221,8 +221,9 @@ export default function AccordionExpandIcon({ seccion }) {
                 </MenuItem>
               ))}
             </Select>
-          </FormControl>
+          </FormControl> */}
 
+          {/**Buscador */}
           <Searcher
             collection={filteredActions}
             searchFunction={searchAccion}

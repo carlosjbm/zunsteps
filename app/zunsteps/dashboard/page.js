@@ -33,6 +33,7 @@ import { LoadingSpinner } from "@/app/components/ui/LoadingSpinner";
 import { QuickNavigation } from "../../components/ui/QuickNavigation";
 import { InfiniteTips } from "@/app/components/ui/InfiniteTips";
 import { ShowTips } from "@/app/components/button-features/ShowTips";
+import { PrincipalBar } from "@/app/components/ui/PrincipalBar";
 
 export default function Dashboard(params) {
   const {
@@ -50,6 +51,7 @@ export default function Dashboard(params) {
   } = useContext(ModuloContext);
   const { itemsMarked, handleMark } = useMark();
   const [showInfiniTips, setShowInfiniTips] = useState(false);
+  const [showContents, setShowContents] = useState(false);
 
   // Mapear módulos a iconos y funciones basado en palabras clave mejoradas
   const moduloConfig = {
@@ -95,7 +97,10 @@ export default function Dashboard(params) {
   const handleShowTips = () => {
     setShowInfiniTips(!showInfiniTips);
   };
-
+  //Funcion pra el manejo de mostrar o no los contenidos
+  const handleShowContents = () => {
+    setShowContents(!showContents);
+  };
   // Función para obtener configuración del módulo
   const getModuloConfig = (moduloName) => {
     if (!moduloName || typeof moduloName !== "string") {
@@ -114,87 +119,96 @@ export default function Dashboard(params) {
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: { xs: "column", lg: "row" },
-        gap: { xs: 2, md: 3 },
-        py: { xs: 2, md: 4 },
-        px: { xs: 1, md: 2 },
-      }}
-    >
+    <>
       <QuickNavigation dashboard={false} />
-
-      {/* Sidebar Izquierdo - Contenidos + Tips */}
+      <Box sx={{ width: "400px", justifyItems: "center" }}>
+        <PrincipalBar
+          handleShowContents={handleShowContents}
+          handleShowTips={handleShowTips}
+          isShown={showContents}
+          isShownTips={showInfiniTips}
+        />
+      </Box>
       <Box
         sx={{
-          width: { xs: "100%", lg: "350px" },
           display: "flex",
-          flexDirection: "column",
-          gap: 2,
+          flexDirection: { xs: "column", lg: "row" },
+          gap: { xs: 2, md: 3 },
+          py: { xs: 2, md: 4 },
+          px: { xs: 1, md: 2 },
         }}
       >
-        {/* Card de Contenidos */}
-        <Card
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            maxHeight: "500px",
-          }}
-        >
+        {/* Sidebar Izquierdo - Contenidos + Tips */}
+        {showContents && (
           <Box
             sx={{
+              width: { xs: "100%", lg: "350px" },
               display: "flex",
               flexDirection: "column",
-              gap: 1,
-              overflowY: "auto",
-              alignItems: "center",
-              p: 1,
+              gap: 2,
             }}
           >
-            {loading && <SideBtnListSkeleton />}
+            {/* Card de Contenidos */}
+            <Card
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                // maxHeight: "500px",
+                width: "100%",
+                padding: "5%",
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 1,
+                  overflowY: "auto",
+                  alignItems: "center",
+                  p: 1,
+                }}
+              >
+                {loading && <SideBtnListSkeleton />}
 
-            {error && (
-              <Typography color="error" variant="body2">
-                Error al cargar módulos
-              </Typography>
-            )}
+                {error && (
+                  <Typography color="error" variant="body2">
+                    Error al cargar módulos
+                  </Typography>
+                )}
 
-            {!loading &&
-              modulos.map((el) => {
-                const config = getModuloConfig(el.mNombre);
-                return (
-                  <SideBtnItem
-                    key={el.id}
-                    title={el.mNombre}
-                    icon={config?.icon || <AppsOutlinedIcon />}
-                    handleModulo={() => setModulo(el)}
-                    modulesStatus={itemsMarked}
-                    toMark={() => handleMark(config?.markName || el.mNombre)}
-                  />
-                );
-              })}
-            <Divider sx={{ width: "100%", my: 0.5 }} />
-            <NavButtonGroup />
+                {!loading &&
+                  modulos.map((el) => {
+                    const config = getModuloConfig(el.mNombre);
+                    return (
+                      <SideBtnItem
+                        key={el.id}
+                        title={el.mNombre}
+                        icon={config?.icon || <AppsOutlinedIcon />}
+                        handleModulo={() => setModulo(el)}
+                        modulesStatus={itemsMarked}
+                        toMark={() =>
+                          handleMark(config?.markName || el.mNombre)
+                        }
+                      />
+                    );
+                  })}
+                <Divider sx={{ width: "100%", my: 0.5 }} />
+                <NavButtonGroup />
+              </Box>
+            </Card>
           </Box>
-        </Card>
-      </Box>
-
-      {/* Contenido Principal - Derecha */}
-      <Box sx={{ flex: 1, width: { xs: "100%", lg: "auto" } }}>
-        {loading ? <BasicTabsSkeleton /> : <BasicTabs />}
-        {showInfiniTips ? (
-          <Box sx={{ display: "flex", flexDirection: "column", gap: "15px" }}>
-            <ShowTips
-              isShow={!showInfiniTips}
-              manageFunction={handleShowTips}
-            />
-            <InfiniteTips />
-          </Box>
-        ) : (
-          <ShowTips isShow={!showInfiniTips} manageFunction={handleShowTips} />
         )}
+
+        {/* Contenido Principal - Derecha */}
+        <Box sx={{ flex: 1, width: { xs: "100%", lg: "auto" } }}>
+          {loading ? <BasicTabsSkeleton /> : <BasicTabs />}
+          {showInfiniTips && (
+            <Box sx={{ display: "flex", flexDirection: "column", gap: "15px" }}>
+              <InfiniteTips />
+            </Box>
+          )}
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 }
