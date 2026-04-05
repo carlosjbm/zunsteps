@@ -10,3 +10,24 @@ export async function getTips() {
   const [rows] = await pool.query(allTipsQuery);
   return rows;
 }
+
+export async function createTip(
+  nombre,
+  descripcion,
+  usuarioId = 1,
+  temId = 1,
+  claseId = 1,
+) {
+  const insertQuery = `
+    INSERT INTO tips (nombre, descripcion, usuario_id, id_tema, id_clase, fecha_creado) 
+    VALUES (?, ?, ?, ?, ?, NOW())
+  `;
+  const [result] = await pool.query(insertQuery, [
+    nombre,
+    descripcion,
+    usuarioId,
+    temId,
+    claseId,
+  ]);
+  return result;
+}
