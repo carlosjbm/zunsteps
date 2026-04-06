@@ -1,16 +1,7 @@
 import pool from "@/app/lib/db";
+import { pasosData } from "@/app/lib/queries/pasosQuery";
+
 export async function getPasos(modulo = 1) {
-  const [pasos] = await pool.query(`SELECT 
-m.nombre AS Modulo, 
-s.nombre AS Seccion, 
-a.nombre AS Accion, 
-p.nombre AS Paso, 
-p.descripcion AS DescripcionPaso 
-FROM 
-modulos m JOIN secciones s ON s.id_modulo = m.id JOIN
- acciones a ON a.id_seccion = s.id JOIN
-  pasos p ON p.id_accion = a.id 
-  WHERE 
-  m.id = ${modulo} `);
+  const [pasos] = await pool.query(pasosData, [modulo]);
   return pasos;
 }
