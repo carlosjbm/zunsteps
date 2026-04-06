@@ -7,7 +7,8 @@ import TerminalIcon from "@mui/icons-material/Terminal";
 import NotificationsActiveOutlinedIcon from "@mui/icons-material/NotificationsActiveOutlined";
 import LinkOutlinedIcon from "@mui/icons-material/LinkOutlined";
 import AccountTreeOutlinedIcon from "@mui/icons-material/AccountTreeOutlined";
-import CodeSnippet from "../ui/CudeSnippet";
+import MilitaryTechOutlinedIcon from "@mui/icons-material/MilitaryTechOutlined";
+import WorkspacePremiumOutlinedIcon from "@mui/icons-material/WorkspacePremiumOutlined";
 import Badge from "@mui/material/Badge";
 import Tooltip from "@mui/material/Tooltip";
 
@@ -26,6 +27,7 @@ import BasicAccordion from "./BasicAccordion";
 import useCurrentMonth from "@/app/lib/hooks/useCurrentMonth";
 import { useFetch } from "@/app/lib/hooks/useFetch";
 import LoadingSpinner from "./LoadingSpinner";
+import { InfiniteTips } from "./InfiniteTips";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -67,9 +69,9 @@ export default function PremiumTabs() {
     toFiltre,
   ] = useCurrentMonth("es-ES");
   //Fetch al endpoint de los scripts
-  const { loading, error, data } = useFetch(
-    "http://localhost:3000/api/scripts/",
-  );
+  // const { loading, error, data } = useFetch(
+  //   "http://localhost:3000/api/scripts/",
+  // );
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -82,8 +84,8 @@ export default function PremiumTabs() {
           onChange={handleChange}
           aria-label="basic tabs example"
         >
-          <Tooltip title="Scripts" arrow>
-            <Tab label={<TerminalIcon />} {...a11yProps(0)} />
+          <Tooltip title="Colaboradores" arrow>
+            <Tab label={<WorkspacePremiumOutlinedIcon />} {...a11yProps(0)} />
           </Tooltip>
           <Tooltip title="Links Útiles" arrow>
             <Tab label={<LinkOutlinedIcon />} {...a11yProps(1)} />
@@ -108,27 +110,9 @@ export default function PremiumTabs() {
       </Box>
       <CustomTabPanel value={value} index={0}>
         <Typography variant="h6" sx={{ margin: "2%" }} gutterBottom>
-          Scripts Utilitarios
+          Colaboradores destacados
         </Typography>
-        <Box className="copy-section">
-          {loading ? (
-            <>
-              <CircularProgress size={20} sx={{ mr: 1 }} />
-              Cargando Scripts...
-            </>
-          ) : (
-            data.map((s) => {
-              return (
-                <CodeSnippet
-                  key={s.id}
-                  name={s.nombre}
-                  code={s.code}
-                  description={s.descripcion}
-                />
-              );
-            })
-          )}
-        </Box>
+        {/* <InfiniteTips /> */}
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         <Typography variant="h6" sx={{ margin: "2%" }} gutterBottom>
