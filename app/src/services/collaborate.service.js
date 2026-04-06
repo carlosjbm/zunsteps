@@ -1,9 +1,15 @@
 import pool from "@/app/lib/db";
-
-const query = `SELECT usuario_id,usuarios.nombre as usuario_nombre, COUNT(usuario_id) as cant_colaboraciones
-FROM tips, usuarios WHERE usuario_id=usuarios.id GROUP BY (usuario_id) ORDER BY cant_colaboraciones DESC;`;
+import { colaboration, usersAndLikes } from "@/app/lib/queries/colaborations";
 
 export async function getBestCollaborators() {
-  const [rows] = await pool.query(query);
-  return rows;
+  const [colaborationData] = await pool.query(colaboration);
+  const [usersLikes] = await pool.query(usersAndLikes);
+  const firstUsers = usersLikes.slice(0, 2).map((us) => {
+    return us?.usuario_nombre;
+  }); //Primeros tres usuarios
+  return {
+    genericData: colaborationData,
+    likesStats: usersLikes,
+    bestRank: firstUsers,
+  };
 }
