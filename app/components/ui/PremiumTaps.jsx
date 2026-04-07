@@ -28,6 +28,7 @@ import useCurrentMonth from "@/app/lib/hooks/useCurrentMonth";
 import { useFetch } from "@/app/lib/hooks/useFetch";
 import LoadingSpinner from "./LoadingSpinner";
 import { InfiniteTips } from "./InfiniteTips";
+import { ColaboratorStats } from "./ColaboratorStats";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -110,7 +111,7 @@ export default function PremiumTabs() {
       </Box>
       <CustomTabPanel value={value} index={0}>
         <Typography variant="h6" sx={{ margin: "2%" }} gutterBottom>
-          Colaboradores destacados
+          <ColaboratorStats />
         </Typography>
         {/* <InfiniteTips /> */}
       </CustomTabPanel>
