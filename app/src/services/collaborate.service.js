@@ -7,8 +7,9 @@ export async function getBestCollaborators() {
   const firstUsers = usersLikes.slice(0, 2).map((us) => {
     return us?.usuario_nombre;
   }); //Primeros tres usuarios
+
   return {
-    genericData: colaborationData,
+    genericData: colaborationData.slice(0, 2), //primeros 3 en el ranking
     likesStats: usersLikes,
     bestRank: firstUsers,
   };

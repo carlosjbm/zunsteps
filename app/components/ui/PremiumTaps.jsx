@@ -1,3 +1,4 @@
+"use client";
 import * as React from "react";
 import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
@@ -11,14 +12,6 @@ import MilitaryTechOutlinedIcon from "@mui/icons-material/MilitaryTechOutlined";
 import WorkspacePremiumOutlinedIcon from "@mui/icons-material/WorkspacePremiumOutlined";
 import Badge from "@mui/material/Badge";
 import Tooltip from "@mui/material/Tooltip";
-
-import {
-  clearStock,
-  resetGet,
-  resetPassOpes,
-  prodMachete,
-  claveAlmacen,
-} from "@/app/lib/scipts/utils";
 import { CircularProgress, Typography } from "@mui/material";
 import "../../styles/premium.css";
 import Utilinks from "./Utilinks";
@@ -69,13 +62,13 @@ export default function PremiumTabs() {
     setFiltredProcess,
     toFiltre,
   ] = useCurrentMonth("es-ES");
-  //Fetch al endpoint de los scripts
-  // const { loading, error, data } = useFetch(
-  //   "http://localhost:3000/api/scripts/",
-  // );
+  const { loading, error, data } = useFetch(
+    "http://localhost:3000/api/colaboracion/",
+  );
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  const apiGenericStats = !loading ? data?.genericData : null;
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -110,9 +103,43 @@ export default function PremiumTabs() {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <Typography variant="h6" sx={{ margin: "2%" }} gutterBottom>
-          <ColaboratorStats />
-        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            height: "20%",
+            backgroundColor: "background.antiflash",
+            marginBottom: "3%",
+            color: "primary.main",
+          }}
+        >
+          <Typography
+            color="primary.blue"
+            variant="h6"
+            sx={{ margin: "2%" }}
+            gutterBottom
+          >
+            Colaboradores destacados
+          </Typography>
+        </Box>
+        {apiGenericStats ? (
+          apiGenericStats.map((e) => {
+            return (
+              <ColaboratorStats
+                key={e.ususrio_id}
+                userName={e.usuario_nombre}
+                tipsNumber={e.cant_c}
+                porcent={e.porc_c}
+                likesNumber={e.usuario_likes}
+              />
+            );
+          })
+        ) : (
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <CircularProgress /> Cargando datos ...
+          </Box>
+        )}
+
         {/* <InfiniteTips /> */}
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>

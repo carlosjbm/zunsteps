@@ -14,6 +14,7 @@ SELECT
     tips.fecha_creado AS fecha_uc,
     tips.nombre AS nombre_uc,
     usuarios.nombre AS usuario_nombre,
+    SUM(tips.likes) AS usuario_likes,
     COUNT(usuario_id) AS cant_c,
     (
 SELECT

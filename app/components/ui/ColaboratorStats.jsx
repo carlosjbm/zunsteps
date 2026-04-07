@@ -8,7 +8,12 @@ import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 import { LightbulbOutline } from "@mui/icons-material";
 import { FavoriteOutlined } from "@mui/icons-material";
 
-export const ColaboratorStats = () => {
+export const ColaboratorStats = ({
+  userName = "Carlos",
+  tipsNumber = 3,
+  likesNumber = 3,
+  porcent = 75,
+}) => {
   return (
     <Card sx={{ padding: 2 }}>
       <Box
@@ -31,13 +36,13 @@ export const ColaboratorStats = () => {
         >
           <Person />
           <Typography variant="body1" fontSize={20} color="primary.main">
-            Carlos
+            {userName}
           </Typography>
         </Box>
         <Box
           sx={{
             display: "flex",
-            gap: 1,
+            gap: 1.5,
             color: "primary.text",
             alignItems: "center",
           }}
@@ -45,30 +50,32 @@ export const ColaboratorStats = () => {
           <Box
             sx={{
               display: "flex",
-              gap: 0.3,
+              gap: 0.2,
               alignItems: "center",
               color: "background.green",
             }}
           >
-            4
             <LocalFireDepartmentIcon />
+            {tipsNumber}
           </Box>
           <Box
             sx={{
               color: "primary.red",
               display: "flex",
-              gap: 0.3,
+              gap: 0.2,
               alignItems: "center",
             }}
           >
-            8
             <FavoriteOutlined />
+            {likesNumber}
           </Box>
         </Box>
       </Box>
 
-      <Typography color="primary.text">autor del: 75% de los tips</Typography>
-      <LinearProgress variant="determinate" value={75} />
+      <Typography color="primary.text">
+        autor del: {porcent}% de los tips
+      </Typography>
+      <LinearProgress variant="determinate" value={porcent} />
     </Card>
   );
 };

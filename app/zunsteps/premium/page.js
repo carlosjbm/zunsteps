@@ -92,14 +92,6 @@ function PremiumPageContent() {
       </Box>
 
       <Box mb={4}>
-        <Typography
-          sx={{ display: "flex", gap: "1%" }}
-          variant="h5"
-          gutterBottom
-        >
-          Contenido Exclusivo
-          <VerifiedIcon sx={{ color: "blue" }} />
-        </Typography>
         <PremiumTabs />
         <ColaborateButton />
       </Box>
