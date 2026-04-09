@@ -22,7 +22,7 @@ SELECT
 FROM
     tips
 ) AS sistema_tc,
-(
+ROUND((
     SELECT
         COUNT(usuario_id) * 100 /(
     SELECT
@@ -30,7 +30,7 @@ FROM
     FROM
         tips
     )
-) AS porc_c
+)) AS porc_c
 FROM
     tips,
     usuarios
@@ -40,8 +40,7 @@ GROUP BY
     (usuario_id)
 ORDER BY
     cant_c
-DESC
-    ;`;
+DESC;`;
 
 // cantidad de likes de un usuario especifico
 export const likesUser = `
@@ -58,12 +57,12 @@ export const usersAndLikes = `
 SELECT
     usuarios.nombre AS usuario_nombre,
     SUM(tips.likes) AS usuario_likes,
-    (SUM(tips.likes)) /((
+  ROUND((SUM(tips.likes)) /((
 SELECT
     COUNT(*)
 FROM
     tips
-)) AS indic_gusto
+)), 2) AS indic_gusto
 FROM
     tips,
     usuarios
