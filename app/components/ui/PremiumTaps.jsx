@@ -126,7 +126,7 @@ export default function PremiumTabs() {
           apiGenericStats.map((e) => {
             return (
               <ColaboratorStats
-                key={e.ususrio_id}
+                key={e.usuario_nombre}
                 userName={e.usuario_nombre}
                 tipsNumber={e.cant_c}
                 porcent={e.porc_c}
