@@ -1,3 +1,4 @@
+"use client";
 import Box from "@mui/material/Box";
 import SpeedDial from "@mui/material/SpeedDial";
 import SpeedDialIcon from "@mui/material/SpeedDialIcon";
@@ -31,13 +32,16 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Divider from "@mui/material/Divider";
 import { ShareOutlined } from "@mui/icons-material";
+import LinkOutlinedIcon from "@mui/icons-material/LinkOutlined";
+import { HeaderMotivator } from "../reusables/HederMotivador";
 
 const actions = [
   {
-    icon: <AttachFileIcon />,
+    icon: <LinkOutlinedIcon />,
     name: "Compartir link",
     title: "Compartir link",
-    rAccion: "Aquí puedes compartir el link de tu proceso con otros usuarios.",
+    rAccion:
+      "Aquí puedes compartir links a recursos de interés para la comunidad.",
     type: "link",
   },
   {
@@ -56,8 +60,9 @@ export default function ColaborateButton() {
     descripcion: "",
     tema_id: "",
     clase_id: "",
+    url: "",
+    descriptionLink: "",
   });
-  const [formLink, setFormLink] = useState({ url: "", description: "" });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
   const theme = useTheme();
@@ -67,7 +72,14 @@ export default function ColaborateButton() {
 
   const handleActionClick = (action) => {
     setSelectedAction(action);
-    setFormData({ nombre: "", descripcion: "", tema_id: "", clase_id: "" });
+    setFormData({
+      nombre: "",
+      descripcion: "",
+      tema_id: "",
+      clase_id: "",
+      url: "",
+      descriptionLink: "",
+    });
     setMessage(null);
   };
 
@@ -82,11 +94,6 @@ export default function ColaborateButton() {
       ...prev,
       [name]: value,
     }));
-  };
-  //manejar la entrada de valores del formulario link con el estado
-  const handleFormLinkChange = (e) => {
-    setFormLink({ url: e.target.value });
-    console.log(e.target.value);
   };
 
   const handleSubmit = async () => {
@@ -143,11 +150,12 @@ export default function ColaborateButton() {
     }
 
     if (selectedAction.type === "link") {
-      if (!formLink.url.trim()) {
+      if (!formData.url) {
         setMessage({
           type: "error",
           text: "Por favor completa todos los campos",
         });
+        setLoading(false);
         return;
       }
 
@@ -160,8 +168,8 @@ export default function ColaborateButton() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            url: formLink.url,
-            descripcion: formLink.description,
+            url: formData.url,
+            descriptionLink: formData.descriptionLink,
             userId: user?.id,
           }),
         });
@@ -171,9 +179,9 @@ export default function ColaborateButton() {
         if (response.ok) {
           setMessage({
             type: "success",
-            text: "¡Link creado exitosamente! Gracias por compartir .",
+            text: "¡Link compartido exitosamente! Gracias por compartir .",
           });
-          setFormData({ nombre: "", descripcion: "" });
+          setFormData({ url: "", descripcionLink: "" });
           setTimeout(() => {
             handleCloseDialog();
           }, 2000);
@@ -188,8 +196,6 @@ export default function ColaborateButton() {
           type: "error",
           text: "Error al conectar con el servidor",
         });
-      } finally {
-        setLoading(false);
       }
     } else {
       handleCloseDialog();
@@ -237,44 +243,7 @@ export default function ColaborateButton() {
           <DialogContent>
             {selectedAction.type === "tip" ? (
               <>
-                {/* Header motivador */}
-                <Box
-                  sx={{
-                    backgroundColor: "background.antiflash",
-                    borderRadius: 2,
-                    padding: 3,
-                    marginBottom: 3,
-                    textAlign: "center",
-                    borderLeft: "4px solid",
-                    borderColor: "background.green",
-                  }}
-                >
-                  <Box
-                    sx={{ display: "flex", justifyContent: "center", mb: 1 }}
-                  >
-                    <PeopleOutlineIcon
-                      sx={{ fontSize: 40, color: "background.green", mr: 1 }}
-                    />
-                  </Box>
-                  <Typography
-                    variant="h6"
-                    sx={{
-                      fontWeight: 700,
-                      color: "primary.main",
-                      marginBottom: 1,
-                    }}
-                  >
-                    ¡Comparte tu conocimiento!
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    sx={{ color: "primary.text", fontSize: "0.95rem" }}
-                  >
-                    Tu experiencia puede ayudar a otros a crecer. Juntos
-                    construimos una comunidad más fuerte.
-                  </Typography>
-                </Box>
-
+                <HeaderMotivator />
                 {message && (
                   <Box sx={{ marginBottom: "20px" }}>
                     <Alert
@@ -471,6 +440,7 @@ export default function ColaborateButton() {
               </>
             ) : (
               <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                <HeaderMotivator />
                 {message && (
                   <Box sx={{ marginBottom: "20px" }}>
                     <Alert
@@ -485,16 +455,83 @@ export default function ColaborateButton() {
                     </Alert>
                   </Box>
                 )}
-                <TextField
-                  fullWidth
-                  value={formLink.url}
-                  onChange={handleFormLinkChange}
-                  type="text"
-                  placeholder="Pega el link que deseas compartir"
-                  variant="outlined"
-                  size="small"
-                  disabled={loading}
-                />
+                <Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1,
+                      mb: 1.5,
+                    }}
+                  >
+                    <LinkOutlinedIcon
+                      sx={{ color: "primary.blue", fontSize: 22 }}
+                    />
+                    <Typography
+                      variant="body1"
+                      sx={{ fontWeight: 600, color: "primary.main" }}
+                    >
+                      URL del recurso a compartir
+                    </Typography>
+                  </Box>
+                  <TextField
+                    sx={{
+                      mb: 1.5,
+                    }}
+                    fullWidth
+                    name="url"
+                    value={formData.url}
+                    onChange={handleFormChange}
+                    type="text"
+                    placeholder="Pega el link que deseas compartir"
+                    variant="outlined"
+                    size="small"
+                    disabled={loading}
+                  />
+                  <Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 1,
+                        mb: 1.5,
+                      }}
+                    >
+                      <DescriptionIcon
+                        sx={{ color: "primary.blue", fontSize: 22 }}
+                      />
+                      <Typography
+                        variant="body1"
+                        sx={{ fontWeight: 600, color: "primary.main" }}
+                      >
+                        Descripción (Opcional)
+                      </Typography>
+                    </Box>
+                    <TextField
+                      fullWidth
+                      name="descriptionLink"
+                      value={formData.descriptionLink}
+                      onChange={handleFormChange}
+                      placeholder="Comparte los detalles del Link que estas compartiendo. Sé específico y práctico para que otros puedan utilizarlo fácilmente..."
+                      variant="outlined"
+                      multiline
+                      rows={6}
+                      disabled={loading}
+                      sx={{
+                        "& .MuiOutlinedInput-root": {
+                          backgroundColor: "background.main",
+                          borderRadius: 1.5,
+                          "&:hover fieldset": {
+                            borderColor: "primary.blue",
+                          },
+                          "&.Mui-focused fieldset": {
+                            borderColor: "primary.blue",
+                          },
+                        },
+                      }}
+                    />
+                  </Box>
+                </Box>
               </Box>
             )}
           </DialogContent>

@@ -22,9 +22,9 @@ export async function GET() {
 export async function POST(request) {
   try {
     const body = await request.json();
-    const { url, description, userId } = body;
+    const { url, descriptionLink, userId } = body;
 
-    const link = await createLink(url, description, userId);
+    const link = await createLink(url, descriptionLink, userId);
     return NextResponse.json(
       {
         success: true,

@@ -5,18 +5,23 @@ export async function getLinks() {
   const [rows] = await pool.query(getLinksQuery);
   return rows;
 }
-export async function createLink(url, description, userId) {
+export async function createLink(url, descriptionLink, userId) {
+  /**Validacion de los valores */
+  if (!url) {
+    throw new Error("La url es obligatoria");
+  }
+
   const insertLinkQuery = ` INSERT INTO links (url,descripcion,id_user)
       VALUES (?,?,?)`;
   const [result] = await pool.query(insertLinkQuery, [
     url,
-    description,
+    descriptionLink,
     userId,
   ]);
   return {
     id: result.id,
     url: url,
-    description: description,
+    descriptionLink: descriptionLink,
     userId: userId,
   };
 }
