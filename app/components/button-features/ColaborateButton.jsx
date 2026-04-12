@@ -57,6 +57,7 @@ export default function ColaborateButton() {
     tema_id: "",
     clase_id: "",
   });
+  const [formLink, setFormLink] = useState({ url: "", description: "" });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
   const theme = useTheme();
@@ -81,6 +82,11 @@ export default function ColaborateButton() {
       ...prev,
       [name]: value,
     }));
+  };
+  //manejar la entrada de valores del formulario link con el estado
+  const handleFormLinkChange = (e) => {
+    setFormLink({ url: e.target.value });
+    console.log(e.target.value);
   };
 
   const handleSubmit = async () => {
@@ -134,10 +140,62 @@ export default function ColaborateButton() {
       } finally {
         setLoading(false);
       }
+    }
+
+    if (selectedAction.type === "link") {
+      if (!formLink.url.trim()) {
+        setMessage({
+          type: "error",
+          text: "Por favor completa todos los campos",
+        });
+        return;
+      }
+
+      setLoading(true);
+
+      try {
+        const response = await fetch("/api/links", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            url: formLink.url,
+            descripcion: formLink.description,
+            userId: user?.id,
+          }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          setMessage({
+            type: "success",
+            text: "¡Link creado exitosamente! Gracias por compartir .",
+          });
+          setFormData({ nombre: "", descripcion: "" });
+          setTimeout(() => {
+            handleCloseDialog();
+          }, 2000);
+        } else {
+          setMessage({
+            type: "error",
+            text: data.error || "Error al crear el link",
+          });
+        }
+      } catch (error) {
+        setMessage({
+          type: "error",
+          text: "Error al conectar con el servidor",
+        });
+      } finally {
+        setLoading(false);
+      }
     } else {
       handleCloseDialog();
     }
   };
+
   return (
     <>
       <Box
@@ -413,8 +471,24 @@ export default function ColaborateButton() {
               </>
             ) : (
               <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                {message && (
+                  <Box sx={{ marginBottom: "20px" }}>
+                    <Alert
+                      severity={message.type}
+                      icon={
+                        message.type === "success" ? (
+                          <CheckCircleOutlineIcon />
+                        ) : undefined
+                      }
+                    >
+                      {message.text}
+                    </Alert>
+                  </Box>
+                )}
                 <TextField
                   fullWidth
+                  value={formLink.url}
+                  onChange={handleFormLinkChange}
                   type="text"
                   placeholder="Pega el link que deseas compartir"
                   variant="outlined"
