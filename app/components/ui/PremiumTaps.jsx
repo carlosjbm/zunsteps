@@ -22,6 +22,9 @@ import { useFetch } from "@/app/lib/hooks/useFetch";
 import LoadingSpinner from "./LoadingSpinner";
 import { InfiniteTips } from "./InfiniteTips";
 import { ColaboratorStats } from "./ColaboratorStats";
+import { ShowLinks } from "./ShowLinks";
+import FastStep from "./FastStep";
+import { FlashOn } from "@mui/icons-material";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -65,10 +68,12 @@ export default function PremiumTabs() {
   const { loading, error, data } = useFetch(
     "http://localhost:3000/api/colaboracion/",
   );
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
   const apiGenericStats = !loading ? data?.genericData : null;
+  console.log(loading, data);
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -79,13 +84,24 @@ export default function PremiumTabs() {
           aria-label="basic tabs example"
         >
           <Tooltip title="Colaboradores" arrow>
-            <Tab label={<WorkspacePremiumOutlinedIcon />} {...a11yProps(0)} />
+            <Tab
+              label={
+                <WorkspacePremiumOutlinedIcon sx={{ color: "primary.gold" }} />
+              }
+              {...a11yProps(0)}
+            />
           </Tooltip>
           <Tooltip title="Links Útiles" arrow>
-            <Tab label={<LinkOutlinedIcon />} {...a11yProps(1)} />
+            <Tab
+              label={<LinkOutlinedIcon sx={{ color: "primary.blue" }} />}
+              {...a11yProps(1)}
+            />
           </Tooltip>
-          <Tooltip title="Procesos" arrow>
-            <Tab label={<AccountTreeOutlinedIcon />} {...a11yProps(2)} />
+          <Tooltip title="Fast Steps" arrow>
+            <Tab
+              label={<FlashOn sx={{ color: "background.green" }} />}
+              {...a11yProps(2)}
+            />
           </Tooltip>
           <Tooltip title="Sugerencias del Mes" arrow>
             <Tab
@@ -146,14 +162,14 @@ export default function PremiumTabs() {
         <Typography variant="h6" sx={{ margin: "2%" }} gutterBottom>
           Links Utilitarios
         </Typography>
-        <Utilinks links={links} />
+        <ShowLinks />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
         <Typography variant="h6" sx={{ margin: "2%" }} gutterBottom>
-          Procesos
+          FastStep
         </Typography>
         <Box className="process-box">
-          <BasicAccordion items={allProcess} isLoading={isLoading} />
+          <FastStep />
         </Box>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={3}>

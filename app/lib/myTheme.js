@@ -7,6 +7,8 @@ export const myTheme = createTheme({
       text: "#7a7a7a",
       blue: "#1976d2",
       red: "#e95354",
+      // gold: "#e6c27a",
+      gold: "#d4af37",
     },
     background: {
       green: "#33d2a4",
