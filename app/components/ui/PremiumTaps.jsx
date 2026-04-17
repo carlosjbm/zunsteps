@@ -24,7 +24,7 @@ import { InfiniteTips } from "./InfiniteTips";
 import { ColaboratorStats } from "./ColaboratorStats";
 import { ShowLinks } from "./ShowLinks";
 import FastStep from "./FastStep";
-import { FlashOn } from "@mui/icons-material";
+import { FlashOn, Light } from "@mui/icons-material";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -99,7 +99,7 @@ export default function PremiumTabs() {
           </Tooltip>
           <Tooltip title="Fast Steps" arrow>
             <Tab
-              label={<FlashOn sx={{ color: "background.green" }} />}
+              label={<FlashOn sx={{ color: "primary.blue" }} />}
               {...a11yProps(2)}
             />
           </Tooltip>
@@ -165,10 +165,18 @@ export default function PremiumTabs() {
         <ShowLinks />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
-        <Typography variant="h6" sx={{ margin: "2%" }} gutterBottom>
-          FastStep
-        </Typography>
         <Box className="process-box">
+          <Box sx={{ display: "flex", gap: 1.5 }}>
+            <Light sx={{ color: "background.green" }} />
+            <Typography
+              variant="h6"
+              sx={{ margin: "2%", color: "primary.text" }}
+              gutterBottom
+            >
+              Con la funcionalidad FASTSTEPS pudes encontrar respuestas a
+              errores comunes.
+            </Typography>
+          </Box>
           <FastStep />
         </Box>
       </CustomTabPanel>

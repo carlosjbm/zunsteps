@@ -4,7 +4,6 @@ import {
   CancelOutlined,
   ChatBubbleOutline,
   ErrorOutlineOutlined,
-  Light,
   SearchOutlined,
 } from "@mui/icons-material";
 import {
@@ -19,15 +18,35 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
-import { WaitingCircular } from "../reusables/WaitingData";
+import Image from "next/image";
+import { useFetch } from "@/app/lib/hooks/useFetch";
 
 export default function FastStep(params) {
   const [errorToInput, setErrorToInput] = useState("");
   const [warning, setWarning] = useState(false);
+  const { data, loading, error, refetch } = useFetch(
+    "http://localhost:3000/api/errors/",
+  );
+  const [response, setResponse] = useState(null);
 
   const handleChange = (e) => {
     setErrorToInput(e.target.value);
-    console.log(errorToInput);
+  };
+
+  const handleSearch = (target) => {
+    const lowerTarget = target.toLowerCase();
+    if (!data?.data) return null;
+
+    const result = data.data.find((e) =>
+      e.error.toLowerCase().includes(target),
+    );
+
+    if (result) {
+      setResponse(result);
+      return result;
+    } else {
+      return null;
+    }
   };
 
   return (
@@ -37,21 +56,14 @@ export default function FastStep(params) {
           Debe introducir algo
         </Alert>
       )}
-
-      <Alert sx={{ mb: 2 }} icon={<Light />}>
-        <Typography>
-          Espera unos segundos mientras se cargan los datos, puedes pegar parte
-          del error para buscar por respuestas rapidas.
-        </Typography>
-      </Alert>
-
       <Box
         sx={{
           width: "100%",
-          backgroundColor: "background.antiflash",
+          backgroundColor: loading ? "background.antiflash" : "background.main",
           p: 0.5,
           borderRadius: 10,
-          border: "1px solid #1976d2",
+          border: "1px solid",
+          borderColor: loading ? "primary.text" : "primary.blue",
           display: "flex",
           justifyContent: "center",
           mb: 2,
@@ -61,42 +73,61 @@ export default function FastStep(params) {
           value={errorToInput}
           onChange={(e) => handleChange(e)}
           sx={{ color: "primary.main", width: "70%" }}
-          placeholder="Segmento del error"
+          placeholder={
+            loading ? "Espere, cargando datos..." : "Introduzca el error"
+          }
           disableUnderline="true"
         />
         <IconButton
           disabled={false}
           sx={{ marginLeft: 2 }}
-          onClick={() => console.log("Cliked search button ...")}
+          onClick={() => handleSearch(errorToInput)}
         >
-          <SearchOutlined sx={{ color: "primary.blue" }} />
+          <SearchOutlined
+            sx={{ color: loading ? "primary.text" : "primary.blue" }}
+          />
         </IconButton>
       </Box>
       <Box>
-        {/* spiner */}
-        <WaitingCircular />
         {/* nombre del error */}
-        <Accordion>
-          <AccordionSummary>
-            <Box sx={{ display: "flex", gap: 1.5 }}>
-              <ErrorOutlineOutlined sx={{ color: "primary.red" }} />
-              <Typography fontWeight={800}>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+        {response && (
+          <Accordion>
+            <AccordionSummary>
+              <Box sx={{ display: "flex", gap: 1.5 }}>
+                <ErrorOutlineOutlined sx={{ color: "primary.red" }} />
+                <Typography color="primary.red" fontWeight={800}>
+                  {response.error}
+                </Typography>
+              </Box>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Divider sx={{ marginBottom: 2 }} />
+              {/* Detalles */}
+              <Box
+                sx={{
+                  padding: 0.5,
+                  border: "1px solid #1976d2",
+                  marginBottom: 2,
+                  borderRadius: 5,
+                }}
+              >
+                <Image
+                  src={"/errors_images/chatlogo.png"}
+                  alt="image"
+                  width={200}
+                  height={200}
+                />
+              </Box>
+              <Typography
+                color="primary.text"
+                sx={{ display: "flex", gap: 1.5 }}
+              >
+                <ChatBubbleOutline sx={{ color: "background.green" }} />
+                {response.solucion}
               </Typography>
-            </Box>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Divider sx={{ marginBottom: 2 }} />
-            {/* Detalles */}
-            <Typography color="primary.text" sx={{ display: "flex", gap: 1.5 }}>
-              <ChatBubbleOutline sx={{ color: "background.green" }} />
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam
-              tempora temporibus vitae aspernatur iure blanditiis, aperiam minus
-              tenetur asperiores quaerat culpa! Aliquam totam pariatur sapiente
-              illo, libero rem exercitationem nisi.
-            </Typography>
-          </AccordionDetails>
-        </Accordion>
+            </AccordionDetails>
+          </Accordion>
+        )}
       </Box>
     </Box>
   );
