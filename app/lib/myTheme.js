@@ -7,8 +7,12 @@ export const myTheme = createTheme({
       text: "#7a7a7a",
       blue: "#1976d2",
       red: "#e95354",
-      // gold: "#e6c27a",
       gold: "#d4af37",
+    },
+    reference: {
+      whatsapp: "#25d366",
+      telegram: "#26a5e4",
+      facebook: "#1877f2",
     },
     background: {
       green: "#33d2a4",

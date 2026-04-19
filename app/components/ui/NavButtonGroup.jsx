@@ -1,6 +1,6 @@
 // app/components/ui/NavButtonGroup.jsx
 "use client";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import Link from "next/link";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import VerifiedOutlinedIcon from "@mui/icons-material/VerifiedOutlined";
@@ -11,12 +11,14 @@ export function NavButtonGroup() {
     {
       href: "/",
       label: "whatsapp",
-      icon: <WhatsApp />,
+      contententColor: "reference.whatsapp",
+      icon: <WhatsApp sx={{ color: "reference.whatsapp" }} />,
     },
     {
       href: "/",
       label: "telegram",
-      icon: <Telegram />,
+      contententColor: "reference.telegram",
+      icon: <Telegram sx={{ color: "reference.telegram" }} />,
     },
   ];
 
@@ -40,8 +42,9 @@ export function NavButtonGroup() {
             sx={{
               display: "flex",
               gap: "8Spx",
-              backgroundColor: "background.antiflash",
-              border: "1.5px solid #f0f0f0",
+              backgroundColor: "background.main",
+              border: "1.5px solid",
+              borderColor: button?.contententColor,
               color: "primary.main",
               fontWeight: 500,
               fontSize: { xs: "0.9rem", md: "1rem" },
@@ -70,7 +73,9 @@ export function NavButtonGroup() {
               }}
             >
               {button.icon}
-              {button.label}
+              <Typography sx={{ color: button.contententColor }}>
+                {button.label}
+              </Typography>
             </Box>
           </Button>
         </Link>

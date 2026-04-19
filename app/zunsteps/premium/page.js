@@ -30,77 +30,84 @@ function PremiumPageContent() {
   };
 
   return (
-    <Container maxWidth="md" sx={{ py: { xs: 2, md: 4 } }}>
+    <>
       <QuickNavigation premiun={false} />
-      {/* Header */}
-      <Box textAlign="center" mb={4}>
-        <Typography
-          variant="h3"
-          component="h1"
-          gutterBottom
-          sx={{ fontSize: { xs: "1.75rem", md: "2.5rem" } }}
-        >
-          Zona Premium
-        </Typography>
-        <Typography variant="subtitle1" color="text.secondary" sx={{ mb: 2 }}>
-          ¡Bienvenido{user?.nombre ? `, ${user.nombre}` : ""}!
-        </Typography>
-        <Button
-          size="small"
-          variant="contained"
-          color="error"
-          startIcon={<LogoutIcon />}
-          onClick={handleLogout}
-        >
-          Cerrar Sesión
-        </Button>
-      </Box>
+      <Container maxWidth="md" sx={{ py: { xs: 2, md: 4 } }}>
+        {/* Header */}
+        <Box textAlign="center" mb={4}>
+          <Typography
+            variant="h3"
+            component="h1"
+            gutterBottom
+            sx={{ fontSize: { xs: "1.75rem", md: "2.5rem" } }}
+          >
+            Zona Premium
+          </Typography>
+          <Typography variant="subtitle1" color="text.secondary" sx={{ mb: 2 }}>
+            ¡Bienvenido{user?.nombre ? `, ${user.nombre}` : ""}!
+          </Typography>
+          <Button
+            size="small"
+            variant="contained"
+            color="error"
+            startIcon={<LogoutIcon />}
+            onClick={handleLogout}
+          >
+            Cerrar Sesión
+          </Button>
+        </Box>
 
-      {/* User Info */}
-      {user && (
-        <Card
-          sx={{ display: "flex", mb: 4, p: 2, backgroundColor: "info.lighter" }}
-        >
-          <Box
+        {/* User Info */}
+        {user && (
+          <Card
             sx={{
               display: "flex",
-              alignContent: "center",
-              justifyContent: "space-between",
-              gap: 4,
+              mb: 4,
+              p: 2,
+              backgroundColor: "info.lighter",
             }}
           >
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <Person /> {user.nombre}
+            <Box
+              sx={{
+                display: "flex",
+                alignContent: "center",
+                justifyContent: "space-between",
+                gap: 4,
+              }}
+            >
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <Person /> {user.nombre}
+              </Box>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <Phone /> {user.telefono}
+              </Box>
             </Box>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <Phone /> {user.telefono}
-            </Box>
-          </Box>
-        </Card>
-      )}
+          </Card>
+        )}
 
-      {/* Benefits Section */}
-      <Box mb={4}>
-        <Typography
-          variant="h5"
-          gutterBottom
-          sx={{ fontSize: { xs: "1.25rem", md: "1.5rem" }, mb: 2 }}
-        >
-          Control de la Facturación
-        </Typography>
-        <FacturProcess />
-      </Box>
+        {/* Benefits Section */}
+        <Box mb={4}>
+          <Typography
+            variant="h5"
+            gutterBottom
+            sx={{ fontSize: { xs: "1.25rem", md: "1.5rem" }, mb: 2 }}
+          >
+            Control de la Facturación
+          </Typography>
+          <FacturProcess />
+        </Box>
 
-      <Box mb={4}>
-        <PremiumTabs />
-        <ColaborateButton />
-      </Box>
-      <Box textAlign="center" color="text.secondary" mt={6}>
-        <Typography variant="body2">
-          © {new Date().getFullYear()} Zunsteps Premium
-        </Typography>
-      </Box>
-    </Container>
+        <Box mb={4}>
+          <PremiumTabs />
+          <ColaborateButton />
+        </Box>
+        <Box textAlign="center" color="text.secondary" mt={6}>
+          <Typography variant="body2">
+            © {new Date().getFullYear()} Zunsteps Premium
+          </Typography>
+        </Box>
+      </Container>
+    </>
   );
 }
 

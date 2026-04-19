@@ -73,7 +73,6 @@ export default function PremiumTabs() {
     setValue(newValue);
   };
   const apiGenericStats = !loading ? data?.genericData : null;
-  console.log(loading, data);
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -166,17 +165,6 @@ export default function PremiumTabs() {
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
         <Box className="process-box">
-          <Box sx={{ display: "flex", gap: 1.5 }}>
-            <Light sx={{ color: "background.green" }} />
-            <Typography
-              variant="h6"
-              sx={{ margin: "2%", color: "primary.text" }}
-              gutterBottom
-            >
-              Con la funcionalidad FASTSTEPS pudes encontrar respuestas a
-              errores comunes.
-            </Typography>
-          </Box>
           <FastStep />
         </Box>
       </CustomTabPanel>
