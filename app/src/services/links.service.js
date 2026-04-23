@@ -1,7 +1,16 @@
 import pool from "@/app/lib/db";
 
 export async function getLinks() {
-  const getLinksQuery = `select * from links`;
+  const getLinksQuery = `SELECT
+    links.id,
+    links.url,
+    links.descripcion,
+    usuarios.nombre AS user_name
+FROM
+    links,
+    usuarios
+WHERE
+    links.id_user = usuarios.id; `;
   const [rows] = await pool.query(getLinksQuery);
   return rows;
 }
