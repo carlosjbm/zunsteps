@@ -19,6 +19,7 @@ import { FacturProcess } from "@/app/components/ui/FacturProcess";
 import { Person } from "@mui/icons-material";
 import { Phone } from "@mui/icons-material";
 import ColaborateButton from "@/app/components/button-features/ColaborateButton";
+import { CurrentUserBar } from "@/app/components/ui/CurrentUserBar";
 
 function PremiumPageContent() {
   const router = useRouter();
@@ -29,6 +30,7 @@ function PremiumPageContent() {
     router.push("/premium-access");
   };
 
+  console.log(user);
   return (
     <>
       <QuickNavigation premiun={false} />
@@ -67,7 +69,7 @@ function PremiumPageContent() {
               backgroundColor: "info.lighter",
             }}
           >
-            <Box
+            {/* <Box
               sx={{
                 display: "flex",
                 alignContent: "center",
@@ -81,7 +83,8 @@ function PremiumPageContent() {
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <Phone /> {user.telefono}
               </Box>
-            </Box>
+            </Box> */}
+            <CurrentUserBar useName={user.nombre} />
           </Card>
         )}
 

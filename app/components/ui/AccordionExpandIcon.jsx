@@ -91,7 +91,6 @@ export default function AccordionExpandIcon({ seccion }) {
           aria-controls="panel1-content"
           id="panel1-header"
           sx={{
-            padding: "16px 20px",
             backgroundColor: "background.paper",
             "&:hover": {
               backgroundColor: "background.green",
@@ -183,11 +182,11 @@ export default function AccordionExpandIcon({ seccion }) {
             gap: 2,
           }}
         >
-          <Typography color="primary.text" sx={{ lineHeight: 1.6 }}>
+          {/* <Typography color="primary.text" sx={{ lineHeight: 1.6 }}>
             A continuación te mostramos las acciones que consideramos más
             importantes en esta sección, pero puedes buscar la que desees desde
             la barra de búsqueda.
-          </Typography>
+          </Typography> */}
 
           {/* Filtro por Cargo */}
           {/* <FormControl

@@ -7,6 +7,7 @@ import {
   GitHub,
   HelpOutlined,
   LinkedIn,
+  LoginOutlined,
   WhatsApp,
   X,
 } from "@mui/icons-material";
@@ -129,7 +130,7 @@ export default function Home() {
                 width: "100%",
               }}
             >
-              <WhiteMiddButton text="Premium" icon={<VerifiedIcon />} />
+              <WhiteMiddButton text="LogIn" icon={<LoginOutlined />} />
             </Link>
             <Link
               href="/zunsteps/dashboard"
@@ -140,7 +141,7 @@ export default function Home() {
                 width: "100%",
               }}
             >
-              <DefaultButton text="Iniciar" />
+              <DefaultButton text="Recursos" />
             </Link>
             <Divider sx={{ my: 2 }} />
             <GenericFactState />

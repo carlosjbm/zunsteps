@@ -117,6 +117,7 @@ export const InfiniteTips = () => {
               alignItems: "center",
               justifyContent: "space-between",
               p: 2,
+              backgroundColor: "background.antiflash",
             }}
           >
             <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
@@ -124,7 +125,7 @@ export const InfiniteTips = () => {
                 sx={{
                   width: 40,
                   height: 40,
-                  backgroundColor: "primary.blue",
+                  backgroundColor: "background.green",
                   cursor: "pointer",
                   fontSize: "1.2rem",
                 }}
@@ -149,9 +150,9 @@ export const InfiniteTips = () => {
                 </Box>
               </Box>
             </Box>
-            <IconButton size="small" sx={{ color: "textSecondary" }}>
+            {/* <IconButton size="small" sx={{ color: "textSecondary" }}>
               <MoreVertIcon fontSize="small" />
-            </IconButton>
+            </IconButton> */}
           </Box>
 
           <Divider />

@@ -121,7 +121,7 @@ export default function Dashboard(params) {
   return (
     <>
       <QuickNavigation dashboard={false} />
-      <Box sx={{ width: "400px", justifyItems: "center" }}>
+      <Box sx={{ justifyItems: "center" }}>
         <PrincipalBar
           handleShowContents={handleShowContents}
           handleShowTips={handleShowTips}

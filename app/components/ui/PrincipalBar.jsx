@@ -63,7 +63,7 @@ export const PrincipalBar = ({
         </IconButton>
       </Tooltip>
 
-      <Box
+      {/* <Box
         sx={{
           display: "flex",
           alignItems: "center",
@@ -75,7 +75,7 @@ export const PrincipalBar = ({
       >
         <SearchRounded fontSize="small" sx={{ opacity: 0.6 }} />
         <span>Buscar ayuda...</span>
-      </Box>
+      </Box> */}
 
       <Tooltip
         title={isShowTips ? "Ocultar consejos" : "Mostrar consejos"}
