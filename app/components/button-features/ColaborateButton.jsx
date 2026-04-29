@@ -35,6 +35,7 @@ import {
   ErrorOutlineOutlined,
   ShareOutlined,
   CloudUploadOutlined,
+  BugReportOutlined,
 } from "@mui/icons-material";
 import LinkOutlinedIcon from "@mui/icons-material/LinkOutlined";
 import { HeaderMotivator } from "../reusables/HederMotivador";
@@ -56,7 +57,7 @@ const actions = [
     type: "tip",
   },
   {
-    icon: <ErrorOutlineOutlined />,
+    icon: <BugReportOutlined />,
     name: "Errores",
     title: "Comparte un error y su solución",
     rAccion: "Comparte la solución a un error al que te hayas enfrentado.",
