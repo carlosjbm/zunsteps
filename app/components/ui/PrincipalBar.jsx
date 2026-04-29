@@ -27,8 +27,10 @@ export const PrincipalBar = ({
     <Box
       sx={{
         display: "flex",
+        width: "100%",
+        borderBottom: "1px solid #2c3e50",
         alignItems: "center",
-        gap: 2,
+        gap: 1.5,
         padding: "8px 12px",
         backgroundColor: "background.antiflash",
         borderRadius: 3,
@@ -62,20 +64,6 @@ export const PrincipalBar = ({
           )}
         </IconButton>
       </Tooltip>
-
-      {/* <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          gap: 1,
-          color: "primary.text",
-          fontSize: "0.9rem",
-          flex: 1,
-        }}
-      >
-        <SearchRounded fontSize="small" sx={{ opacity: 0.6 }} />
-        <span>Buscar ayuda...</span>
-      </Box> */}
 
       <Tooltip
         title={isShowTips ? "Ocultar consejos" : "Mostrar consejos"}
