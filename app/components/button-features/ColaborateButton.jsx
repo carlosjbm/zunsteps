@@ -370,33 +370,39 @@ export default function ColaborateButton() {
 
   return (
     <>
-      <Box
+      <SpeedDial
+        ariaLabel="SpeedDial colaborate"
         sx={{
-          height: 100,
-          transform: "translateZ(0px)",
-          flexGrow: 1,
-          position: "relative",
+          position: "fixed",
+          bottom: 16,
+          right: 16,
+          opacity: 0.85,
+          transition: "opacity 0.3s ease",
+          "&:hover": {
+            opacity: 1,
+          },
+          "& .MuiSpeedDial-fab": {
+            backgroundColor: "background.green",
+            "&:hover": {
+              backgroundColor: "background.green",
+            },
+          },
         }}
+        icon={<SpeedDialIcon openIcon={<EditIcon />} />}
       >
-        <SpeedDial
-          ariaLabel="SpeedDial openIcon example"
-          sx={{ position: "absolute", bottom: 16, right: 16 }}
-          icon={<SpeedDialIcon openIcon={<EditIcon />} />}
-        >
-          {actions.map((action) => (
-            <SpeedDialAction
-              onClick={() => handleActionClick(action)}
-              key={action.name}
-              icon={action.icon}
-              slotProps={{
-                tooltip: {
-                  title: action.name,
-                },
-              }}
-            />
-          ))}
-        </SpeedDial>
-      </Box>
+        {actions.map((action) => (
+          <SpeedDialAction
+            onClick={() => handleActionClick(action)}
+            key={action.name}
+            icon={action.icon}
+            slotProps={{
+              tooltip: {
+                title: action.name,
+              },
+            }}
+          />
+        ))}
+      </SpeedDial>
 
       {selectedAction && (
         <Dialog
