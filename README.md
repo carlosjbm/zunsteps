@@ -32,12 +32,6 @@ Herramienta moderna y ágil diseñada para facilitar y optimizar el trabajo con 
 - **Logout Funcional:** Cierre de sesión con limpieza segura de credenciales
 - **Interfaz Amigable:** Componentes Material-UI para la mejor experiencia de usuario
 
-### Clave de Acceso Premium
-
-La clave de acceso actual es: `Master*25`
-
-**Nota:** Esta clave se valida localmente en Netlify sin necesidad de servidor backend.
-
 ### Rutas Protegidas
 
 - `/zunsteps/premium` — Zona premium (requiere validación)
@@ -86,18 +80,10 @@ La clave de acceso actual es: `Master*25`
 
 ## 🎯 Funcionalidades Clave
 
-### 🤖 Chatbot Inteligente
-
-- Responde preguntas sobre cualquier módulo
-- Búsqueda inteligente por palabras clave
-- Respuestas contextualizadas y precisas
-- Disponible 24/7
-
 ### 📖 Centro de Documentación
 
 - **Página de FAQs:** Preguntas frecuentes con búsqueda y filtros
 - **Docs:** Documentación completa de cada módulo
-- **Snippets:** Código listo para copiar y usar
 - **Tips:** Consejos y trucos para maximizar productividad
 
 ### 🔐 Sistema Premium
@@ -206,87 +192,6 @@ pnpm run dev
 ```
 
 La app estará disponible en `http://localhost:3000`
-
----
-
-## 📁 Estructura del Proyecto
-
-```
-zunsteps/
-├── app/
-│   ├── api/                        # Rutas API de Next.js
-│   │   ├── set-premium-key/       # Endpoint para validar clave premium
-│   │   └── logout-premium/        # Endpoint para cerrar sesión
-│   ├── components/
-│   │   ├── ui/                    # Componentes reutilizables
-│   │   │   ├── PremiumProtection.jsx  # Componente de protección premium
-│   │   │   ├── BasicCard.jsx
-│   │   │   ├── ConceptItem.jsx
-│   │   │   ├── ConteTable.jsx
-│   │   │   ├── CudeSnippet.jsx
-│   │   │   └── ... (componentes UI adicionales)
-│   │   └── providers/
-│   │       └── MyThemeProvider.jsx    # Proveedor de tema global
-│   ├── lib/
-│   │   ├── modulos/               # Contenido de módulos
-│   │   │   ├── zunacc.js         # Módulo de Contabilidad
-│   │   │   ├── zunhr.js          # Módulo de Recursos Humanos
-│   │   │   ├── zunaft.js         # Módulo de Afiliaciones
-│   │   │   ├── zunst.js          # Módulo de Sindicatos
-│   │   │   └── zunpr.js          # Módulo de Procesos
-│   │   ├── contexts/             # React Contexts
-│   │   │   ├── PremiumAuthContext.jsx   # Contexto de autenticación premium
-│   │   │   ├── ModulosContext.jsx       # Contexto de módulos
-│   │   │   └── PremiumContext.jsx       # Contexto premium
-│   │   ├── hooks/                # Custom hooks
-│   │   │   ├── useCopy.js       # Hook para copiar al portapapeles
-│   │   │   ├── useKey.js        # Hook para gestionar claves
-│   │   │   └── useMark.js       # Hook para marcar favoritos
-│   │   ├── knowlebasic/
-│   │   │   ├── basicAnswers.js      # Respuestas del chatbot
-│   │   │   ├── tips.js              # Base de tips
-│   │   │   └── tablas.js            # Tablas de referencia
-│   │   ├── scipts/
-│   │   │   └── utils.js             # Scripts y utilidades SQL
-│   │   ├── helpers/
-│   │   │   └── cargoHelper.js       # Funciones auxiliares para cargos
-│   │   ├── cargos.js            # Definiciones de cargos
-│   │   ├── links.js             # Enlaces globales
-│   │   ├── myTheme.js           # Configuración de tema
-│   │   ├── returnKnow.js        # Utilidad para búsqueda de conocimiento
-│   │   └── validate.js          # Validaciones
-│   ├── styles/                 # Estilos globales
-│   │   ├── globals.css
-│   │   ├── admin.css
-│   │   ├── front.css
-│   │   └── premium.css
-│   ├── zunsteps/               # Rutas principales
-│   │   ├── dashboard/          # Panel de control
-│   │   ├── docs/               # Documentación completa
-│   │   ├── faqs/               # Preguntas frecuentes
-│   │   └── premium/            # Zona premium (protegida)
-│   ├── premium-access/         # Página de acceso premium
-│   ├── admin/                  # Panel de administración
-│   ├── layout.js               # Layout raíz con PremiumAuthProvider
-│   ├── page.js                 # Página de inicio
-│   ├── loading.js              # Componente de carga
-│   ├── globals.css             # Estilos globales
-│   └── page.module.css
-├── public/                     # Archivos estáticos
-│   └── zunacc/
-│       ├── estados_financieros/
-│       └── registro/
-├── middleware.js               # Middleware de Next.js (deshabilitado para Netlify)
-├── eslint.config.mjs           # Configuración de ESLint
-├── jsconfig.json               # Configuración de JS
-├── next.config.mjs             # Configuración de Next.js
-├── netlify.toml                # Configuración de Netlify
-├── package.json
-├── pnpm-lock.yaml
-├── PREMIUM_NETLIFY.md          # Documentación del sistema premium para Netlify
-├── PREMIUM_PROTECTION.md       # Documentación del sistema premium con middleware
-└── README.md
-```
 
 ---
 
@@ -415,13 +320,6 @@ Edita [app/zunsteps/premium/page.js](app/zunsteps/premium/page.js) para agregar 
 ---
 
 ## 🎯 Características por Área
-
-### Chatbot Inteligente
-
-- Respuesta automática basada en palabras clave
-- Búsqueda semántica en la base de conocimiento
-- Respuestas contextualizadas por módulo
-- Disponible en todas las páginas
 
 ### Centro de Documentación
 
@@ -558,7 +456,6 @@ Documentación de sistemas premium:
 
 ## 📞 Soporte y Contacto
 
-- 💬 **Chatbot integrado** — Disponible en toda la app
 - 🆘 **Panel de ayuda** — Accesible desde el dashboard
 - 📧 **Email:** contacto@zunsteps.com
 - 🐛 **Reportar bugs:** Crea un issue en GitHub
@@ -566,8 +463,6 @@ Documentación de sistemas premium:
 ---
 
 ## 🔄 Historial de Cambios
-
-### v1.3.2 (22 de diciembre de 2025)
 
 - ✅ Actualización de dependencias con operadores `^` para flexibilidad
 - ✅ Agregados comentarios JSDoc completos en helpers
