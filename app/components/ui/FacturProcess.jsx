@@ -3,8 +3,7 @@ import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
-import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CircularProgress from "@mui/material/CircularProgress";
 import {
   Box,
@@ -18,22 +17,19 @@ import {
   Paper,
   Button,
   Alert,
-  Chip,
   Tooltip,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
+  Chip,
 } from "@mui/material";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import CancelIcon from "@mui/icons-material/Cancel";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import SaveIcon from "@mui/icons-material/Save";
-import StorefrontIcon from "@mui/icons-material/Storefront";
 import ReceiptIcon from "@mui/icons-material/Receipt";
-import RefreshIcon from "@mui/icons-material/Refresh";
+import FactCheckIcon from "@mui/icons-material/FactCheck";
 import SearchIcon from "@mui/icons-material/Search";
-import FiterListIcon from "@mui/icons-material/FilterList";
+import FilterListIcon from "@mui/icons-material/FilterList";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import BlockIcon from "@mui/icons-material/Block";
 import { MyCircularProgres } from "./MyCircularProgres";
@@ -41,7 +37,264 @@ import { useFetch } from "@/app/lib/hooks/useFetch";
 import { useState, useEffect } from "react";
 import { Searcher } from "./Searcher";
 import { PaginatorDots } from "./PaginatorDots";
-import { FormatListBulleted } from "@mui/icons-material";
+import { dinamicColorChange } from "@/app/lib/myTheme";
+
+const PERCENTAGE_CHIP_COLORS = {
+  red: { bg: "rgba(233, 83, 84, 0.12)", fg: "#e95354" },
+  blue: { bg: "rgba(25, 118, 210, 0.12)", fg: "#1976d2" },
+  green: { bg: "rgba(51, 210, 164, 0.12)", fg: "#33d2a4" },
+};
+
+const getPercentageChipColors = (value) => {
+  const key = dinamicColorChange(value);
+  if (key === "primary.red") return PERCENTAGE_CHIP_COLORS.red;
+  if (key === "primary.blue") return PERCENTAGE_CHIP_COLORS.blue;
+  return PERCENTAGE_CHIP_COLORS.green;
+};
+
+const FILTER_PALETTE = {
+  neutral: {
+    base: "primary.main",
+    activeBg: "primary.main",
+    activeHover: "#1a252f",
+    idleHover: "#e8e8e8",
+    activeShadow: "rgba(44, 62, 80, 0.20)",
+  },
+  success: {
+    base: "background.green",
+    activeBg: "background.green",
+    activeHover: "#26b088",
+    idleHover: "#e8f5f0",
+    activeShadow: "rgba(51, 210, 164, 0.30)",
+  },
+  error: {
+    base: "primary.red",
+    activeBg: "primary.red",
+    activeHover: "#d63f40",
+    idleHover: "#fce8e8",
+    activeShadow: "rgba(233, 83, 84, 0.30)",
+  },
+  primary: {
+    base: "primary.blue",
+    activeBg: "primary.blue",
+    activeHover: "#135ba1",
+    idleHover: "#e3f2fd",
+    activeShadow: "rgba(25, 118, 210, 0.30)",
+  },
+};
+
+function FilterChip({
+  active = false,
+  onClick,
+  icon: Icon,
+  label,
+  tooltip,
+  color = "neutral",
+  fullWidthOnMobile = false,
+}) {
+  const palette = FILTER_PALETTE[color] || FILTER_PALETTE.neutral;
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onClick?.();
+    }
+  };
+
+  return (
+    <Tooltip title={tooltip} arrow placement="top">
+      <Box
+        role="button"
+        tabIndex={0}
+        aria-pressed={active}
+        onClick={onClick}
+        onKeyDown={handleKeyDown}
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          gap: { xs: 0.5, sm: 0.75 },
+          padding: {
+            xs: "0.6rem 0.9rem",
+            sm: "0.7rem 1.2rem",
+            md: "0.8rem 1.4rem",
+          },
+          borderRadius: "2rem",
+          backgroundColor: active ? palette.activeBg : "background.antiflash",
+          color: active ? "#fff" : palette.base,
+          cursor: "pointer",
+          transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+          border: active
+            ? `2px solid ${palette.activeBg}`
+            : "2px solid transparent",
+          fontWeight: 600,
+          fontSize: { xs: "0.8rem", sm: "0.95rem", md: "1rem" },
+          whiteSpace: "nowrap",
+          flexShrink: 0,
+          userSelect: "none",
+          minWidth: fullWidthOnMobile ? { xs: "100%", sm: "auto" } : "auto",
+          justifyContent: "center",
+          "&:hover": {
+            backgroundColor: active ? palette.activeHover : palette.idleHover,
+            transform: {
+              xs: "translateY(-2px)",
+              md: "translateY(-3px) scale(1.02)",
+            },
+            boxShadow: active
+              ? `0 4px 12px ${palette.activeShadow}`
+              : "0 2px 8px rgba(0, 0, 0, 0.10)",
+          },
+          "&:active": { transform: "translateY(0)" },
+          "&:focus-visible": {
+            outline: "2px solid",
+            outlineColor: palette.base,
+            outlineOffset: 2,
+          },
+        }}
+      >
+        <Icon
+          sx={{ fontSize: { xs: "1.1rem", sm: "1.3rem", md: "1.4rem" } }}
+        />
+        <Box component="span" sx={{ display: { xs: "none", sm: "inline" } }}>
+          {label}
+        </Box>
+      </Box>
+    </Tooltip>
+  );
+}
+
+function ActionButton({
+  onClick,
+  disabled = false,
+  loading = false,
+  color = "primary",
+  icon: Icon,
+  label,
+  loadingLabel = "Guardando...",
+  tooltip,
+}) {
+  const palette = FILTER_PALETTE[color] || FILTER_PALETTE.primary;
+
+  const handleKeyDown = (e) => {
+    if (disabled) return;
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onClick?.();
+    }
+  };
+
+  return (
+    <Tooltip title={tooltip} placement="top" arrow>
+      <Box
+        role="button"
+        tabIndex={disabled ? -1 : 0}
+        aria-disabled={disabled || undefined}
+        onClick={disabled ? undefined : onClick}
+        onKeyDown={handleKeyDown}
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: { xs: 0.5, sm: 0.75 },
+          padding: {
+            xs: "0.6rem 1rem",
+            sm: "0.7rem 1.3rem",
+            md: "0.8rem 1.5rem",
+          },
+          borderRadius: "0.5rem",
+          backgroundColor: palette.activeBg,
+          color: "#fff",
+          cursor: disabled ? "not-allowed" : "pointer",
+          transition: "all 0.3s ease",
+          border: `1px solid ${palette.activeBg}`,
+          fontWeight: 600,
+          fontSize: { xs: "0.875rem", sm: "0.95rem", md: "1rem" },
+          opacity: disabled ? 0.6 : 1,
+          userSelect: "none",
+          pointerEvents: disabled ? "none" : "auto",
+          "&:hover": disabled
+            ? {}
+            : {
+                backgroundColor: palette.activeHover,
+                transform: "translateY(-2px)",
+                boxShadow: `0 4px 12px ${palette.activeShadow}`,
+              },
+          "&:active": disabled ? {} : { transform: "translateY(0)" },
+          "&:focus-visible": {
+            outline: "2px solid",
+            outlineColor: palette.base,
+            outlineOffset: 2,
+          },
+        }}
+      >
+        {loading ? (
+          <CircularProgress size={20} sx={{ color: "#fff" }} />
+        ) : (
+          <Icon
+            sx={{ fontSize: { xs: "1.1rem", sm: "1.3rem", md: "1.4rem" } }}
+          />
+        )}
+        <span>{loading ? loadingLabel : label}</span>
+      </Box>
+    </Tooltip>
+  );
+}
+
+const accordionSx = {
+  boxShadow: { xs: 1, sm: 2, md: 3 },
+  borderRadius: 2,
+  marginBottom: { xs: 1.5, sm: 2, md: 2.5 },
+  border: { sm: "1px solid #f0f0f0", md: "1px solid #e8e8e8" },
+  overflow: "hidden",
+  transition: "all 0.2s ease",
+  "&:hover": {
+    boxShadow: { xs: 2, sm: 3, md: 4 },
+  },
+  "&:before": { display: "none" },
+};
+
+const summarySx = {
+  disableGutters: true,
+  padding: { xs: "0.75rem 1rem", sm: "0.85rem 1.25rem" },
+  minHeight: { xs: 56, sm: 64 },
+  "& .MuiAccordionSummary-content": {
+    alignItems: "center",
+    gap: { xs: 1, sm: 1.5 },
+    my: 0,
+  },
+  "& .MuiAccordionSummary-expandIconWrapper": {
+    color: "text.secondary",
+    transition: "transform 200ms ease, color 200ms ease",
+  },
+  "&:hover .MuiAccordionSummary-expandIconWrapper": {
+    color: "primary.main",
+  },
+  transition: "background-color 0.2s ease",
+  "&:hover": {
+    backgroundColor: "rgba(25, 118, 210, 0.04)",
+  },
+  "&.Mui-focused": {
+    backgroundColor: "rgba(25, 118, 210, 0.06)",
+  },
+};
+
+const titleTypographySx = {
+  color: "primary.main",
+  fontWeight: 600,
+  fontSize: { xs: "0.95rem", sm: "1.1rem" },
+  lineHeight: 1.2,
+};
+
+const summaryIconSx = {
+  color: "primary.main",
+  fontSize: { xs: "1.4rem", sm: "1.55rem" },
+  flexShrink: 0,
+};
+
+const detailsSx = {
+  backgroundColor: "#fafbfc",
+  borderTop: "1px solid #e8e8e8",
+  transition: "background-color 0.2s ease",
+};
 
 export const FacturProcess = () => {
   const { data, loading, error, refetch } = useFetch(
@@ -53,7 +306,7 @@ export const FacturProcess = () => {
   const [tipoMensaje, setTipoMensaje] = useState("success");
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredClients, setFilteredClients] = useState([]);
-  const [filterStatus, setFilterStatus] = useState("all"); // all, facturados, sin_facturar
+  const [filterStatus, setFilterStatus] = useState("all");
   const [leftValue, setLeftValue] = useState(0);
   const [rightValue, setRightValue] = useState(5);
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
@@ -78,6 +331,7 @@ export const FacturProcess = () => {
       [clientId]: !prev[clientId],
     }));
   };
+
   const handleResetFacturatedStatus = async () => {
     const resetStatus = {};
     data?.clients.forEach((client) => {
@@ -91,12 +345,8 @@ export const FacturProcess = () => {
     try {
       const response = await fetch("/api/facturation/clientes/", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          clientesFacturacion: resetStatus,
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ clientesFacturacion: resetStatus }),
       });
 
       if (response.ok) {
@@ -124,18 +374,13 @@ export const FacturProcess = () => {
     try {
       const response = await fetch("/api/facturation/clientes/", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          clientesFacturacion,
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ clientesFacturacion }),
       });
 
       if (response.ok) {
         setTipoMensaje("success");
         setMensaje("Cambios guardados correctamente");
-        // Refrescar los datos después de guardar
         await refetch();
         setTimeout(() => setMensaje(null), 3000);
       } else {
@@ -151,28 +396,25 @@ export const FacturProcess = () => {
     }
   };
 
+  const applyClientFilter = (searchValue, status) => {
+    let results = data?.clients || [];
+    if (searchValue.trim()) {
+      const term = searchValue.toLowerCase();
+      results = results.filter((c) => c.nombre.toLowerCase().includes(term));
+    }
+    if (status === "facturados") {
+      results = results.filter((c) => c.facturado === 1);
+    } else if (status === "sin_facturar") {
+      results = results.filter((c) => c.facturado === 0);
+    }
+    setFilteredClients(results);
+  };
+
   const handleSearch = (searchValue) => {
     setSearchTerm(searchValue);
     setLeftValue(0);
     setRightValue(5);
-
-    let results = data?.clients || [];
-
-    // Aplicar filtro de búsqueda
-    if (searchValue.trim()) {
-      results = results.filter((client) =>
-        client.nombre.toLowerCase().includes(searchValue.toLowerCase()),
-      );
-    }
-
-    // Aplicar filtro de estado
-    if (filterStatus === "facturados") {
-      results = results.filter((client) => client.facturado === 1);
-    } else if (filterStatus === "sin_facturar") {
-      results = results.filter((client) => client.facturado === 0);
-    }
-
-    setFilteredClients(results);
+    applyClientFilter(searchValue, filterStatus);
   };
 
   const handleFilterFacturados = () => {
@@ -180,10 +422,7 @@ export const FacturProcess = () => {
     setSearchTerm("");
     setLeftValue(0);
     setRightValue(5);
-
-    const results =
-      data?.clients.filter((client) => client.facturado === 1) || [];
-    setFilteredClients(results);
+    applyClientFilter("", "facturados");
   };
 
   const handleFilterSinFacturar = () => {
@@ -191,10 +430,7 @@ export const FacturProcess = () => {
     setSearchTerm("");
     setLeftValue(0);
     setRightValue(5);
-
-    const results =
-      data?.clients.filter((client) => client.facturado === 0) || [];
-    setFilteredClients(results);
+    applyClientFilter("", "sin_facturar");
   };
 
   const handleResetSearch = () => {
@@ -214,59 +450,46 @@ export const FacturProcess = () => {
         paddingX: { sm: 0, md: 2, lg: 3 },
       }}
     >
-      <Accordion
-        sx={{
-          boxShadow: { xs: 1, sm: 2, md: 3 },
-          borderRadius: 2,
-          marginBottom: { xs: 1.5, sm: 2, md: 2.5 },
-          border: { sm: "1px solid #f0f0f0", md: "1px solid #e8e8e8" },
-          transition: "all 0.2s ease",
-          "&:hover": {
-            boxShadow: { xs: 2, sm: 3, md: 4 },
-          },
-        }}
-      >
+      <Accordion defaultExpanded sx={accordionSx}>
         <AccordionSummary
-          expandIcon={<ArrowDownwardIcon />}
+          expandIcon={<ExpandMoreIcon fontSize="small" />}
           aria-controls="panel1-content"
           id="panel1-header"
-          sx={{
-            "& .MuiAccordionSummary-content": {
-              alignItems: "center",
-              gap: 1,
-            },
-            padding: { xs: "0.75rem 1rem", sm: "1rem" },
-          }}
+          sx={summarySx}
         >
-          <ReceiptIcon
-            sx={{
-              color: "main",
-              marginRight: 1,
-              fontSize: { xs: "1.5rem", sm: "1.75rem" },
-            }}
-          />
-          <Typography
-            component="span"
-            sx={{
-              color: "main",
-              fontWeight: 600,
-              fontSize: { xs: "0.95rem", sm: "1.1rem" },
-            }}
-          >
+          <ReceiptIcon sx={summaryIconSx} />
+          <Typography component="span" sx={titleTypographySx}>
             Estado de la Facturación
           </Typography>
+          {typeof data?.generalPorcentage === "number" && (
+            <Chip
+              size="small"
+              label={`${Math.round(data.generalPorcentage)}%`}
+              aria-label={`${Math.round(data.generalPorcentage)} por ciento completado`}
+              sx={{
+                ml: "auto",
+                mr: 1,
+                bgcolor: getPercentageChipColors(data.generalPorcentage).bg,
+                color: getPercentageChipColors(data.generalPorcentage).fg,
+                fontWeight: 700,
+                fontSize: "0.72rem",
+                height: 24,
+                borderRadius: 1.5,
+                letterSpacing: "0.02em",
+              }}
+            />
+          )}
         </AccordionSummary>
         <AccordionDetails
           sx={{
+            ...detailsSx,
             display: "flex",
             alignItems: "center",
-            gap: { xs: "5%", sm: "8%", md: "6%", lg: "5%" },
+            gap: { xs: 2, sm: 3, md: 4, lg: 5 },
             justifyContent: "center",
-            padding: { xs: "3%", sm: "2.5%", md: "3%", lg: "3.5%" },
-            backgroundColor: { xs: "#f8f9fa", sm: "#fafbfc" },
+            padding: { xs: "1.5rem 1rem", sm: "2rem 1.5rem", md: "2.5rem 2rem" },
             flexWrap: "wrap",
-            minHeight: { sm: "180px", md: "200px" },
-            transition: "background-color 0.2s ease",
+            minHeight: { sm: 180, md: 200 },
           }}
         >
           {loading && (
@@ -297,41 +520,40 @@ export const FacturProcess = () => {
           )}
         </AccordionDetails>
       </Accordion>
-      <Accordion
-        sx={{
-          boxShadow: { xs: 1, sm: 2, md: 3 },
-          borderRadius: 2,
-          border: { sm: "1px solid #f0f0f0", md: "1px solid #e8e8e8" },
-          transition: "all 0.2s ease",
-          "&:hover": {
-            boxShadow: { xs: 2, sm: 3, md: 4 },
-          },
-        }}
-      >
+      <Accordion defaultExpanded sx={accordionSx}>
         <AccordionSummary
-          expandIcon={<ArrowDropDownIcon />}
+          expandIcon={<ExpandMoreIcon fontSize="small" />}
           aria-controls="panel2-content"
           id="panel2-header"
-          sx={{
-            padding: { xs: "0.75rem 1rem", sm: "1rem" },
-            transition: "background-color 0.2s ease",
-          }}
+          sx={summarySx}
         >
-          <Typography
-            component="span"
-            sx={{
-              fontSize: { xs: "0.95rem", sm: "1.1rem" },
-              fontWeight: 600,
-            }}
-          >
+          <FactCheckIcon sx={summaryIconSx} />
+          <Typography component="span" sx={titleTypographySx}>
             Gestión de Facturación
           </Typography>
+          {data?.clients?.length > 0 && (
+            <Chip
+              size="small"
+              label={`${data.clients.length} cliente${data.clients.length === 1 ? "" : "s"}`}
+              aria-label={`${data.clients.length} clientes en total`}
+              sx={{
+                ml: "auto",
+                mr: 1,
+                bgcolor: "rgba(25, 118, 210, 0.10)",
+                color: "primary.blue",
+                fontWeight: 700,
+                fontSize: "0.72rem",
+                height: 24,
+                borderRadius: 1.5,
+                letterSpacing: "0.02em",
+              }}
+            />
+          )}
         </AccordionSummary>
         <AccordionDetails
           sx={{
+            ...detailsSx,
             padding: { xs: "1rem", sm: "1.5rem", md: "2rem", lg: "2.5rem" },
-            backgroundColor: { xs: "transparent", sm: "#fafbfc" },
-            transition: "background-color 0.2s ease",
           }}
         >
           {loading && (
@@ -356,7 +578,6 @@ export const FacturProcess = () => {
                   },
                 }}
               >
-                {/* Filtros */}
                 <Box
                   sx={{
                     display: "flex",
@@ -366,273 +587,49 @@ export const FacturProcess = () => {
                     overflow: { xs: "auto", sm: "visible" },
                     paddingBottom: { xs: "0.5rem", sm: 0 },
                     scrollBehavior: "smooth",
-                    "&::-webkit-scrollbar": {
-                      height: "4px",
-                    },
-                    "&::-webkit-scrollbar-track": {
-                      background: "transparent",
-                    },
+                    "&::-webkit-scrollbar": { height: "4px" },
+                    "&::-webkit-scrollbar-track": { background: "transparent" },
                     "&::-webkit-scrollbar-thumb": {
                       background: "#ccc",
                       borderRadius: "2px",
                     },
                   }}
                 >
-                  {/* Botón Todos */}
-                  <Tooltip
-                    title="Mostrar todos los clientes"
-                    arrow
-                    placement="top"
-                  >
-                    <Box
-                      onClick={handleResetSearch}
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: { xs: 0.5, sm: 0.75 },
-                        padding: {
-                          xs: "0.6rem 0.9rem",
-                          sm: "0.7rem 1.2rem",
-                          md: "0.8rem 1.4rem",
-                        },
-                        borderRadius: "2rem",
-                        backgroundColor:
-                          filterStatus === "all"
-                            ? "#2c3e50"
-                            : "background.antiflash",
-                        color: filterStatus === "all" ? "#fff" : "#2c3e50",
-                        cursor: "pointer",
-                        transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                        border:
-                          filterStatus === "all"
-                            ? "2px solid #2c3e50"
-                            : "2px solid transparent",
-                        fontWeight: 600,
-                        fontSize: { xs: "0.8rem", sm: "0.95rem", md: "1rem" },
-                        whiteSpace: "nowrap",
-                        flexShrink: 0,
-                        userSelect: "none",
-                        "&:hover": {
-                          backgroundColor:
-                            filterStatus === "all" ? "#1a252f" : "#e8e8e8",
-                          transform: {
-                            xs: "translateY(-2px)",
-                            md: "translateY(-3px) scale(1.02)",
-                          },
-                          boxShadow:
-                            filterStatus === "all"
-                              ? "0 4px 12px rgba(44, 62, 80, 0.2)"
-                              : "0 2px 8px rgba(0, 0, 0, 0.1)",
-                        },
-                        "&:active": {
-                          transform: "translateY(0)",
-                        },
-                      }}
-                    >
-                      <FiterListIcon
-                        sx={{
-                          fontSize: {
-                            xs: "1.1rem",
-                            sm: "1.3rem",
-                            md: "1.4rem",
-                          },
-                        }}
-                      />
-                      <span style={{ display: { xs: "none", sm: "inline" } }}>
-                        Todos
-                      </span>
-                    </Box>
-                  </Tooltip>
-
-                  {/* Botón Facturados */}
-                  <Tooltip title="Solo facturados" arrow placement="top">
-                    <Box
-                      onClick={handleFilterFacturados}
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: { xs: 0.5, sm: 0.75 },
-                        padding: {
-                          xs: "0.6rem 0.9rem",
-                          sm: "0.7rem 1.2rem",
-                          md: "0.8rem 1.4rem",
-                        },
-                        borderRadius: "2rem",
-                        backgroundColor:
-                          filterStatus === "facturados"
-                            ? "#33d2a4"
-                            : "background.antiflash",
-                        color:
-                          filterStatus === "facturados" ? "#fff" : "#33d2a4",
-                        cursor: "pointer",
-                        transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                        border:
-                          filterStatus === "facturados"
-                            ? "2px solid #33d2a4"
-                            : "2px solid transparent",
-                        fontWeight: 600,
-                        fontSize: { xs: "0.8rem", sm: "0.95rem", md: "1rem" },
-                        whiteSpace: "nowrap",
-                        flexShrink: 0,
-                        userSelect: "none",
-                        "&:hover": {
-                          backgroundColor:
-                            filterStatus === "facturados"
-                              ? "#26b088"
-                              : "#e8f5f0",
-                          transform: {
-                            xs: "translateY(-2px)",
-                            md: "translateY(-3px) scale(1.02)",
-                          },
-                          boxShadow:
-                            filterStatus === "facturados"
-                              ? "0 4px 12px rgba(51, 210, 164, 0.3)"
-                              : "0 2px 8px rgba(51, 210, 164, 0.1)",
-                        },
-                        "&:active": {
-                          transform: "translateY(0)",
-                        },
-                      }}
-                    >
-                      <DoneAllIcon
-                        sx={{
-                          fontSize: {
-                            xs: "1.1rem",
-                            sm: "1.3rem",
-                            md: "1.4rem",
-                          },
-                        }}
-                      />
-                      <span style={{ display: { xs: "none", sm: "inline" } }}>
-                        Facturados
-                      </span>
-                    </Box>
-                  </Tooltip>
-
-                  {/* Botón Sin Facturar */}
-                  <Tooltip title="Sin facturar" arrow placement="top">
-                    <Box
-                      onClick={handleFilterSinFacturar}
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: { xs: 0.5, sm: 0.75 },
-                        padding: {
-                          xs: "0.6rem 0.9rem",
-                          sm: "0.7rem 1.2rem",
-                          md: "0.8rem 1.4rem",
-                        },
-                        borderRadius: "2rem",
-                        backgroundColor:
-                          filterStatus === "sin_facturar"
-                            ? "#e95354"
-                            : "background.antiflash",
-                        color:
-                          filterStatus === "sin_facturar" ? "#fff" : "#e95354",
-                        cursor: "pointer",
-                        transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                        border:
-                          filterStatus === "sin_facturar"
-                            ? "2px solid #e95354"
-                            : "2px solid transparent",
-                        fontWeight: 600,
-                        fontSize: { xs: "0.8rem", sm: "0.95rem", md: "1rem" },
-                        whiteSpace: "nowrap",
-                        flexShrink: 0,
-                        userSelect: "none",
-                        "&:hover": {
-                          backgroundColor:
-                            filterStatus === "sin_facturar"
-                              ? "#d63f40"
-                              : "#fce8e8",
-                          transform: {
-                            xs: "translateY(-2px)",
-                            md: "translateY(-3px) scale(1.02)",
-                          },
-                          boxShadow:
-                            filterStatus === "sin_facturar"
-                              ? "0 4px 12px rgba(233, 83, 84, 0.3)"
-                              : "0 2px 8px rgba(233, 83, 84, 0.1)",
-                        },
-                        "&:active": {
-                          transform: "translateY(0)",
-                        },
-                      }}
-                    >
-                      <BlockIcon
-                        sx={{
-                          fontSize: {
-                            xs: "1.1rem",
-                            sm: "1.3rem",
-                            md: "1.4rem",
-                          },
-                        }}
-                      />
-                      <span style={{ display: { xs: "none", sm: "inline" } }}>
-                        Sin facturar
-                      </span>
-                    </Box>
-                  </Tooltip>
+                  <FilterChip
+                    active={filterStatus === "all"}
+                    onClick={handleResetSearch}
+                    icon={FilterListIcon}
+                    label="Todos"
+                    tooltip="Mostrar todos los clientes"
+                    color="neutral"
+                  />
+                  <FilterChip
+                    active={filterStatus === "facturados"}
+                    onClick={handleFilterFacturados}
+                    icon={DoneAllIcon}
+                    label="Facturados"
+                    tooltip="Solo facturados"
+                    color="success"
+                  />
+                  <FilterChip
+                    active={filterStatus === "sin_facturar"}
+                    onClick={handleFilterSinFacturar}
+                    icon={BlockIcon}
+                    label="Sin facturar"
+                    tooltip="Sin facturar"
+                    color="error"
+                  />
                 </Box>
 
-                {/* Botón Buscador */}
-                <Tooltip
-                  title={showSearcher ? "Ocultar buscador" : "Mostrar buscador"}
-                  arrow
-                  placement="top"
-                >
-                  <Box
-                    onClick={() => setShowSearcher(!showSearcher)}
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: { xs: 0.5, sm: 0.75 },
-                      padding: {
-                        xs: "0.6rem 0.9rem",
-                        sm: "0.7rem 1.2rem",
-                        md: "0.8rem 1.4rem",
-                      },
-                      borderRadius: "2rem",
-                      backgroundColor: showSearcher
-                        ? "#1976d2"
-                        : "background.antiflash",
-                      color: showSearcher ? "#fff" : "#1976d2",
-                      cursor: "pointer",
-                      transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                      border: showSearcher
-                        ? "2px solid #1976d2"
-                        : "2px solid transparent",
-                      fontWeight: 600,
-                      fontSize: { xs: "0.8rem", sm: "0.95rem", md: "1rem" },
-                      whiteSpace: "nowrap",
-                      flexShrink: 0,
-                      minWidth: { xs: "100%", sm: "auto" },
-                      userSelect: "none",
-                      "&:hover": {
-                        backgroundColor: showSearcher ? "#135ba1" : "#e3f2fd",
-                        transform: {
-                          xs: "translateY(-2px)",
-                          md: "translateY(-3px) scale(1.02)",
-                        },
-                        boxShadow: showSearcher
-                          ? "0 4px 12px rgba(25, 118, 210, 0.3)"
-                          : "0 2px 8px rgba(25, 118, 210, 0.1)",
-                      },
-                      "&:active": {
-                        transform: "translateY(0)",
-                      },
-                    }}
-                  >
-                    <SearchIcon
-                      sx={{
-                        fontSize: { xs: "1.1rem", sm: "1.3rem" },
-                      }}
-                    />
-                    <span style={{ display: { xs: "none", sm: "inline" } }}>
-                      {showSearcher ? "Ocultar" : "Buscar"}
-                    </span>
-                  </Box>
-                </Tooltip>
+                <FilterChip
+                  active={showSearcher}
+                  onClick={() => setShowSearcher(!showSearcher)}
+                  icon={SearchIcon}
+                  label={showSearcher ? "Ocultar" : "Buscar"}
+                  tooltip={showSearcher ? "Ocultar buscador" : "Mostrar buscador"}
+                  color="primary"
+                  fullWidthOnMobile
+                />
               </Box>
 
               {showSearcher && (
@@ -792,109 +789,31 @@ export const FacturProcess = () => {
                   display: "flex",
                   flexDirection: { xs: "column", sm: "row" },
                   justifyContent: { xs: "stretch", sm: "flex-end" },
-                  gap: { xs: "1%", sm: "1.5%", md: "2%" },
+                  // gap: { xs: "1%", sm: "1.5%", md: "2%" },
                   flexWrap: { xs: "nowrap", sm: "wrap" },
                 }}
               >
-                <Tooltip
-                  title="Reinicia el estado de facturación para todos los clientes"
-                  placement="top"
-                >
-                  <Box
-                    onClick={() => setOpenConfirmDialog(true)}
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      marginBottom: { xs: "3%", sm: 0 },
-                      gap: { xs: 0.5, sm: 0.75 },
-                      padding: {
-                        xs: "0.6rem 1rem",
-                        sm: "0.7rem 1.3rem",
-                        md: "0.8rem 1.5rem",
-                      },
-                      borderRadius: "0.5rem",
-                      backgroundColor: "primary.red",
-                      color: "#fff",
-                      cursor: guardando ? "not-allowed" : "pointer",
-                      transition: "all 0.3s ease",
-                      border: "1px solid primary.main",
-                      fontWeight: 600,
-                      fontSize: { xs: "0.875rem", sm: "0.95rem", md: "1rem" },
-                      opacity: guardando ? 0.6 : 1,
-                      pointerEvents: guardando ? "none" : "auto",
-                      userSelect: "none",
-                      "&:hover": guardando
-                        ? {}
-                        : {
-                            backgroundColor: "#d63f40",
-                            transform: "translateY(-2px)",
-                            boxShadow: "0 4px 12px rgba(233, 83, 84, 0.3)",
-                          },
-                      "&:active": guardando
-                        ? {}
-                        : {
-                            transform: "translateY(0)",
-                          },
-                    }}
-                  >
-                    <RestartAltIcon
-                      sx={{
-                        fontSize: { xs: "1.1rem", sm: "1.3rem", md: "1.4rem" },
-                      }}
-                    />
-                    <span>Reiniciar</span>
-                  </Box>
-                </Tooltip>
-
-                <Box
-                  onClick={!guardando ? handleGuardarFacturacion : undefined}
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginBottom: { xs: "1%", sm: 0 },
-                    gap: { xs: 0.5, sm: 0.75 },
-                    padding: {
-                      xs: "0.6rem 1rem",
-                      sm: "0.7rem 1.3rem",
-                      md: "0.8rem 1.5rem",
-                    },
-                    borderRadius: "0.5rem",
-                    backgroundColor: "#2c3e50",
-                    color: "#fff",
-                    cursor: guardando ? "not-allowed" : "pointer",
-                    transition: "all 0.3s ease",
-                    border: "1px solid #2c3e50",
-                    fontWeight: 600,
-                    fontSize: { xs: "0.875rem", sm: "0.95rem", md: "1rem" },
-                    opacity: guardando ? 0.6 : 1,
-                    userSelect: "none",
-                    "&:hover": guardando
-                      ? {}
-                      : {
-                          backgroundColor: "#1a252f",
-                          transform: "translateY(-2px)",
-                          boxShadow: "0 4px 12px rgba(44, 62, 80, 0.3)",
-                        },
-                    "&:active": guardando
-                      ? {}
-                      : {
-                          transform: "translateY(0)",
-                        },
-                  }}
-                >
-                  {guardando ? (
-                    <CircularProgress size={20} sx={{ color: "#fff" }} />
-                  ) : (
-                    <SaveIcon
-                      sx={{
-                        fontSize: { xs: "1.1rem", sm: "1.3rem", md: "1.4rem" },
-                      }}
-                    />
-                  )}
-                  <span>{guardando ? "Guardando..." : "Guardar"}</span>
+                <Box sx={{marginBottom:"3%"}}>
+              <ActionButton 
+                  onClick={() => setOpenConfirmDialog(true)}
+                  disabled={guardando}
+                  color="error"
+                  icon={RestartAltIcon}
+                  label="Reiniciar"
+                  tooltip="Reinicia el estado de facturación para todos los clientes"
+                />
                 </Box>
+                
+                <ActionButton
+                  onClick={handleGuardarFacturacion}
+                  disabled={guardando}
+                  loading={guardando}
+                  color="primary"
+                  icon={SaveIcon}
+                  label="Guardar"
+                  loadingLabel="Guardando..."
+                  tooltip="Guardar cambios de facturación"
+                />
               </Box>
 
               <Dialog
@@ -903,9 +822,7 @@ export const FacturProcess = () => {
                 maxWidth="xs"
                 fullWidth
                 PaperProps={{
-                  sx: {
-                    margin: { xs: 1, sm: 0 },
-                  },
+                  sx: { margin: { xs: 1, sm: 0 } },
                 }}
               >
                 <DialogTitle

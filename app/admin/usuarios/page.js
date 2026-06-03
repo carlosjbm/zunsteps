@@ -243,7 +243,7 @@ export default function AdminUsuariosPage() {
           Administración de Usuarios
         </Typography>
       </Box>
-      <QuickNavigation admin={false} />
+      <QuickNavigation />
 
       {/* Alerts */}
       {error && (

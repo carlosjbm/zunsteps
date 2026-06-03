@@ -29,7 +29,7 @@ export default function AdminPage() {
 
   return (
     <>
-      <QuickNavigation admin={false} />
+      <QuickNavigation />
       <Container maxWidth="lg" sx={{ py: { xs: 2, md: 4 } }}>
         {/* Quick Navigation */}
         {/* Header */}

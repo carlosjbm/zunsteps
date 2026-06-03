@@ -120,7 +120,7 @@ export default function FAQsPage() {
         px: { xs: 2, md: 4 },
       }}
     >
-      <QuickNavigation faqs={false} />
+      <QuickNavigation />
       <Container maxWidth="md">
         {/* Header */}
         <Box sx={{ mb: 4, textAlign: "center" }}>
