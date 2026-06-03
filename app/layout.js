@@ -1,19 +1,8 @@
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { MyThemeProvider } from "./components/providers/MyThemeProvider";
 import { ModuloProvider } from "./lib/contexts/ModulosContext";
 import { PremiumProvider } from "./lib/contexts/PremiumContext";
 import { PremiumAuthProvider } from "./lib/contexts/PremiumAuthContext";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata = {
   title: "ZUNSteps",
@@ -26,7 +15,7 @@ export default function RootLayout({ children }) {
       <MyThemeProvider>
         <ModuloProvider>
           <PremiumAuthProvider>
-            <body className={`${geistSans.variable} ${geistMono.variable}`}>
+            <body>
               {children}
             </body>
           </PremiumAuthProvider>

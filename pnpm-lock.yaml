@@ -20,6 +20,9 @@ importers:
       '@mui/material':
         specifier: ^7.3.4
         version: 7.3.5(@emotion/react@11.14.0(@types/react@19.2.7)(react@19.1.0))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.7)(react@19.1.0))(@types/react@19.2.7)(react@19.1.0))(@types/react@19.2.7)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@next/swc-wasm-nodejs':
+        specifier: ^15.5.4
+        version: 15.5.19
       mysql2:
         specifier: ^3.18.2
         version: 3.18.2(@types/node@25.3.3)
@@ -518,6 +521,9 @@ packages:
     cpu: [x64]
     os: [linux]
     libc: [musl]
+
+  '@next/swc-wasm-nodejs@15.5.19':
+    resolution: {integrity: sha512-Tv1K3VjgVYXruxnmF3LCxQSg5RwL3XKU1aBIwemy2miwXGIAP38Tv2SG18H4X3MP8hZ9ae2nOi8b2k2uEPp8wg==}
 
   '@next/swc-win32-arm64-msvc@15.5.4':
     resolution: {integrity: sha512-PcR2bN7FlM32XM6eumklmyWLLbu2vs+D7nJX8OAIoWy69Kef8mfiN4e8TUv2KohprwifdpFKPzIP1njuCjD0YA==}
@@ -2370,6 +2376,8 @@ snapshots:
 
   '@next/swc-linux-x64-musl@15.5.4':
     optional: true
+
+  '@next/swc-wasm-nodejs@15.5.19': {}
 
   '@next/swc-win32-arm64-msvc@15.5.4':
     optional: true
